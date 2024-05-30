@@ -3,7 +3,10 @@ import 'package:client/orders/view_order.dart';
 import 'package:client/profiles/freelancer_profile.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/AppColors.dart';
 import '../orders/all_orders.dart';
+import '../reg/registration.dart';
+import '../services/orders/orders_service.dart';
 
 class AllFreelancersWidget extends StatelessWidget {
   const AllFreelancersWidget({super.key});
@@ -15,18 +18,33 @@ class AllFreelancersWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
         child: Stack(children: [
+          LayoutBuilder(builder: (context, constraints) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    margin: EdgeInsets.only(top: constraints.maxHeight * 0.125),
+                    height: 1.0,
+                    width: constraints.maxWidth * 0.95,
+                    color: AppColors.hintColor,
+                  ),
+                ),
+              ),
+            );
+          }),
           Align(
             alignment: const FractionalOffset(0, 1),
             child: Container(
               height: 90,
               decoration: const ShapeDecoration(
-                color: Color(0xFF7B9B6B),
+                color: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
               ),
             ),
@@ -40,7 +58,7 @@ class AllFreelancersWidget extends StatelessWidget {
                 'Фрилансеры',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -52,26 +70,22 @@ class AllFreelancersWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.49, 0.96),
+            alignment: const FractionalOffset(0.5, 0.97),
             child: SizedBox(
-              child: Material(
-                  color: const Color(0xFF7B9B6B),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AllFreelancersWidget()),
-                        );
-                      },
-                      splashColor: Colors.transparent,
-                      child: Stack(children: [
-                        Transform.scale(
-                          scale: 1.1,
-                          child:
-                          Image.asset('assets/images/freelancers_icon.png'),
-                        )
-                      ]))),
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.center,
+                              child: Image.asset('assets/images/freelancers_icon.png'),
+                            )
+                          ])))),
             ),
           ),
           const Align(
@@ -83,7 +97,7 @@ class AllFreelancersWidget extends StatelessWidget {
                 'Профиль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -95,26 +109,58 @@ class AllFreelancersWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.91, 0.96),
+            alignment: const FractionalOffset(0.925, 0.97),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const FreelancerProfileWidget()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/profile.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (
+                                      context) => const RegistrationWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.center,
+                              child: Image.asset('assets/images/profile_icon.png'),
+                            )
+                          ])))),
+            ),
           ),
+          Align(
+              alignment: const FractionalOffset(0.075, 0.97),
+              child: SizedBox(
+                child: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: Material(
+                        color: AppColors.primaryColor,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (
+                                        context) => const AllOrders()),
+                              );
+                            },
+                            splashColor: Colors.transparent,
+                            child: Stack(children: [
+                              Transform.scale(
+                                scale: 1,
+                                alignment: Alignment.center,
+                                child: Image.asset('assets/images/orders_icon.png'),
+                              )
+                            ])))),
+              )),
           const Align(
             alignment: FractionalOffset(0, 1.01),
             child: SizedBox(
@@ -124,7 +170,7 @@ class AllFreelancersWidget extends StatelessWidget {
                 'Заказы',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -134,27 +180,6 @@ class AllFreelancersWidget extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          Align(
-            alignment: const FractionalOffset(0.09, 0.96),
-            child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/orders_icon.png'),
-                          )
-                        ])))),
           ),
           LayoutBuilder(
             builder: (context, constraints) {
@@ -165,7 +190,7 @@ class AllFreelancersWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -173,12 +198,12 @@ class AllFreelancersWidget extends StatelessWidget {
             },
           ),
           const Align(
-            alignment: FractionalOffset(0.15, 0.08),
+            alignment: FractionalOffset(0.15, 0.1),
             child: Text(
                 'Фрилансеры:',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 24,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -189,12 +214,12 @@ class AllFreelancersWidget extends StatelessWidget {
               ),
           ),
           const Align(
-              alignment: FractionalOffset(0.75, 0.08),
+              alignment: FractionalOffset(0.75, 0.1),
               child: Text(
                   'Фильтр',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                       fontSize: 18,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
@@ -203,29 +228,35 @@ class AllFreelancersWidget extends StatelessWidget {
                       decoration: TextDecoration.none),
               )),
           Align(
-            alignment: const FractionalOffset(0.9, 0.048),
+            alignment: const FractionalOffset(0.9, 0.075),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFFD8DEC6),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const FreelancerFiltersWidget()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 0.6,
-                            child:
-                            Image.asset('assets/images/order_settings.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Material(
+                      color: AppColors.backgroundColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const FreelancerFiltersWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 0.8,
+                              alignment: Alignment.center,
+                              child:
+                              Image.asset('assets/images/order_settings.png'),
+                            )
+                          ])))),
+            ),
           ),
           Align(
-            alignment: const FractionalOffset(0.5, 0.2),
+            alignment: const FractionalOffset(0.5, 0.225),
             child: LayoutBuilder(builder: (context, constraints) {
               return GestureDetector(
                   onTap: () {
@@ -242,21 +273,21 @@ class AllFreelancersWidget extends StatelessWidget {
                           width: constraints.maxWidth * 0.9,
                           height: constraints.maxHeight * 0.3,
                           decoration: ShapeDecoration(
-                            color: const Color(0xFFD9D9D9),
+                            color: AppColors.backgroundColor,
                             shape: RoundedRectangleBorder(
-                              side: const BorderSide(width: 1),
+                              side: const BorderSide(width: 3, color: AppColors.primaryColor),
                               borderRadius: BorderRadius.circular(20),
                             ),
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.05,
+                          left: constraints.maxWidth * 0.075,
                           top: constraints.maxHeight * 0.05,
                           child: const Text(
                             'Игорь Игоревич',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 22,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -266,14 +297,14 @@ class AllFreelancersWidget extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.6,
+                          right: constraints.maxWidth * 0.075,
                           top: constraints.maxHeight * 0.05,
                           child: const SizedBox(
                             child: Text(
                               '50\$/час',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -284,11 +315,13 @@ class AllFreelancersWidget extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.65,
-                          top: constraints.maxHeight * 0.08,
+                          right: constraints.maxWidth * 0.05,
+                          top: constraints.maxHeight * 0.055,
+                          width: 60,
+                          height: 60,
                           child: SizedBox(
                               child: Material(
-                                  color: const Color(0xFFD9D9D9),
+                                  color: AppColors.backgroundColor,
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -301,20 +334,21 @@ class AllFreelancersWidget extends StatelessWidget {
                                       splashColor: Colors.transparent,
                                       child: Stack(children: [
                                         Transform.scale(
-                                          scale: 0.5,
+                                          scale: 0.6,
+                                          alignment: Alignment.center,
                                           child:
                                           Image.asset('assets/images/mark.png'),
                                         )
                                       ])))),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.1,
+                          left: constraints.maxWidth * 0.075,
                           top: constraints.maxHeight * 0.1,
                           child: const Text(
                               '8 заказов',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -324,33 +358,15 @@ class AllFreelancersWidget extends StatelessWidget {
                             ),
                           ),
                         Positioned(
-                          left: constraints.maxWidth * 0.62,
-                          top: constraints.maxHeight * 0.12,
+                          right: constraints.maxWidth * 0.185,
+                          top: constraints.maxHeight * 0.1,
                           child: const SizedBox(
                             child: Text(
                               '5',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 24,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0.04,
-                                  letterSpacing: -0.50,
-                                  decoration: TextDecoration.none),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: constraints.maxWidth * 0.5,
-                          top: constraints.maxHeight * 0.08,
-                          child: const SizedBox(
-                            child: Text(
-                              'Средняя оценка',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
                                   height: 0.04,
@@ -366,7 +382,7 @@ class AllFreelancersWidget extends StatelessWidget {
                             'Обо мне:',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 22,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -382,7 +398,7 @@ class AllFreelancersWidget extends StatelessWidget {
                             'Разрабатываю тг ботов на Java',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 18,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -399,7 +415,7 @@ class AllFreelancersWidget extends StatelessWidget {
                               'Spring',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -417,7 +433,7 @@ class AllFreelancersWidget extends StatelessWidget {
                               'Java',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -435,7 +451,7 @@ class AllFreelancersWidget extends StatelessWidget {
                               'SQL',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -457,7 +473,8 @@ class AllFreelancersWidget extends StatelessWidget {
                               decoration: const ShapeDecoration(
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                    width: 1,
+                                    color: AppColors.primaryColor,
+                                    width: 1.5,
                                     strokeAlign: BorderSide.strokeAlignCenter,
                                   ),
                                 ),
@@ -477,7 +494,8 @@ class AllFreelancersWidget extends StatelessWidget {
                               decoration: const ShapeDecoration(
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                    width: 1,
+                                    color: AppColors.primaryColor,
+                                    width: 1.5,
                                     strokeAlign: BorderSide.strokeAlignCenter,
                                   ),
                                 ),
@@ -498,7 +516,7 @@ class AllFreelancersWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ViewOrderWidget()),
+                          builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
                     );
                   },
                   child: SizedBox(
@@ -508,21 +526,21 @@ class AllFreelancersWidget extends StatelessWidget {
                           width: constraints.maxWidth * 0.9,
                           height: constraints.maxHeight * 0.3,
                           decoration: ShapeDecoration(
-                            color: const Color(0xFFD9D9D9),
+                            color: AppColors.backgroundColor,
                             shape: RoundedRectangleBorder(
-                              side: const BorderSide(width: 1),
+                              side: const BorderSide(width: 3, color: AppColors.primaryColor),
                               borderRadius: BorderRadius.circular(20),
                             ),
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.05,
+                          left: constraints.maxWidth * 0.075,
                           top: constraints.maxHeight * 0.05,
                           child: const Text(
                             'Максим Иванович',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 22,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -532,14 +550,14 @@ class AllFreelancersWidget extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.6,
+                          right: constraints.maxWidth * 0.075,
                           top: constraints.maxHeight * 0.05,
                           child: const SizedBox(
                             child: Text(
                               '5000\$/час',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -550,11 +568,13 @@ class AllFreelancersWidget extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.65,
-                          top: constraints.maxHeight * 0.08,
+                          right: constraints.maxWidth * 0.05,
+                          top: constraints.maxHeight * 0.055,
+                          width: 60,
+                          height: 60,
                           child: SizedBox(
                               child: Material(
-                                  color: const Color(0xFFD9D9D9),
+                                  color: AppColors.backgroundColor,
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -567,20 +587,21 @@ class AllFreelancersWidget extends StatelessWidget {
                                       splashColor: Colors.transparent,
                                       child: Stack(children: [
                                         Transform.scale(
-                                          scale: 0.5,
+                                          scale: 0.6,
+                                          alignment: Alignment.center,
                                           child:
                                           Image.asset('assets/images/mark.png'),
                                         )
                                       ])))),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.1,
+                          left: constraints.maxWidth * 0.075,
                           top: constraints.maxHeight * 0.1,
                           child: const Text(
                             '1 заказ',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 22,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -590,33 +611,15 @@ class AllFreelancersWidget extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.62,
-                          top: constraints.maxHeight * 0.12,
+                          right: constraints.maxWidth * 0.185,
+                          top: constraints.maxHeight * 0.1,
                           child: const SizedBox(
                             child: Text(
                               '5',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 24,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0.04,
-                                  letterSpacing: -0.50,
-                                  decoration: TextDecoration.none),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: constraints.maxWidth * 0.5,
-                          top: constraints.maxHeight * 0.08,
-                          child: const SizedBox(
-                            child: Text(
-                              'Средняя оценка',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
                                   height: 0.04,
@@ -632,7 +635,7 @@ class AllFreelancersWidget extends StatelessWidget {
                             'Обо мне:',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 22,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -648,7 +651,7 @@ class AllFreelancersWidget extends StatelessWidget {
                             'Разрабатываю блокчейн системы',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 18,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -665,7 +668,7 @@ class AllFreelancersWidget extends StatelessWidget {
                               'Golang',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -683,7 +686,7 @@ class AllFreelancersWidget extends StatelessWidget {
                               'Cosmos',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -701,7 +704,7 @@ class AllFreelancersWidget extends StatelessWidget {
                               '-',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -723,7 +726,8 @@ class AllFreelancersWidget extends StatelessWidget {
                               decoration: const ShapeDecoration(
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                    width: 1,
+                                    color: AppColors.primaryColor,
+                                    width: 1.5,
                                     strokeAlign: BorderSide.strokeAlignCenter,
                                   ),
                                 ),
@@ -743,7 +747,8 @@ class AllFreelancersWidget extends StatelessWidget {
                               decoration: const ShapeDecoration(
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                    width: 1,
+                                    color: AppColors.primaryColor,
+                                    width: 1.5,
                                     strokeAlign: BorderSide.strokeAlignCenter,
                                   ),
                                 ),

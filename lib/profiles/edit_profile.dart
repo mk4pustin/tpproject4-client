@@ -3,8 +3,8 @@ import 'package:client/profiles/freelancer_profile.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
-import '../start_page.dart';
 
 class EditProfileWidget extends StatelessWidget {
   const EditProfileWidget({super.key});
@@ -16,7 +16,7 @@ class EditProfileWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -27,7 +27,7 @@ class EditProfileWidget extends StatelessWidget {
             child: Container(
               height: 90,
               decoration: const ShapeDecoration(
-                color: Color(0xFF7B9B6B),
+                color: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
               ),
             ),
@@ -41,7 +41,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Фрилансеры',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -53,27 +53,30 @@ class EditProfileWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.49, 0.96),
+            alignment: const FractionalOffset(0.525, 0.97),
             child: SizedBox(
-              child: Material(
-                  color: const Color(0xFF7B9B6B),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                              const AllFreelancersWidget()),
-                        );
-                      },
-                      splashColor: Colors.transparent,
-                      child: Stack(children: [
-                        Transform.scale(
-                          scale: 1.1,
-                          child:
-                          Image.asset('assets/images/freelancers_icon.png'),
-                        )
-                      ]))),
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (
+                                      context) => const AllFreelancersWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child: Image.asset('assets/images/freelancers_icon.png'),
+                            )
+                          ])))),
             ),
           ),
           const Align(
@@ -85,7 +88,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Профиль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -97,26 +100,58 @@ class EditProfileWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.91, 0.96),
+            alignment: const FractionalOffset(0.98, 0.97),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const StartPage()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/profile.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (
+                                      context) => const RegistrationWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child: Image.asset('assets/images/profile_icon.png'),
+                            )
+                          ])))),
+            ),
           ),
+          Align(
+              alignment: const FractionalOffset(0.08, 0.97),
+              child: SizedBox(
+                child: SizedBox(
+                    width: 80,
+                    height: 60,
+                    child: Material(
+                        color: AppColors.primaryColor,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (
+                                        context) => const AllOrders()),
+                              );
+                            },
+                            splashColor: Colors.transparent,
+                            child: Stack(children: [
+                              Transform.scale(
+                                scale: 1,
+                                alignment: Alignment.topCenter,
+                                child: Image.asset('assets/images/orders_icon.png'),
+                              )
+                            ])))),
+              )),
           const Align(
             alignment: FractionalOffset(0, 1.01),
             child: SizedBox(
@@ -126,7 +161,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Заказы',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -137,27 +172,6 @@ class EditProfileWidget extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: const FractionalOffset(0.09, 0.96),
-            child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/orders_icon.png'),
-                          )
-                        ])))),
-          ),
           const Align(
               alignment: FractionalOffset(0.65, 0.087),
               child: SizedBox(
@@ -165,7 +179,7 @@ class EditProfileWidget extends StatelessWidget {
                   'Редактирование профиля',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                       fontSize: 24,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
@@ -181,7 +195,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Имя пользователя',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -215,7 +229,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Текущий пароль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -248,7 +262,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Новый пароль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -281,7 +295,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Обо мне',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -315,7 +329,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Контактная информация',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -348,7 +362,7 @@ class EditProfileWidget extends StatelessWidget {
                 'Стоимость',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -391,12 +405,12 @@ class EditProfileWidget extends StatelessWidget {
                         constraints.maxWidth * 0.5,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                    MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Сохранить',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                     ),
                   ),
                 ));
@@ -410,7 +424,7 @@ class EditProfileWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -421,7 +435,7 @@ class EditProfileWidget extends StatelessWidget {
             alignment: const FractionalOffset(0.05, 0.05),
             child: SizedBox(
                 child: Material(
-                    color: const Color(0xFFD8DEC6),
+                    color: AppColors.backgroundColor,
                     child: InkWell(
                         onTap: () {
                           Navigator.push(

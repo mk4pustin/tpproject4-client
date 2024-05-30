@@ -2,6 +2,8 @@ import 'package:client/complaints/all_complaints.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/AppColors.dart';
+
 class ForgotPasswordWidget extends StatelessWidget {
   const ForgotPasswordWidget({super.key});
 
@@ -12,7 +14,7 @@ class ForgotPasswordWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -24,7 +26,7 @@ class ForgotPasswordWidget extends StatelessWidget {
               'Восстановление доступа',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 24,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -57,7 +59,7 @@ class ForgotPasswordWidget extends StatelessWidget {
                 'Логин или Email',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -83,12 +85,12 @@ class ForgotPasswordWidget extends StatelessWidget {
                         constraints.maxWidth * 0.7,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                    MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Отправить код',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                       fontSize: 14,
                     ),
                   ),
@@ -101,7 +103,7 @@ class ForgotPasswordWidget extends StatelessWidget {
                 'Код из Email',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -134,7 +136,7 @@ class ForgotPasswordWidget extends StatelessWidget {
                 'Новый пароль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -176,12 +178,12 @@ class ForgotPasswordWidget extends StatelessWidget {
                         constraints.maxWidth * 0.7,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                    MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Войти',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                       fontSize: 14,
                     ),
                   ),
@@ -190,7 +192,7 @@ class ForgotPasswordWidget extends StatelessWidget {
           Align(
             alignment: const FractionalOffset(0.5, 0.85),
             child: Material(
-                color: const Color(0xFFD8DEC6),
+                color: AppColors.backgroundColor,
                 child: InkWell(
                     onTap: () {
                       Navigator.push(

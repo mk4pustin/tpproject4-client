@@ -3,6 +3,8 @@ import 'package:client/reg/forgot_password.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/AppColors.dart';
+
 class EntranceWidget extends StatelessWidget {
   const EntranceWidget({super.key});
 
@@ -13,7 +15,7 @@ class EntranceWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -25,7 +27,7 @@ class EntranceWidget extends StatelessWidget {
               'FREELANCEFINDER',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.black,
+                color: AppColors.blackTextColor,
                 fontSize: 32,
                 fontFamily: 'Viga',
                 fontWeight: FontWeight.w400,
@@ -45,7 +47,7 @@ class EntranceWidget extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: const ShapeDecoration(
-                  color: Color(0xFF7B9B6B),
+                  color: AppColors.primaryColor,
                   shape: StarBorder.polygon(sides: 3),
                 ),
               ),
@@ -57,7 +59,7 @@ class EntranceWidget extends StatelessWidget {
               'Вход',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.black,
+                color: AppColors.blackTextColor,
                 fontSize: 24,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
@@ -68,7 +70,7 @@ class EntranceWidget extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.44),
+              alignment: const FractionalOffset(0.5, 0.49),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
                     child: SizedBox(
@@ -80,17 +82,29 @@ class EntranceWidget extends StatelessWidget {
                               contentPadding: EdgeInsets.only(
                                   top: constraints.maxHeight * 0.08,
                                   left: constraints.maxWidth * 0.05),
-                              border: const OutlineInputBorder()),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
                         )));
               })),
           const Align(
-            alignment: FractionalOffset(0.16, 0.4),
+            alignment: FractionalOffset(0.1325, 0.45),
             child: SizedBox(
               child: Text(
                 'Логин или Email',
-                textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -101,13 +115,13 @@ class EntranceWidget extends StatelessWidget {
             ),
           ),
           const Align(
-            alignment: FractionalOffset(0.13, 0.52),
+            alignment: FractionalOffset(0.1, 0.57),
             child: SizedBox(
               child: Text(
                 'Пароль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -118,7 +132,7 @@ class EntranceWidget extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.57),
+              alignment: const FractionalOffset(0.5, 0.62),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
                     child: SizedBox(
@@ -130,13 +144,26 @@ class EntranceWidget extends StatelessWidget {
                               contentPadding: EdgeInsets.only(
                                   top: constraints.maxHeight * 0.08,
                                   left: constraints.maxWidth * 0.05),
-                              border: const OutlineInputBorder()),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
                         )));
               })),
           Align(
-            alignment: const FractionalOffset(0.13, 0.64),
+            alignment: const FractionalOffset(0.13, 0.69),
             child: Material(
-                color: const Color(0xFFD8DEC6),
+                color: AppColors.backgroundColor,
                 child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -163,7 +190,7 @@ class EntranceWidget extends StatelessWidget {
           ),
           LayoutBuilder(builder: (context, constraints) {
             return Align(
-                alignment: const FractionalOffset(0.5, 0.73),
+                alignment: const FractionalOffset(0.5, 0.85),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -174,24 +201,24 @@ class EntranceWidget extends StatelessWidget {
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(Size(
-                        constraints.maxWidth * 0.6,
+                        constraints.maxWidth * 0.85,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                        MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                        MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Войти',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.backgroundColor,
                       fontSize: 14,
                     ),
                   ),
                 ));
           }),
           Align(
-            alignment: const FractionalOffset(0.5, 0.8),
+            alignment: const FractionalOffset(0.5, 0.925),
             child: Material(
-                color: const Color(0xFFD8DEC6),
+                color: AppColors.backgroundColor,
                 child: InkWell(
                     onTap: () {
                       Navigator.push(

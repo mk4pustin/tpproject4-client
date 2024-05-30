@@ -1,9 +1,11 @@
 import 'package:client/orders/all_orders.dart';
 import 'package:client/reg/registration.dart';
+import 'package:client/services/orders/orders_service.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
-import '../start_page.dart';
+import '../services/orders/dto/order.dart';
 
 class AddOrderWidget extends StatelessWidget {
   const AddOrderWidget({super.key});
@@ -15,18 +17,33 @@ class AddOrderWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
         child: Stack(children: [
+          LayoutBuilder(builder: (context, constraints) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    margin: EdgeInsets.only(top: constraints.maxHeight * 0.125),
+                    height: 1.0,
+                    width: constraints.maxWidth * 0.95,
+                    color: AppColors.hintColor,
+                  ),
+                ),
+              ),
+            );
+          }),
           Align(
             alignment: const FractionalOffset(0, 1),
             child: Container(
               height: 90,
               decoration: const ShapeDecoration(
-                color: Color(0xFF7B9B6B),
+                color: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
               ),
             ),
@@ -40,7 +57,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Фрилансеры',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -52,27 +69,31 @@ class AddOrderWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.49, 0.96),
+            alignment: const FractionalOffset(0.5, 0.97),
             child: SizedBox(
-              child: Material(
-                  color: const Color(0xFF7B9B6B),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const AllFreelancersWidget()),
-                        );
-                      },
-                      splashColor: Colors.transparent,
-                      child: Stack(children: [
-                        Transform.scale(
-                          scale: 1.1,
-                          child:
-                              Image.asset('assets/images/freelancers_icon.png'),
-                        )
-                      ]))),
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AllFreelancersWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                  'assets/images/freelancers_icon.png'),
+                            )
+                          ])))),
             ),
           ),
           const Align(
@@ -84,7 +105,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Профиль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -96,26 +117,59 @@ class AddOrderWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.91, 0.96),
+            alignment: const FractionalOffset(0.925, 0.97),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const StartPage()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/profile.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegistrationWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.center,
+                              child:
+                                  Image.asset('assets/images/profile_icon.png'),
+                            )
+                          ])))),
+            ),
           ),
+          Align(
+              alignment: const FractionalOffset(0.075, 0.97),
+              child: SizedBox(
+                child: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: Material(
+                        color: AppColors.primaryColor,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const AllOrders()),
+                              );
+                            },
+                            splashColor: Colors.transparent,
+                            child: Stack(children: [
+                              Transform.scale(
+                                scale: 1,
+                                alignment: Alignment.center,
+                                child: Image.asset(
+                                    'assets/images/orders_icon.png'),
+                              )
+                            ])))),
+              )),
           const Align(
             alignment: FractionalOffset(0, 1.01),
             child: SizedBox(
@@ -125,7 +179,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Заказы',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -136,27 +190,6 @@ class AddOrderWidget extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: const FractionalOffset(0.09, 0.96),
-            child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/orders_icon.png'),
-                          )
-                        ])))),
-          ),
           const Align(
               alignment: FractionalOffset(0.5, 0.087),
               child: SizedBox(
@@ -164,7 +197,7 @@ class AddOrderWidget extends StatelessWidget {
                   'Размещение заказа',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                       fontSize: 24,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
@@ -180,7 +213,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Название заказа',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -198,14 +231,26 @@ class AddOrderWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration:
-                              InputDecoration(
-                                  contentPadding: EdgeInsets.only(
-                                      top: constraints.maxHeight * 0.08,
-                                      left: constraints.maxWidth * 0.05),
-                                  border: const OutlineInputBorder()),
-                        )));
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: constraints.maxHeight * 0.08,
+                                  left: constraints.maxWidth * 0.05),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ))));
               })),
           const Align(
             alignment: FractionalOffset(0.13, 0.28),
@@ -214,7 +259,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Описание',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -232,13 +277,26 @@ class AddOrderWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.15,
                         child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: constraints.maxHeight * 0.3,
+                                  bottom: constraints.maxHeight * 0.33,
                                   left: constraints.maxWidth * 0.05),
-                              border: const OutlineInputBorder()),
-                        )));
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ))));
               })),
           const Align(
             alignment: FractionalOffset(0.2, 0.5),
@@ -247,7 +305,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Сфера деятельности',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -261,18 +319,48 @@ class AddOrderWidget extends StatelessWidget {
               alignment: const FractionalOffset(0.5, 0.55),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                    child: SizedBox(
-                        width: constraints.maxWidth * 0.85,
-                        height: constraints.maxHeight * 0.05,
-                        child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.01,
-                                  left: constraints.maxWidth * 0.3),
-                              hintText: 'Выберите...',
-                              border: const OutlineInputBorder()),
-                        )));
+                  child: SizedBox(
+                    width: constraints.maxWidth * 0.85,
+                    height: constraints.maxHeight * 0.05,
+                    child: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                          top: constraints.maxHeight * 0.01,
+                          left: constraints.maxWidth * 0.3,
+                        ),
+                        hintText: 'Выберите...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.primaryColor, width: 2.0),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.primaryColor, width: 2.0),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      items: <String>[
+                        'Разработка',
+                        'Тестирование',
+                        'Администрирование',
+                        'Маркетинг'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {}
+                      },
+                    ),
+                  ),
+                );
               })),
           const Align(
             alignment: FractionalOffset(0.18, 0.62),
@@ -281,7 +369,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Ключевые навыки',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -299,14 +387,26 @@ class AddOrderWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   top: constraints.maxHeight * 0.01,
-                                  left: constraints.maxWidth * 0.3),
-                              hintText: 'Выберите...',
-                              border: const OutlineInputBorder()),
-                        )));
+                                  left: constraints.maxWidth * 0.05),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ))));
               })),
           const Align(
             alignment: FractionalOffset(0.14, 0.74),
@@ -315,7 +415,7 @@ class AddOrderWidget extends StatelessWidget {
                 'Стоимость',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -333,24 +433,38 @@ class AddOrderWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration:
-                              InputDecoration(
-                                  contentPadding: EdgeInsets.only(
-                                      top: constraints.maxHeight * 0.08,
-                                      left: constraints.maxWidth * 0.05),
-                                  border: const OutlineInputBorder()),
-                        )));
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: constraints.maxHeight * 0.08,
+                                  left: constraints.maxWidth * 0.05),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: AppColors.primaryColor, width: 2.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ))));
               })),
           LayoutBuilder(builder: (context, constraints) {
             return Align(
                 alignment: const FractionalOffset(0.5, 0.87),
                 child: ElevatedButton(
                   onPressed: () {
+                    OrdersService().addOrder(Order('Блокчейн система', '2500\$',
+                        '0', '29.05.2024', ['Go', 'gRPC', 'Cosmos']));
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegistrationWidget()),
+                          builder: (context) => const AllOrders()),
                     );
                   },
                   style: ButtonStyle(
@@ -358,52 +472,41 @@ class AddOrderWidget extends StatelessWidget {
                         constraints.maxWidth * 0.5,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                        MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                        MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Создать',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ));
           }),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Container(
-                height: constraints.maxHeight * 0.12,
-                decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 0.70,
-                      strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
           Align(
             alignment: const FractionalOffset(0.05, 0.05),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFFD8DEC6),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 0.8,
-                            child: Image.asset('assets/images/back.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.backgroundColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AllOrders()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 0.8,
+                              alignment: Alignment.center,
+                              child: Image.asset('assets/images/back.png'),
+                            )
+                          ])))),
+            ),
           ),
         ]));
   }

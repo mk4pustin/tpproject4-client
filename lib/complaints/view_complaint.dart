@@ -2,10 +2,10 @@ import 'package:client/complaints/all_complaints.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/orders/view_order.dart';
 import 'package:client/profiles/freelancer_profile.dart';
-import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 
-import '../freelancers/all_freelancers.dart';
+import '../constants/AppColors.dart';
+import '../services/orders/orders_service.dart';
 
 class ViewComplaintWidget extends StatelessWidget {
   const ViewComplaintWidget({super.key});
@@ -17,18 +17,33 @@ class ViewComplaintWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
         child: Stack(children: [
+          LayoutBuilder(builder: (context, constraints) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    margin: EdgeInsets.only(top: constraints.maxHeight * 0.125),
+                    height: 1.0,
+                    width: constraints.maxWidth * 0.95,
+                    color: AppColors.hintColor,
+                  ),
+                ),
+              ),
+            );
+          }),
           Align(
             alignment: const FractionalOffset(0, 1),
             child: Container(
               height: 90,
               decoration: const ShapeDecoration(
-                color: Color(0xFF7B9B6B),
+                color: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
               ),
             ),
@@ -42,7 +57,7 @@ class ViewComplaintWidget extends StatelessWidget {
                 'Фрилансеры',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -54,26 +69,22 @@ class ViewComplaintWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.49, 0.96),
+            alignment: const FractionalOffset(0.525, 0.97),
             child: SizedBox(
-              child: Material(
-                  color: const Color(0xFF7B9B6B),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AllFreelancersWidget()),
-                        );
-                      },
-                      splashColor: Colors.transparent,
-                      child: Stack(children: [
-                        Transform.scale(
-                          scale: 1.1,
-                          child:
-                          Image.asset('assets/images/freelancers_icon.png'),
-                        )
-                      ]))),
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child: Image.asset('assets/images/freelancers_icon.png'),
+                            )
+                          ])))),
             ),
           ),
           const Align(
@@ -85,7 +96,7 @@ class ViewComplaintWidget extends StatelessWidget {
                 'Обращения',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -97,26 +108,58 @@ class ViewComplaintWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.91, 0.96),
+            alignment: const FractionalOffset(0.99, 0.97),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllComplaints()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/complaint.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (
+                                      context) => const AllComplaints()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child: Image.asset('assets/images/complaint.png'),
+                            )
+                          ])))),
+            ),
           ),
+          Align(
+              alignment: const FractionalOffset(0.08, 0.97),
+              child: SizedBox(
+                child: SizedBox(
+                    width: 80,
+                    height: 60,
+                    child: Material(
+                        color: AppColors.primaryColor,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (
+                                        context) => const AllOrders()),
+                              );
+                            },
+                            splashColor: Colors.transparent,
+                            child: Stack(children: [
+                              Transform.scale(
+                                scale: 1,
+                                alignment: Alignment.topCenter,
+                                child: Image.asset('assets/images/orders_icon.png'),
+                              )
+                            ])))),
+              )),
           const Align(
             alignment: FractionalOffset(0, 1.01),
             child: SizedBox(
@@ -126,7 +169,7 @@ class ViewComplaintWidget extends StatelessWidget {
                 'Заказы',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -137,50 +180,28 @@ class ViewComplaintWidget extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: const FractionalOffset(0.09, 0.96),
-            child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/orders_icon.png'),
-                          )
-                        ])))),
-          ),
           const Align(
-              alignment: FractionalOffset(0.5, 0.087),
-              child: SizedBox(
-                child: Text(
-                  'Обращение',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                      height: 0.03,
-                      letterSpacing: -0.50,
-                      decoration: TextDecoration.none),
-                ),
-              )),
+            alignment: FractionalOffset(0.5, 0.0875),
+            child: Text(
+              'Обращение',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: AppColors.blackTextColor,
+                  fontSize: 24,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  height: 0.09,
+                  letterSpacing: -0.50,
+                  decoration: TextDecoration.none),
+            ),
+          ),
           const Align(
             alignment: FractionalOffset(0.5, 0.11),
             child: Text(
               '#1',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Color(0xFF9E9E9E),
+                  color: AppColors.hintColor,
                   fontSize: 14,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -190,12 +211,12 @@ class ViewComplaintWidget extends StatelessWidget {
             ),
           ),
           const Align(
-            alignment: FractionalOffset(0.5, 0.15),
+            alignment: FractionalOffset(0.5, 0.175),
             child: Text(
               'Дата размещения: 22.11.2024',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -205,12 +226,12 @@ class ViewComplaintWidget extends StatelessWidget {
             ),
           ),
           const Align(
-            alignment: FractionalOffset(0.5, 0.25),
+            alignment: FractionalOffset(0.5, 0.275),
             child: Text(
               'Описание',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -220,12 +241,12 @@ class ViewComplaintWidget extends StatelessWidget {
             ),
           ),
           const Align(
-            alignment: FractionalOffset(0.5, 0.3),
+            alignment: FractionalOffset(0.5, 0.35),
             child: Text(
               'Заказ оскорбляет чувства верующих',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 16,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -243,7 +264,7 @@ class ViewComplaintWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -259,7 +280,7 @@ class ViewComplaintWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -284,9 +305,9 @@ class ViewComplaintWidget extends StatelessWidget {
                       width: constraints.maxWidth * 0.9,
                       height: constraints.maxHeight * 0.13,
                       decoration: ShapeDecoration(
-                        color: const Color(0xFFD9D9D9),
+                        color: AppColors.backgroundColor,
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1),
+                          side: const BorderSide(width: 3, color: AppColors.primaryColor),
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -296,7 +317,7 @@ class ViewComplaintWidget extends StatelessWidget {
                       top: constraints.maxHeight * 0.075,
                       child: const SizedBox(
                         child: Text(
-                          'Инициатор 1',
+                          'Максим Иванович',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Color(0xFF1B53C1),
@@ -317,7 +338,7 @@ class ViewComplaintWidget extends StatelessWidget {
                           'Средняя оценка',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.blackTextColor,
                               fontSize: 18,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
@@ -328,11 +349,13 @@ class ViewComplaintWidget extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      left: constraints.maxWidth * 0.65,
-                      top: constraints.maxHeight * 0.06,
+                      right: constraints.maxWidth * 0.165,
+                      top: constraints.maxHeight * 0.0675,
+                      width: 40,
+                      height: 40,
                       child: SizedBox(
                           child: Material(
-                              color: const Color(0xFFD9D9D9),
+                              color: AppColors.backgroundColor,
                               child: InkWell(
                                   onTap: () {
                                     Navigator.push(
@@ -345,7 +368,8 @@ class ViewComplaintWidget extends StatelessWidget {
                                   splashColor: Colors.transparent,
                                   child: Stack(children: [
                                     Transform.scale(
-                                      scale: 0.7,
+                                      scale: 0.8,
+                                      alignment: Alignment.center,
                                       child:
                                       Image.asset('assets/images/mark.png'),
                                     )
@@ -359,7 +383,7 @@ class ViewComplaintWidget extends StatelessWidget {
                           '5',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.blackTextColor,
                               fontSize: 28,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
@@ -383,7 +407,7 @@ class ViewComplaintWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -399,7 +423,7 @@ class ViewComplaintWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -414,7 +438,7 @@ class ViewComplaintWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ViewOrderWidget()),
+                          builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
                     );
                   },
                   child: SizedBox(
@@ -424,19 +448,19 @@ class ViewComplaintWidget extends StatelessWidget {
                           width: constraints.maxWidth * 0.9,
                           height: constraints.maxHeight * 0.1,
                           decoration: ShapeDecoration(
-                            color: const Color(0xFFD9D9D9),
+                            color: AppColors.backgroundColor,
                             shape: RoundedRectangleBorder(
-                              side: const BorderSide(width: 1),
+                              side: const BorderSide(width: 3, color: AppColors.primaryColor),
                               borderRadius: BorderRadius.circular(20),
                             ),
                           ),
                         ),
                         Positioned(
-                          left: constraints.maxWidth * 0.35,
+                          left: constraints.maxWidth * 0.375,
                           top: constraints.maxHeight * 0.06,
                           child: const SizedBox(
                             child: Text(
-                              'Заказ 1',
+                              'Заказ',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF1B53C1),
@@ -454,53 +478,82 @@ class ViewComplaintWidget extends StatelessWidget {
                   ));
             }),
           ),
-          LayoutBuilder(builder: (context, constraints) {
-            return Align(
-                alignment: const FractionalOffset(0.5, 0.35),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegistrationWidget()),
-                    );
-                  },
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(Size(
-                        constraints.maxWidth * 0.5,
-                        constraints.maxHeight * 0.05)),
-                    backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF7B9B6B)),
-                  ),
-                  child: const Text(
-                    'Решено',
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                ));
-          }),
+          ResponseButton(),
           Align(
-            alignment: const FractionalOffset(0.05, 0.05),
+            alignment: const FractionalOffset(0.05, 0.055),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFFD8DEC6),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 0.8,
-                            child: Image.asset('assets/images/back.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.backgroundColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const AllOrders()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 0.8,
+                              alignment: Alignment.center,
+                              child: Image.asset('assets/images/back.png'),
+                            )
+                          ])))),
+            ),
           ),
         ]));
+  }
+}
+
+class ResponseButton extends StatefulWidget {
+  @override
+  _ResponseButtonState createState() => _ResponseButtonState();
+}
+
+class _ResponseButtonState extends State<ResponseButton> {
+  bool _isResponded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      return Align(
+        alignment: const FractionalOffset(0.5, 0.45),
+        child: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _isResponded = true;
+            });
+          },
+          style: ButtonStyle(
+            minimumSize: MaterialStateProperty.all(
+              Size(
+                constraints.maxWidth * 0.5,
+                constraints.maxHeight * 0.05,
+              ),
+            ),
+            backgroundColor: MaterialStateProperty.all(
+                _isResponded ? AppColors.backgroundColor : AppColors.primaryColor
+            ),
+            side: MaterialStateProperty.all(
+                const BorderSide(
+                  color: AppColors.primaryColor,
+                  width: 3,
+                )
+            ),
+          ),
+          child: Text(
+            _isResponded ? 'Решено' : 'Решить',
+            style: TextStyle(
+              color: _isResponded ? AppColors.primaryColor : AppColors.backgroundColor,
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

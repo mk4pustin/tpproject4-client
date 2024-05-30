@@ -1,11 +1,12 @@
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/edit_profile.dart';
 import 'package:client/reg/registration.dart';
+import 'package:client/services/orders/orders_service.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
 import '../orders/view_order.dart';
-import '../start_page.dart';
 
 class FreelancerProfileWidget extends StatelessWidget {
   const FreelancerProfileWidget({super.key});
@@ -17,7 +18,7 @@ class FreelancerProfileWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -28,7 +29,7 @@ class FreelancerProfileWidget extends StatelessWidget {
             child: Container(
               height: 90,
               decoration: const ShapeDecoration(
-                color: Color(0xFF7B9B6B),
+                color: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
               ),
             ),
@@ -42,7 +43,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                 'Фрилансеры',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -54,26 +55,31 @@ class FreelancerProfileWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.49, 0.96),
+            alignment: const FractionalOffset(0.525, 0.97),
             child: SizedBox(
-              child: Material(
-                  color: const Color(0xFF7B9B6B),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AllFreelancersWidget()),
-                        );
-                      },
-                      splashColor: Colors.transparent,
-                      child: Stack(children: [
-                        Transform.scale(
-                          scale: 1.1,
-                          child:
-                          Image.asset('assets/images/freelancers_icon.png'),
-                        )
-                      ]))),
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AllFreelancersWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child: Image.asset(
+                                  'assets/images/freelancers_icon.png'),
+                            )
+                          ])))),
             ),
           ),
           const Align(
@@ -85,7 +91,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                 'Профиль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -97,26 +103,59 @@ class FreelancerProfileWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: const FractionalOffset(0.91, 0.96),
+            alignment: const FractionalOffset(0.98, 0.97),
             child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const StartPage()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/profile.png'),
-                          )
-                        ])))),
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegistrationWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child:
+                                  Image.asset('assets/images/profile_icon.png'),
+                            )
+                          ])))),
+            ),
           ),
+          Align(
+              alignment: const FractionalOffset(0.08, 0.97),
+              child: SizedBox(
+                child: SizedBox(
+                    width: 80,
+                    height: 60,
+                    child: Material(
+                        color: AppColors.primaryColor,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const AllOrders()),
+                              );
+                            },
+                            splashColor: Colors.transparent,
+                            child: Stack(children: [
+                              Transform.scale(
+                                scale: 1,
+                                alignment: Alignment.topCenter,
+                                child: Image.asset(
+                                    'assets/images/orders_icon.png'),
+                              )
+                            ])))),
+              )),
           const Align(
             alignment: FractionalOffset(0, 1.01),
             child: SizedBox(
@@ -126,7 +165,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                 'Заказы',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -137,35 +176,14 @@ class FreelancerProfileWidget extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: const FractionalOffset(0.09, 0.96),
-            child: SizedBox(
-                child: Material(
-                    color: const Color(0xFF7B9B6B),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 1.1,
-                            child: Image.asset('assets/images/orders_icon.png'),
-                          )
-                        ])))),
-          ),
           const Align(
-              alignment: FractionalOffset(0.5, 0.087),
+              alignment: FractionalOffset(0.5, 0.0925),
               child: SizedBox(
                 child: Text(
                   'Игорь Игоревич',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                       fontSize: 24,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
@@ -180,7 +198,7 @@ class FreelancerProfileWidget extends StatelessWidget {
               'в сети',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Color(0xFF9E9E9E),
+                  color: AppColors.backgroundColor,
                   fontSize: 14,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -195,7 +213,7 @@ class FreelancerProfileWidget extends StatelessWidget {
               'Дата регистрации: 22.11.2024',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -214,10 +232,10 @@ class FreelancerProfileWidget extends StatelessWidget {
                       width: constraints.maxWidth * 0.9,
                       height: constraints.maxHeight * 0.05,
                       decoration: ShapeDecoration(
-                        color: const Color(0xFF7B9B6B),
+                        color: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1),
-                          borderRadius: BorderRadius.circular(40),
+                          side: const BorderSide(width: 3, color: AppColors.primaryColor),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                     ),
@@ -228,7 +246,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                         '8 заказов',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.backgroundColor,
                             fontSize: 16,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w400,
@@ -245,7 +263,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                           '5 оценка',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.white,
+                              color: AppColors.backgroundColor,
                               fontSize: 16,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
@@ -262,7 +280,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                         '50\$/час',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.backgroundColor,
                             fontSize: 16,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w400,
@@ -286,9 +304,9 @@ class FreelancerProfileWidget extends StatelessWidget {
                       width: constraints.maxWidth * 0.9,
                       height: constraints.maxHeight * 0.15,
                       decoration: ShapeDecoration(
-                        color: const Color(0xFFD9D9D9),
+                        color: AppColors.backgroundColor,
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1),
+                          side: const BorderSide(width: 3, color: AppColors.primaryColor),
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -301,7 +319,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                           'Spring',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.blackTextColor,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
@@ -319,7 +337,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                           'Java',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.blackTextColor,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
@@ -337,7 +355,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                           'SQL',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.blackTextColor,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
@@ -398,7 +416,7 @@ class FreelancerProfileWidget extends StatelessWidget {
               'Обо мне',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -428,7 +446,7 @@ class FreelancerProfileWidget extends StatelessWidget {
               'Разрабатываю тг ботов на Java',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 16,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -446,7 +464,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -462,7 +480,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -475,7 +493,7 @@ class FreelancerProfileWidget extends StatelessWidget {
               'Текущий заказ',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.black,
+                  color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w400,
@@ -492,7 +510,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ViewOrderWidget()),
+                          builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
                     );
                   },
                   child: SizedBox(
@@ -502,9 +520,9 @@ class FreelancerProfileWidget extends StatelessWidget {
                           width: constraints.maxWidth * 0.9,
                           height: constraints.maxHeight * 0.2,
                           decoration: ShapeDecoration(
-                            color: const Color(0xFFD9D9D9),
+                            color: AppColors.backgroundColor,
                             shape: RoundedRectangleBorder(
-                              side: const BorderSide(width: 1),
+                              side: const BorderSide(width: 3, color: AppColors.primaryColor),
                               borderRadius: BorderRadius.circular(20),
                             ),
                           ),
@@ -516,7 +534,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                             'ТГ-бот',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 22,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -533,7 +551,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               '50\$',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -551,7 +569,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               '15 Просмотров',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -568,7 +586,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                             'Дата размещения:',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 18,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -584,7 +602,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                             '22.11.2024',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.blackTextColor,
                                 fontSize: 18,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
@@ -601,7 +619,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               'Spring',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -619,7 +637,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               'Java',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -637,7 +655,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               'SQL',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: AppColors.blackTextColor,
                                   fontSize: 22,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w400,
@@ -708,12 +726,12 @@ class FreelancerProfileWidget extends StatelessWidget {
                         constraints.maxWidth * 0.5,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                        MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Предложить заказ',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                     ),
                   ),
                 ));
@@ -734,58 +752,66 @@ class FreelancerProfileWidget extends StatelessWidget {
                         constraints.maxWidth * 0.5,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                        MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Обратная связь',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                     ),
                   ),
                 ));
           }),
           Align(
-            alignment: const FractionalOffset(0.05, 0.05),
+            alignment: const FractionalOffset(0.05, 0.055),
+            child: SizedBox(
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.backgroundColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const AllFreelancersWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 0.8,
+                              alignment: Alignment.center,
+                              child: Image.asset('assets/images/back.png'),
+                            )
+                          ])))),
+            ),
+          ),
+          false ? Align(
+            alignment: const FractionalOffset(0.9, 0.065),
             child: SizedBox(
                 child: Material(
-                    color: const Color(0xFFD8DEC6),
+                    color: AppColors.backgroundColor,
                     child: InkWell(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const AllOrders()),
+                                builder: (context) =>
+                                    const EditProfileWidget()),
                           );
                         },
                         splashColor: Colors.transparent,
                         child: Stack(children: [
                           Transform.scale(
-                            scale: 0.8,
-                            child: Image.asset('assets/images/back.png'),
+                            scale: 1,
+                            child:
+                                Image.asset('assets/images/edit_profile.png'),
                           )
                         ])))),
-          ),
-          Align(
-            alignment: const FractionalOffset(0.9, 0.05),
-            child: SizedBox(
-                child: Material(
-                    color: const Color(0xFFD8DEC6),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EditProfileWidget()),
-                          );
-                        },
-                        splashColor: Colors.transparent,
-                        child: Stack(children: [
-                          Transform.scale(
-                            scale: 0.8,
-                            child: Image.asset('assets/images/edit_profile.png'),
-                          )
-                        ])))),
-          ),
+          ) : const SizedBox.shrink(),
         ]));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:client/constants/AppColors.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:flutter/material.dart';
 
@@ -15,20 +16,20 @@ class RegistrationWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFD7DEC6),
+          color: AppColors.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
         child: Stack(children: [
           const Align(
-              alignment: FractionalOffset(0.5, 0.087),
+              alignment: FractionalOffset(0.5, 0.1),
               child: SizedBox(
                 child: Text(
                   'Регистрация',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                       fontSize: 24,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
@@ -44,7 +45,7 @@ class RegistrationWidget extends StatelessWidget {
                 'Логин',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -64,10 +65,24 @@ class RegistrationWidget extends StatelessWidget {
                         child: TextField(
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder()),
+                            contentPadding: EdgeInsets.only(
+                                top: constraints.maxHeight * 0.08,
+                                left: constraints.maxWidth * 0.05),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
                         )));
               })),
           const Align(
@@ -77,7 +92,7 @@ class RegistrationWidget extends StatelessWidget {
                 'Email',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -97,10 +112,24 @@ class RegistrationWidget extends StatelessWidget {
                         child: TextField(
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder()),
+                            contentPadding: EdgeInsets.only(
+                                top: constraints.maxHeight * 0.08,
+                                left: constraints.maxWidth * 0.05),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
                         )));
               })),
           const Align(
@@ -110,7 +139,7 @@ class RegistrationWidget extends StatelessWidget {
                 'Пароль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -133,7 +162,20 @@ class RegistrationWidget extends StatelessWidget {
                               contentPadding: EdgeInsets.only(
                                   top: constraints.maxHeight * 0.08,
                                   left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder()),
+                border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                color: AppColors.primaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                color: AppColors.primaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(8.0),
+                ),),
                         )));
               })),
           const Align(
@@ -143,7 +185,7 @@ class RegistrationWidget extends StatelessWidget {
                 'Повторите пароль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -166,7 +208,20 @@ class RegistrationWidget extends StatelessWidget {
                               contentPadding: EdgeInsets.only(
                                   top: constraints.maxHeight * 0.08,
                                   left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder()),
+                border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                color: AppColors.primaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                color: AppColors.primaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(8.0),
+                ),),
                         )));
               })),
           const Align(
@@ -176,7 +231,7 @@ class RegistrationWidget extends StatelessWidget {
                 'Выберите роль',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 22,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -191,7 +246,7 @@ class RegistrationWidget extends StatelessWidget {
               child: StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                 return Material(
-                    color: Color(0xFFD7DEC6),
+                    color: AppColors.backgroundColor,
                     child: Switch(
                       value: isFreelancer,
                       onChanged: (value) {
@@ -202,8 +257,7 @@ class RegistrationWidget extends StatelessWidget {
                       activeColor: Colors.green,
                       activeTrackColor: Colors.lightGreen,
                       inactiveThumbColor: Colors.grey,
-                      inactiveTrackColor: Colors.grey
-                          .withOpacity(0.5), // Цвет неактивной дорожки
+                      inactiveTrackColor: Colors.grey.withOpacity(0.5),
                     ));
               })),
           const Align(
@@ -213,7 +267,7 @@ class RegistrationWidget extends StatelessWidget {
                 'Заказчик',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 20,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -230,7 +284,7 @@ class RegistrationWidget extends StatelessWidget {
                 'Фрилансер',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 20,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -256,12 +310,12 @@ class RegistrationWidget extends StatelessWidget {
                         constraints.maxWidth * 0.8,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                        MaterialStateProperty.all(const Color(0xFF7B9B6B)),
+                        MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Зарегистрироваться',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.blackTextColor,
                     ),
                   ),
                 ));
@@ -275,7 +329,7 @@ class RegistrationWidget extends StatelessWidget {
                     side: BorderSide(
                       width: 0.70,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF9E9E9E),
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -286,7 +340,7 @@ class RegistrationWidget extends StatelessWidget {
             alignment: const FractionalOffset(0.05, 0.05),
             child: SizedBox(
                 child: Material(
-                    color: const Color(0xFFD8DEC6),
+                    color: AppColors.backgroundColor,
                     child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -298,7 +352,7 @@ class RegistrationWidget extends StatelessWidget {
                         splashColor: Colors.transparent,
                         child: Stack(children: [
                           Transform.scale(
-                            scale: 0.8,
+                            scale: 0.5,
                             child: Image.asset('assets/images/back.png'),
                           )
                         ])))),
@@ -306,7 +360,7 @@ class RegistrationWidget extends StatelessWidget {
           Align(
             alignment: FractionalOffset(0.5, 0.85),
             child: Material(
-              color: const Color(0xFFD8DEC6),
+                color: AppColors.backgroundColor,
                 child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -317,19 +371,19 @@ class RegistrationWidget extends StatelessWidget {
                     },
                     splashColor: Colors.transparent,
                     child: const SizedBox(
-                      height: 30,
+                        height: 30,
                         child: Text(
-                      'Уже есть аккаунт?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF6C85C5),
-                          fontSize: 16,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w400,
-                          height: 0.09,
-                          letterSpacing: -0.50,
-                          decoration: TextDecoration.none),
-                    )))),
+                          'Уже есть аккаунт?',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFF6C85C5),
+                              fontSize: 16,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w400,
+                              height: 0.09,
+                              letterSpacing: -0.50,
+                              decoration: TextDecoration.none),
+                        )))),
           ),
         ]));
   }

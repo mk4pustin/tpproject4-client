@@ -1,3 +1,4 @@
+import 'package:client/constants/AppColors.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:flutter/material.dart';
 
@@ -25,19 +26,19 @@ class StartPage extends StatelessWidget {
             height: height,
             clipBehavior: Clip.antiAlias,
             decoration: ShapeDecoration(
-              color: const Color(0xFFD7DEC6),
+              color: AppColors.backgroundColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
             child: Stack(children: [
               const Align(
-                alignment: FractionalOffset(0.5, 0.45),
+                alignment: FractionalOffset(0.5, 0.5),
                 child: Text(
                   'FREELANCEFINDER',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackTextColor,
                     fontSize: 32,
                     fontFamily: 'Viga',
                     fontWeight: FontWeight.w400,
@@ -48,7 +49,7 @@ class StartPage extends StatelessWidget {
                 ),
               ),
               Align(
-                alignment: const FractionalOffset(0.63, 0.55),
+                alignment: const FractionalOffset(0.625, 0.6),
                 child: Transform(
                   transform: Matrix4.identity()
                     ..translate(0.0, 0.0)
@@ -57,14 +58,14 @@ class StartPage extends StatelessWidget {
                     width: 44,
                     height: 44,
                     decoration: const ShapeDecoration(
-                      color: Color(0xFF7B9B6B),
-                      shape: StarBorder.polygon(sides: 3),
+                      color: AppColors.primaryColor,
+                      shape: StarBorder.polygon(side: BorderSide(width: 1), sides: 3),
                     ),
                   ),
                 ),
               ),
               const Align(
-                alignment: FractionalOffset(0.5, 0.8),
+                alignment: FractionalOffset(0.5, 0.9),
                 child: SizedBox(
                   width: 253,
                   height: 40,
@@ -72,7 +73,7 @@ class StartPage extends StatelessWidget {
                     'Свайпните вверх, чтобы начать',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color(0xFF696969),
+                      color: AppColors.hintColor,
                       fontSize: 14,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
@@ -82,9 +83,46 @@ class StartPage extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              Align(
+                alignment: const FractionalOffset(0.7, 0.95),
+                child: SizedBox(
+                  child: GestureDetector(
+                    onVerticalDragUpdate: (details) {
+                    },
+                    child: CustomPaint(
+                      size: const Size(150, 50),
+                      painter: ArrowPainter(),
+                    ),
+                  ),
+                ),
               )
             ])
         )
     );
+  }
+}
+
+class ArrowPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppColors.hintColor
+      ..strokeWidth = 1
+      ..strokeCap = StrokeCap.round;
+
+    const horizontalPadding = 1 / 1000;
+    final arrowLength = size.height / 3;
+    final arrowWidth = size.width / 3;
+
+    canvas.drawLine(Offset(horizontalPadding, arrowLength / 2),
+        Offset(arrowWidth / 2, 0), paint);
+    canvas.drawLine(Offset(arrowWidth - horizontalPadding, arrowLength / 2),
+        Offset(arrowWidth / 2, 0), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
