@@ -1,12 +1,14 @@
-import 'package:client/UserRoleProvider.dart';
+import 'package:client/providers/UserRoleProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'start_page.dart';
 
 void main() => runApp(
-  ChangeNotifierProvider(
-    create: (context) => UserRoleProvider(),
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => UserRoleProvider()),
+    ],
     child: const MyApp(),
   ),
 );

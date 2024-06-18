@@ -116,7 +116,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const RegistrationWidget()),
+                                      RegistrationWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -718,7 +718,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegistrationWidget()),
+                          builder: (context) => RegistrationWidget()),
                     );
                   },
                   style: ButtonStyle(
@@ -744,7 +744,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegistrationWidget()),
+                          builder: (context) => RegistrationWidget()),
                     );
                   },
                   style: ButtonStyle(

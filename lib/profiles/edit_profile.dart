@@ -113,7 +113,7 @@ class EditProfileWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (
-                                      context) => const RegistrationWidget()),
+                                      context) => RegistrationWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -397,7 +397,7 @@ class EditProfileWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegistrationWidget()),
+                          builder: (context) => RegistrationWidget()),
                     );
                   },
                   style: ButtonStyle(

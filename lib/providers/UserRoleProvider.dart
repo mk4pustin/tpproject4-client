@@ -1,5 +1,6 @@
-import 'package:client/UserRole.dart';
 import 'package:flutter/material.dart';
+
+import 'dto/UserRole.dart';
 
 class UserRoleProvider with ChangeNotifier {
   UserRole _userRole = UserRole.guest;
@@ -10,4 +11,12 @@ class UserRoleProvider with ChangeNotifier {
     _userRole = role;
     notifyListeners();
   }
+
+  static final UserRoleProvider _instance = UserRoleProvider._internal();
+
+  factory UserRoleProvider() {
+    return _instance;
+  }
+
+  UserRoleProvider._internal();
 }

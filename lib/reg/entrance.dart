@@ -224,7 +224,7 @@ class EntranceWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const RegistrationWidget()),
+                            builder: (context) => RegistrationWidget()),
                       );
                     },
                     splashColor: Colors.transparent,

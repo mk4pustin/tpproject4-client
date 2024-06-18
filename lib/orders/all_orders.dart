@@ -1,4 +1,4 @@
-import 'package:client/UserRole.dart';
+import 'package:client/providers/dto/UserRole.dart';
 import 'package:client/constants/AppColors.dart';
 import 'package:client/freelancers/all_freelancers.dart';
 import 'package:client/orders/add_order.dart';
@@ -10,7 +10,7 @@ import 'package:client/services/orders/orders_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../UserRoleProvider.dart';
+import '../providers/UserRoleProvider.dart';
 
 class AllOrders extends StatelessWidget {
   const AllOrders({super.key});
@@ -482,7 +482,7 @@ class AllOrders extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const RegistrationWidget()),
+                                      RegistrationWidget()),
                             );
                           },
                           splashColor: Colors.transparent,

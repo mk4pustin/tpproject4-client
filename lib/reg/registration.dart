@@ -1,14 +1,40 @@
+import 'package:client/providers/UserRoleProvider.dart';
 import 'package:client/constants/AppColors.dart';
+import 'package:client/integration/rest/freelance_finder/client/client.dart';
+import 'package:client/integration/rest/freelance_finder/dto/registration_request.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/dto/UserRole.dart';
 import 'entrance.dart';
 
-class RegistrationWidget extends StatelessWidget {
+class RegistrationWidget extends StatefulWidget {
   const RegistrationWidget({super.key});
 
   @override
+  _RegistrationWidgetState createState() => _RegistrationWidgetState();
+}
+
+class _RegistrationWidgetState extends State<RegistrationWidget> {
+  final TextEditingController _loginTextFieldController =
+      TextEditingController();
+  final TextEditingController _emailTextFieldController =
+      TextEditingController();
+  final TextEditingController _passwordTextFieldController =
+      TextEditingController();
+  final TextEditingController _passwordRepeatTextFieldController =
+      TextEditingController();
+
+  String? _loginTextFieldError;
+  String? _passwordTextFieldError;
+  String? _passwordRepeatTextFieldError;
+  String? _emailTextFieldError;
+
+  @override
   Widget build(BuildContext context) {
+    final userRoleProvider = Provider.of<UserRoleProvider>(context);
+
     bool isFreelancer = false;
 
     return Container(
@@ -63,14 +89,17 @@ class RegistrationWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
+                          controller: _loginTextFieldController,
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
+                            errorText: _loginTextFieldError,
                             contentPadding: EdgeInsets.only(
                                 top: constraints.maxHeight * 0.08,
                                 left: constraints.maxWidth * 0.05),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide.none,
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
@@ -110,8 +139,10 @@ class RegistrationWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
+                          controller: _emailTextFieldController,
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
+                            errorText: _emailTextFieldError,
                             contentPadding: EdgeInsets.only(
                                 top: constraints.maxHeight * 0.08,
                                 left: constraints.maxWidth * 0.05),
@@ -157,25 +188,29 @@ class RegistrationWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
+                          controller: _passwordTextFieldController,
                           textAlignVertical: TextAlignVertical.center,
+                          obscureText: true,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                color: AppColors.primaryColor, width: 2.0),
-                borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                color: AppColors.primaryColor, width: 2.0),
-                borderRadius: BorderRadius.circular(8.0),
-                ),),
+                            errorText: _passwordTextFieldError,
+                            contentPadding: EdgeInsets.only(
+                                top: constraints.maxHeight * 0.08,
+                                left: constraints.maxWidth * 0.05),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
                         )));
               })),
           const Align(
@@ -203,25 +238,30 @@ class RegistrationWidget extends StatelessWidget {
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
+                          controller: _passwordRepeatTextFieldController,
                           textAlignVertical: TextAlignVertical.center,
+                          obscureText: true,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                color: AppColors.primaryColor, width: 2.0),
-                borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                color: AppColors.primaryColor, width: 2.0),
-                borderRadius: BorderRadius.circular(8.0),
-                ),),
+                            errorText: _passwordRepeatTextFieldError,
+                            contentPadding: EdgeInsets.only(
+                                top: constraints.maxHeight * 0.08,
+                                left: constraints.maxWidth * 0.05),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: AppColors.primaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
                         )));
               })),
           const Align(
@@ -298,12 +338,65 @@ class RegistrationWidget extends StatelessWidget {
             return Align(
                 alignment: const FractionalOffset(0.5, 0.78),
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AllOrders()),
-                    );
+                  onPressed: () async {
+                    if (_loginTextFieldController.text.trim() == "") {
+                      setState(() {
+                        _loginTextFieldError = "Поле пустое";
+                      });
+                      return;
+                    }
+                    if (_emailTextFieldController.text.trim() == "") {
+                      setState(() {
+                        _emailTextFieldError = "Поле пустое";
+                      });
+                      return;
+                    }
+                    if (_passwordTextFieldController.text.trim() == "") {
+                      setState(() {
+                        _passwordTextFieldError = "Поле пустое";
+                      });
+                      return;
+                    }
+                    if (_passwordRepeatTextFieldController.text.trim() == "") {
+                      setState(() {
+                        _passwordRepeatTextFieldError = "Поле пустое";
+                      });
+                      return;
+                    }
+                    if (_passwordTextFieldController.text !=
+                        _passwordRepeatTextFieldController.text) {
+                      setState(() {
+                        _passwordTextFieldError = "Пароли не совпадают";
+                      });
+                      return;
+                    }
+                    if (!isValidEmail(_emailTextFieldController.text)) {
+                      setState(() {
+                        _emailTextFieldError = "Неверный формат почты";
+                      });
+                      return;
+                    }
+                    try {
+                      final user = RegistrationRequestDTO(
+                        username: _loginTextFieldController.text,
+                        password: _passwordTextFieldController.text,
+                        email: _emailTextFieldController.text,
+                        role: isFreelancer ? "Freelancer" : "Customer",
+                      );
+
+                      FreelanceFinderService.instance.registerUser(user).then((value) =>
+                      print(value));
+                      userRoleProvider.setUserRole(isFreelancer
+                          ? UserRole.freelancer
+                          : UserRole.charterer);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AllOrders()),
+                      );
+                    } catch (e) {
+                      print(111);
+                    }
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(Size(
@@ -386,5 +479,9 @@ class RegistrationWidget extends StatelessWidget {
                         )))),
           ),
         ]));
+  }
+
+  bool isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 }

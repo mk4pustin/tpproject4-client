@@ -130,7 +130,7 @@ class AddOrderWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const RegistrationWidget()),
+                                      RegistrationWidget()),
                             );
                           },
                           splashColor: Colors.transparent,

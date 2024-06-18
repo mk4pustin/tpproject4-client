@@ -124,7 +124,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (
-                                      context) => const RegistrationWidget()),
+                                      context) => RegistrationWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
