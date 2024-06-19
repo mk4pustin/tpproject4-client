@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
     final userRoleProvider = Provider.of<UserRoleProvider>(context);
     final userIdProvider = Provider.of<UserIdProvider>(context);
     final tokenProvider = Provider.of<TokenProvider>(context);
@@ -41,7 +42,12 @@ class MyApp extends StatelessWidget {
         });
 
     AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+    AppMetrica.reportEvent('Запуск');
     AppMetrica.reportEvent('Установка');
+    AppMetrica.reportEvent('Переход в аккаунт');
+    AppMetrica.reportEvent('Регистрация');
+    AppMetrica.reportEvent('Авторизация');
+
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
