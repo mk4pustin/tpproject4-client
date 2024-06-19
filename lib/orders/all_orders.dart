@@ -321,7 +321,7 @@ class AllOrders extends StatelessWidget {
                           ]));
                         })));
               }),
-          userRole == UserRole.charterer || userRole == UserRole.guest
+          userRole == UserRole.Customer || userRole == UserRole.Guest
               ? Align(
                   alignment: const FractionalOffset(0.97, 0.0575),
                   child: SizedBox(
@@ -336,7 +336,7 @@ class AllOrders extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            userRole == UserRole.guest
+                                            userRole == UserRole.Guest
                                                 ? const EntranceWidget()
                                                 : const AddOrderWidget()),
                                   );
@@ -355,14 +355,14 @@ class AllOrders extends StatelessWidget {
               : const SizedBox.shrink(),
           Align(
               alignment:
-                  userRole == UserRole.charterer || userRole == UserRole.guest
+                  userRole == UserRole.Customer || userRole == UserRole.Guest
                       ? const FractionalOffset(0.2, 0.06)
                       : const FractionalOffset(0.5, 0.06),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
                     child: SizedBox(
-                        width: userRole == UserRole.charterer ||
-                                userRole == UserRole.guest
+                        width: userRole == UserRole.Customer ||
+                                userRole == UserRole.Guest
                             ? constraints.maxWidth * 0.8
                             : constraints.maxWidth * 0.95,
                         height: constraints.maxHeight * 0.05,

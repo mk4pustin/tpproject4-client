@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'dto/UserRole.dart';
 
 class UserRoleProvider with ChangeNotifier {
-  UserRole _userRole = UserRole.guest;
+  UserRole _userRole = UserRole.Guest;
 
   UserRole get userRole => _userRole;
 

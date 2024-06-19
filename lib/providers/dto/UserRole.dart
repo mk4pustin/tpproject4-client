@@ -1,6 +1,6 @@
 enum UserRole {
-  admin,
-  freelancer,
-  charterer,
-  guest,
+  Admin,
+  Freelancer,
+  Customer,
+  Guest,
 }

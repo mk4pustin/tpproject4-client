@@ -10,7 +10,6 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import '../providers/dto/UserRole.dart';
 import '../services/custom_switch.dart';
 import 'entrance.dart';
-import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 
 class RegistrationWidget extends StatefulWidget {
   const RegistrationWidget({super.key});
@@ -476,13 +475,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
               onChanged: (value) {
                 setState(() {
                   isFreelancer = value;
-                  // Добавьте следующую строку
-                  userRoleProvider.setUserRole(isFreelancer ? UserRole.charterer : UserRole.freelancer);
+                  userRoleProvider.setUserRole(isFreelancer ? UserRole.Customer : UserRole.Freelancer);
                   print(userRoleProvider.userRole.name);
                 });
               },
               activeColor: CupertinoColors.activeGreen,
-              thumbSize: 15, // Измените размер шарика здесь
+              thumbSize: 15,
             ),
           ),
           const Align(
@@ -552,7 +550,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
                 print(userRoleProvider.userRole.name);
 
-                // Если есть ошибки, прекратить выполнение
                 if (_loginTextFieldError != null ||
                     _emailTextFieldError != null ||
                     _passwordTextFieldError != null ||
