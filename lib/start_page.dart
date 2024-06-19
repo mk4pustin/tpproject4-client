@@ -10,11 +10,7 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
-    AppMetrica.reportEvent('Установка');
     AppMetrica.reportEvent('Запуск');
-    AppMetrica.reportEvent('Event1');
-    AppMetrica.reportEvent('Event2');
-    AppMetrica.reportEvent('Event3');
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -42,7 +38,7 @@ class StartPage extends StatelessWidget {
             ),
             child: Stack(children: [
               const Align(
-                alignment: FractionalOffset(0.5, 0.5),
+                alignment: FractionalOffset(0.5, 0.45),
                 child: Text(
                   'FREELANCEFINDER',
                   textAlign: TextAlign.center,
@@ -58,7 +54,7 @@ class StartPage extends StatelessWidget {
                 ),
               ),
               Align(
-                alignment: const FractionalOffset(0.625, 0.6),
+                alignment: const FractionalOffset(0.625, 0.555),
                 child: Transform(
                   transform: Matrix4.identity()
                     ..translate(0.0, 0.0)

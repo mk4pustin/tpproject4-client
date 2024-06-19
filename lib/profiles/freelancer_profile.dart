@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/edit_profile.dart';
 import 'package:client/reg/registration.dart';
@@ -5,13 +6,95 @@ import 'package:flutter/material.dart';
 
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
-import '../orders/view_order.dart';
 
 class FreelancerProfileWidget extends StatelessWidget {
   const FreelancerProfileWidget({super.key});
 
+  void _showComplaintDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: const BorderSide(color: AppColors.primaryColor, width: 4), // Increase the border width
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    onChanged: (value) {},
+                    decoration: const InputDecoration(
+                      hintText: "Введите текст жалобы",
+                      hintStyle: TextStyle(
+                        color: AppColors.blackTextColor,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.primaryColor),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.primaryColor),
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: AppColors.blackTextColor, // Make the text color black
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16), // Add some space between the text field and the buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: const Text(
+                          'Отправить',
+                          style: TextStyle(
+                            color: AppColors.blackTextColor,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onPressed: () {
+                          // Handle the complaint submission
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text(
+                          'Отмена',
+                          style: TextStyle(
+                            color: AppColors.blackTextColor,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+    AppMetrica.reportEvent('Переход в аккаунт');
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -424,19 +507,28 @@ class FreelancerProfileWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          const Align(
-            alignment: FractionalOffset(0.9, 0.45),
-            child: Text(
-              'Жалоба',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xFF6C85C5),
-                  fontSize: 14,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
-                  height: 0.12,
-                  letterSpacing: -0.50,
-                  decoration: TextDecoration.none),
+          Align(
+            alignment: const FractionalOffset(0.9, 0.45),
+            child: GestureDetector(
+              onTap: () {
+                _showComplaintDialog(context);
+              },
+              behavior: HitTestBehavior.translucent,
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Жалоба',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFF6C85C5),
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      height: 0.12,
+                      letterSpacing: -0.50,
+                      decoration: TextDecoration.none),
+                ),
+              ),
             ),
           ),
           const Align(
@@ -499,6 +591,30 @@ class FreelancerProfileWidget extends StatelessWidget {
                   height: 0.07,
                   letterSpacing: -0.50,
                   decoration: TextDecoration.none),
+            ),
+          ),
+          Align(
+            alignment: const FractionalOffset(0.9, 0.45),
+            child: GestureDetector(
+              onTap: () {
+                _showComplaintDialog(context);
+              },
+              behavior: HitTestBehavior.translucent,
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Жалоба',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFF6C85C5),
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      height: 0.12,
+                      letterSpacing: -0.50,
+                      decoration: TextDecoration.none),
+                ),
+              ),
             ),
           ),
           Align(

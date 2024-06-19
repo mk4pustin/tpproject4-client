@@ -101,11 +101,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                       child: TextField(
                         controller: _loginTextFieldController,
                         textAlignVertical: TextAlignVertical.center,
+                        cursorColor: Colors.black,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
-                            top: constraints.maxHeight * 0.02,
-                            bottom: constraints.maxHeight * 0.02,
                             left: constraints.maxWidth * 0.05,
+                            right: constraints.maxWidth * 0.05,
+                            top: 0,
+                            bottom: 0,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -205,10 +207,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                       child: TextField(
                         controller: _emailTextFieldController,
                         textAlignVertical: TextAlignVertical.center,
+                        cursorColor: Colors.black,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
-                            top: constraints.maxHeight * 0.08,
                             left: constraints.maxWidth * 0.05,
+                            right: constraints.maxWidth * 0.05,
+                            top: 0,
+                            bottom: 0,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -306,11 +311,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                       child: TextField(
                         controller: _passwordTextFieldController,
                         textAlignVertical: TextAlignVertical.center,
-                        obscureText: true,
+                        cursorColor: Colors.black,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
-                            top: constraints.maxHeight * 0.08,
                             left: constraints.maxWidth * 0.05,
+                            right: constraints.maxWidth * 0.05,
+                            top: 0,
+                            bottom: 0,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -409,11 +416,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                       child: TextField(
                         controller: _passwordRepeatTextFieldController,
                         textAlignVertical: TextAlignVertical.center,
-                        obscureText: true,
+                        cursorColor: Colors.black,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
-                            top: constraints.maxHeight * 0.08,
                             left: constraints.maxWidth * 0.05,
+                            right: constraints.maxWidth * 0.05,
+                            top: 0,
+                            bottom: 0,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),

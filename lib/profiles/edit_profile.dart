@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/freelancer_profile.dart';
 import 'package:client/reg/registration.dart';
@@ -11,6 +12,8 @@ class EditProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+    AppMetrica.reportEvent('Изменение профиля');
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

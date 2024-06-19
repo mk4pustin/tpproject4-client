@@ -1,10 +1,8 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/AppColors.dart';
 import '../orders/all_orders.dart';
-import '../orders/view_order.dart';
 import '../profiles/freelancer_profile.dart';
 import '../reg/registration.dart';
 import 'freelancers_filters.dart';
@@ -123,13 +121,11 @@ class OrderResponsesWidget extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
-                    AppMetrica.reportEvent('Установка');
-                    AppMetrica.reportEvent('Запуск');
-                    AppMetrica.reportEvent('Регистрация');
-                    AppMetrica.reportEvent('Авторизация');
+                    AppMetrica.reportEvent('Оценки');
+                    AppMetrica.reportEvent('Рейтинг');
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegistrationWidget()),
+                      MaterialPageRoute(builder: (context) => const RegistrationWidget()),
                     );
                   },
                   splashColor: Colors.transparent,
