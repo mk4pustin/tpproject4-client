@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/constants/AppColors.dart';
 import 'package:client/freelancers/all_freelancers.dart';
 import 'package:client/orders/add_order.dart';
@@ -15,18 +14,34 @@ import '../integration/rest/freelance_finder/dto/order.dart';
 import '../models/user_role.dart';
 import '../providers/user_role_provider.dart';
 
-class AllOrders extends StatelessWidget {
+class AllOrders extends StatefulWidget {
   const AllOrders({super.key});
+
+  @override
+  _AllOrdersState createState() => _AllOrdersState();
+}
+
+class _AllOrdersState extends State<AllOrders> {
+  late Future<List<Order>?> _ordersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _ordersFuture = _fetchOrders();
+  }
+
+  Future<List<Order>?> _fetchOrders() async {
+    try {
+      final orders = await FreelanceFinderService.instance.fetchAllOrders();
+      return orders;
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final userRole = Provider.of<UserRoleProvider>(context).userRole;
-
-    List<Order>? orders;
-    // FreelanceFinderService.instance.fetchAllOrders().then((value) => {
-    //   orders = value
-    // });
-    // print(orders);
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -120,220 +135,235 @@ class AllOrders extends StatelessWidget {
                           ])))),
             ),
           ),
-          orders != null
-              ? ListView.builder(
-                  itemCount: orders?.length,
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.2),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 20.0),
-                        child: AspectRatio(
-                            aspectRatio: 2 / 1,
-                            child:
-                                LayoutBuilder(builder: (context, constraints) {
-                              return SizedBox(
-                                  child: Stack(children: [
-                                Container(
-                                  decoration: ShapeDecoration(
-                                    color: AppColors.backgroundColor,
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(
-                                        width: 3,
-                                        color: AppColors.primaryColor,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: constraints.maxWidth * 0.1,
-                                  top: constraints.maxHeight * 0.22,
-                                  child: Text(
-                                    orders![index].title,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        color: AppColors.blackTextColor,
-                                        fontSize: 22,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.08,
-                                        letterSpacing: -0.50,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: constraints.maxWidth * 0.1,
-                                  top: constraints.maxHeight * 0.25,
-                                  child: SizedBox(
-                                    child: Text(
-                                      orders![index].price.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: AppColors.blackTextColor,
-                                          fontSize: 22,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0.08,
-                                          letterSpacing: -0.50,
-                                          decoration: TextDecoration.none),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: constraints.maxWidth * 0.1,
-                                  top: constraints.maxHeight * 0.475,
-                                  child: SizedBox(
-                                    child: Text(
-                                      orders![index].responsesCount.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: AppColors.blackTextColor,
-                                          fontSize: 22,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0.03,
-                                          letterSpacing: -0.50,
-                                          decoration: TextDecoration.none),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: constraints.maxWidth * 0.1,
-                                  top: constraints.maxHeight * 0.475,
-                                  child: Text(
-                                    orders![index]
-                                        .creationDate
-                                        .toIso8601String(),
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        color: AppColors.blackTextColor,
-                                        fontSize: 22,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.09,
-                                        letterSpacing: -0.50,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: constraints.maxWidth * 0.775,
-                                  top: constraints.maxHeight * 0.78,
-                                  child: SizedBox(
-                                    child: Text(
-                                      orders![index].skills.isNotEmpty
-                                          ? orders![index].skills[0]
-                                          : '-',
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: AppColors.blackTextColor,
-                                          fontSize: 22,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0.04,
-                                          letterSpacing: -0.50,
-                                          decoration: TextDecoration.none),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: constraints.maxHeight * 0.78,
-                                  left: constraints.maxWidth * 0.45,
-                                  child: SizedBox(
-                                    child: Text(
-                                      orders![index].skills.length >= 2
-                                          ? orders![index].skills[1]
-                                          : '-',
-                                      style: const TextStyle(
-                                          color: AppColors.blackTextColor,
-                                          fontSize: 22,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0.04,
-                                          letterSpacing: -0.50,
-                                          decoration: TextDecoration.none),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: constraints.maxWidth * 0.725,
-                                  top: constraints.maxHeight * 0.78,
-                                  child: SizedBox(
-                                    child: Text(
-                                      orders![index].skills.length >= 3
-                                          ? orders![index].skills[2]
-                                          : '---',
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: AppColors.blackTextColor,
-                                          fontSize: 22,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0.04,
-                                          letterSpacing: -0.50,
-                                          decoration: TextDecoration.none),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: constraints.maxWidth * 0.33,
-                                  top: constraints.maxHeight * 0.65,
-                                  child: Transform(
-                                    transform: Matrix4.identity()
-                                      ..translate(0.0, 0.0)
-                                      ..rotateZ(1.57),
-                                    child: Container(
-                                      width: 40,
-                                      decoration: const ShapeDecoration(
+          FutureBuilder(
+              future: _ordersFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox.shrink();
+                } else if (snapshot.hasError) {
+                  return const SizedBox.shrink();
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const SizedBox.shrink();
+                } else {
+                  final orders = snapshot.data!;
+                  return ListView.builder(
+                      itemCount: orders.length,
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.2),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 20.0),
+                            child: AspectRatio(
+                                aspectRatio: 2 / 1,
+                                child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                  return SizedBox(
+                                      child: Stack(children: [
+                                    Container(
+                                      decoration: ShapeDecoration(
+                                        color: AppColors.backgroundColor,
                                         shape: RoundedRectangleBorder(
-                                          side: BorderSide(
+                                          side: const BorderSide(
+                                            width: 3,
                                             color: AppColors.primaryColor,
-                                            width: 1.5,
-                                            strokeAlign:
-                                                BorderSide.strokeAlignCenter,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: constraints.maxWidth * 0.1,
+                                      top: constraints.maxHeight * 0.22,
+                                      child: Text(
+                                        orders[index].title,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: AppColors.blackTextColor,
+                                            fontSize: 22,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0.08,
+                                            letterSpacing: -0.50,
+                                            decoration: TextDecoration.none),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: constraints.maxWidth * 0.1,
+                                      top: constraints.maxHeight * 0.25,
+                                      child: SizedBox(
+                                        child: Text(
+                                          orders[index].price.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: AppColors.blackTextColor,
+                                              fontSize: 22,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0.08,
+                                              letterSpacing: -0.50,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: constraints.maxWidth * 0.1,
+                                      top: constraints.maxHeight * 0.475,
+                                      child: SizedBox(
+                                        child: Text(
+                                          orders[index]
+                                              .responsesCount
+                                              .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: AppColors.blackTextColor,
+                                              fontSize: 22,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0.03,
+                                              letterSpacing: -0.50,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: constraints.maxWidth * 0.1,
+                                      top: constraints.maxHeight * 0.475,
+                                      child: Text(
+                                        orders[index]
+                                            .creationDate
+                                            .toIso8601String(),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: AppColors.blackTextColor,
+                                            fontSize: 22,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0.09,
+                                            letterSpacing: -0.50,
+                                            decoration: TextDecoration.none),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: constraints.maxWidth * 0.775,
+                                      top: constraints.maxHeight * 0.78,
+                                      child: SizedBox(
+                                        child: Text(
+                                          orders![index].skills.isNotEmpty
+                                              ? orders[index].skills[0]
+                                              : '-',
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: AppColors.blackTextColor,
+                                              fontSize: 22,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0.04,
+                                              letterSpacing: -0.50,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: constraints.maxHeight * 0.78,
+                                      left: constraints.maxWidth * 0.45,
+                                      child: SizedBox(
+                                        child: Text(
+                                          orders[index].skills.length >= 2
+                                              ? orders[index].skills[1]
+                                              : '-',
+                                          style: const TextStyle(
+                                              color: AppColors.blackTextColor,
+                                              fontSize: 22,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0.04,
+                                              letterSpacing: -0.50,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: constraints.maxWidth * 0.725,
+                                      top: constraints.maxHeight * 0.78,
+                                      child: SizedBox(
+                                        child: Text(
+                                          orders[index].skills.length >= 3
+                                              ? orders[index].skills[2]
+                                              : '---',
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: AppColors.blackTextColor,
+                                              fontSize: 22,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0.04,
+                                              letterSpacing: -0.50,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: constraints.maxWidth * 0.33,
+                                      top: constraints.maxHeight * 0.65,
+                                      child: Transform(
+                                        transform: Matrix4.identity()
+                                          ..translate(0.0, 0.0)
+                                          ..rotateZ(1.57),
+                                        child: Container(
+                                          width: 40,
+                                          decoration: const ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                color: AppColors.primaryColor,
+                                                width: 1.5,
+                                                strokeAlign: BorderSide
+                                                    .strokeAlignCenter,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: constraints.maxWidth * 0.66,
-                                  top: constraints.maxHeight * 0.65,
-                                  child: Transform(
-                                    transform: Matrix4.identity()
-                                      ..translate(0.0, 0.0)
-                                      ..rotateZ(1.57),
-                                    child: Container(
-                                      width: 40,
-                                      decoration: const ShapeDecoration(
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                            color: AppColors.primaryColor,
-                                            width: 1.5,
-                                            strokeAlign:
-                                                BorderSide.strokeAlignCenter,
+                                    Positioned(
+                                      left: constraints.maxWidth * 0.66,
+                                      top: constraints.maxHeight * 0.65,
+                                      child: Transform(
+                                        transform: Matrix4.identity()
+                                          ..translate(0.0, 0.0)
+                                          ..rotateZ(1.57),
+                                        child: Container(
+                                          width: 40,
+                                          decoration: const ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                color: AppColors.primaryColor,
+                                                width: 1.5,
+                                                strokeAlign: BorderSide
+                                                    .strokeAlignCenter,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Material(
-                                    color: Colors.transparent,
-                                    child: InkWell(onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ViewOrderWidget(orders![index]),
-                                          ));
-                                    })),
-                              ]));
-                            })));
-                  })
-              : const SizedBox.shrink(),
+                                    Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ViewOrderWidget(
+                                                        orders[index]),
+                                              ));
+                                        })),
+                                  ]));
+                                })));
+                      });
+                }
+              }),
           userRole == UserRole.Customer || userRole == UserRole.Guest
               ? Align(
                   alignment: const FractionalOffset(0.97, 0.0575),
@@ -491,8 +521,6 @@ class AllOrders extends StatelessWidget {
                       color: AppColors.primaryColor,
                       child: InkWell(
                           onTap: () {
-                            AppMetrica.reportEvent('Авторизация');
-                            print(userRole);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
