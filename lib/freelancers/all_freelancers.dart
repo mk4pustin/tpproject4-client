@@ -2,7 +2,7 @@ import 'package:client/freelancers/freelancers_filters.dart';
 import 'package:client/orders/view_order.dart';
 import 'package:client/profiles/freelancer_profile.dart';
 import 'package:flutter/material.dart';
-
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import '../constants/AppColors.dart';
 import '../orders/all_orders.dart';
 import '../reg/registration.dart';
@@ -118,6 +118,11 @@ class AllFreelancersWidget extends StatelessWidget {
                       color: AppColors.primaryColor,
                       child: InkWell(
                           onTap: () {
+                            AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+                            AppMetrica.reportEvent('Установка');
+                            AppMetrica.reportEvent('Запуск');
+                            AppMetrica.reportEvent('Регистрация');
+                            AppMetrica.reportEvent('Авторизация');
                             Navigator.push(
                               context,
                               MaterialPageRoute(

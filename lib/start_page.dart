@@ -1,12 +1,21 @@
 import 'package:client/constants/AppColors.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:flutter/material.dart';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    AppMetrica.activate(AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+    AppMetrica.reportEvent('Установка');
+    AppMetrica.reportEvent('Запуск');
+    AppMetrica.reportEvent('Event1');
+    AppMetrica.reportEvent('Event2');
+    AppMetrica.reportEvent('Event3');
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 

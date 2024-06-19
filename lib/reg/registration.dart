@@ -3,11 +3,14 @@ import 'package:client/constants/AppColors.dart';
 import 'package:client/integration/rest/freelance_finder/client/client.dart';
 import 'package:client/integration/rest/freelance_finder/dto/registration_request.dart';
 import 'package:client/orders/all_orders.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import '../providers/dto/UserRole.dart';
+import '../services/custom_switch.dart';
 import 'entrance.dart';
+import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 
 class RegistrationWidget extends StatefulWidget {
   const RegistrationWidget({super.key});
@@ -71,51 +74,100 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 'Логин',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: AppColors.blackTextColor,
-                    fontSize: 22,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    height: 0.07,
-                    letterSpacing: -0.50,
-                    decoration: TextDecoration.none),
+                  color: AppColors.blackTextColor,
+                  fontSize: 22,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  height: 0.07,
+                  decoration: TextDecoration.none,
+                ),
               ),
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.2),
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Material(
-                    child: SizedBox(
-                        width: constraints.maxWidth * 0.85,
-                        height: constraints.maxHeight * 0.05,
-                        child: TextField(
-                          controller: _loginTextFieldController,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                            errorText: _loginTextFieldError,
-                            contentPadding: EdgeInsets.only(
-                                top: constraints.maxHeight * 0.08,
-                                left: constraints.maxWidth * 0.05),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
+            alignment: const FractionalOffset(0.5, 0.2),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Material(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: constraints.maxWidth * 0.85,
+                      height: constraints.maxHeight * 0.05,
+                      child: TextField(
+                        controller: _loginTextFieldController,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            top: constraints.maxHeight * 0.02,
+                            bottom: constraints.maxHeight * 0.02,
+                            left: constraints.maxWidth * 0.05,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: _loginTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
                             ),
                           ),
-                        )));
-              })),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _loginTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _loginTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: constraints.maxHeight * 0.01,
+                      ),
+                      child: SizedBox(
+                        height: 16,
+                        child: Visibility(
+                          visible: _loginTextFieldError != null,
+                          child: Text(
+                            _loginTextFieldError ?? '',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            }),
+          ),
           const Align(
-            alignment: FractionalOffset(0.1, 0.28),
+            alignment: FractionalOffset(0.1, 0.285),
             child: SizedBox(
               child: Text(
                 'Email',
@@ -126,43 +178,89 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
                     height: 0.07,
-                    letterSpacing: -0.50,
                     decoration: TextDecoration.none),
               ),
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.32),
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Material(
-                    child: SizedBox(
-                        width: constraints.maxWidth * 0.85,
-                        height: constraints.maxHeight * 0.05,
-                        child: TextField(
-                          controller: _emailTextFieldController,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                            errorText: _emailTextFieldError,
-                            contentPadding: EdgeInsets.only(
-                                top: constraints.maxHeight * 0.08,
-                                left: constraints.maxWidth * 0.05),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
+            alignment: const FractionalOffset(0.5, 0.327),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Material(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: constraints.maxWidth * 0.85,
+                      height: constraints.maxHeight * 0.05,
+                      child: TextField(
+                        controller: _emailTextFieldController,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            top: constraints.maxHeight * 0.08,
+                            left: constraints.maxWidth * 0.05,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: _emailTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
                             ),
                           ),
-                        )));
-              })),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _emailTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _emailTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: SizedBox(
+                        height: 16,
+                        child: Visibility(
+                          visible: _emailTextFieldError != null,
+                          child: Text(
+                            _emailTextFieldError ?? '',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            }),
+          ),
           const Align(
             alignment: FractionalOffset(0.1, 0.4),
             child: SizedBox(
@@ -175,44 +273,89 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
                     height: 0.07,
-                    letterSpacing: -0.50,
                     decoration: TextDecoration.none),
               ),
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.44),
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Material(
-                    child: SizedBox(
-                        width: constraints.maxWidth * 0.85,
-                        height: constraints.maxHeight * 0.05,
-                        child: TextField(
-                          controller: _passwordTextFieldController,
-                          textAlignVertical: TextAlignVertical.center,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            errorText: _passwordTextFieldError,
-                            contentPadding: EdgeInsets.only(
-                                top: constraints.maxHeight * 0.08,
-                                left: constraints.maxWidth * 0.05),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
+            alignment: const FractionalOffset(0.5, 0.46),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Material(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: constraints.maxWidth * 0.85,
+                      height: constraints.maxHeight * 0.05,
+                      child: TextField(
+                        controller: _passwordTextFieldController,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            top: constraints.maxHeight * 0.08,
+                            left: constraints.maxWidth * 0.05,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: _passwordTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
                             ),
                           ),
-                        )));
-              })),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _passwordTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _passwordTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: SizedBox(
+                        height: 16,
+                        child: Visibility(
+                          visible: _passwordTextFieldError != null,
+                          child: Text(
+                            _passwordTextFieldError ?? '',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            }),
+          ),
           const Align(
             alignment: FractionalOffset(0.16, 0.52),
             child: SizedBox(
@@ -231,39 +374,84 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.57),
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Material(
-                    child: SizedBox(
-                        width: constraints.maxWidth * 0.85,
-                        height: constraints.maxHeight * 0.05,
-                        child: TextField(
-                          controller: _passwordRepeatTextFieldController,
-                          textAlignVertical: TextAlignVertical.center,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            errorText: _passwordRepeatTextFieldError,
-                            contentPadding: EdgeInsets.only(
-                                top: constraints.maxHeight * 0.08,
-                                left: constraints.maxWidth * 0.05),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColors.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(8.0),
+            alignment: const FractionalOffset(0.5, 0.59),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Material(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: constraints.maxWidth * 0.85,
+                      height: constraints.maxHeight * 0.05,
+                      child: TextField(
+                        controller: _passwordRepeatTextFieldController,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            top: constraints.maxHeight * 0.08,
+                            left: constraints.maxWidth * 0.05,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: _passwordRepeatTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
                             ),
                           ),
-                        )));
-              })),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _passwordRepeatTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _passwordRepeatTextFieldError != null ? Colors.red : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: SizedBox(
+                        height: 16,
+                        child: Visibility(
+                          visible: _passwordRepeatTextFieldError != null,
+                          child: Text(
+                            _passwordRepeatTextFieldError ?? '',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            }),
+          ),
           const Align(
             alignment: FractionalOffset(0.15, 0.64),
             child: SizedBox(
@@ -282,26 +470,23 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.7),
-              child: StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                return Material(
-                    color: AppColors.backgroundColor,
-                    child: Switch(
-                      value: isFreelancer,
-                      onChanged: (value) {
-                        setState(() {
-                          isFreelancer = value;
-                        });
-                      },
-                      activeColor: Colors.green,
-                      activeTrackColor: Colors.lightGreen,
-                      inactiveThumbColor: Colors.grey,
-                      inactiveTrackColor: Colors.grey.withOpacity(0.5),
-                    ));
-              })),
+            alignment: const FractionalOffset(0.5, 0.7),
+            child: CustomSwitch(
+              value: isFreelancer,
+              onChanged: (value) {
+                setState(() {
+                  isFreelancer = value;
+                  // Добавьте следующую строку
+                  userRoleProvider.setUserRole(isFreelancer ? UserRole.charterer : UserRole.freelancer);
+                  print(userRoleProvider.userRole.name);
+                });
+              },
+              activeColor: CupertinoColors.activeGreen,
+              thumbSize: 15, // Измените размер шарика здесь
+            ),
+          ),
           const Align(
-            alignment: FractionalOffset(0.24, 0.695),
+            alignment: FractionalOffset(0.24, 0.7),
             child: SizedBox(
               child: Text(
                 'Заказчик',
@@ -318,7 +503,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             ),
           ),
           const Align(
-            alignment: FractionalOffset(0.8, 0.695),
+            alignment: FractionalOffset(0.8, 0.7),
             child: SizedBox(
               child: Text(
                 'Фрилансер',
@@ -336,98 +521,77 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
           ),
           LayoutBuilder(builder: (context, constraints) {
             return Align(
-                alignment: const FractionalOffset(0.5, 0.78),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_loginTextFieldController.text.trim() == "") {
-                      setState(() {
-                        _loginTextFieldError = "Поле пустое";
-                      });
-                      return;
-                    }
-                    if (_emailTextFieldController.text.trim() == "") {
-                      setState(() {
-                        _emailTextFieldError = "Поле пустое";
-                      });
-                      return;
-                    }
-                    if (_passwordTextFieldController.text.trim() == "") {
-                      setState(() {
-                        _passwordTextFieldError = "Поле пустое";
-                      });
-                      return;
-                    }
-                    if (_passwordRepeatTextFieldController.text.trim() == "") {
-                      setState(() {
-                        _passwordRepeatTextFieldError = "Поле пустое";
-                      });
-                      return;
-                    }
-                    if (_passwordTextFieldController.text !=
-                        _passwordRepeatTextFieldController.text) {
-                      setState(() {
-                        _passwordTextFieldError = "Пароли не совпадают";
-                      });
-                      return;
-                    }
-                    if (!isValidEmail(_emailTextFieldController.text)) {
-                      setState(() {
-                        _emailTextFieldError = "Неверный формат почты";
-                      });
-                      return;
-                    }
-                    try {
-                      final user = RegistrationRequestDTO(
-                        username: _loginTextFieldController.text,
-                        password: _passwordTextFieldController.text,
-                        email: _emailTextFieldController.text,
-                        role: isFreelancer ? "Freelancer" : "Customer",
-                      );
+            alignment: const FractionalOffset(0.5, 0.78),
+            child: ElevatedButton(
+              onPressed: () async {
+                AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+                AppMetrica.reportEvent('Установка');
+                AppMetrica.reportEvent('Запуск');
+                AppMetrica.reportEvent('Регистрация');
+                AppMetrica.reportEvent('Авторизация');
+                AppMetrica.reportEvent('Переход в аккаунт');
+                AppMetrica.reportEvent('Оценки');
 
-                      FreelanceFinderService.instance.registerUser(user).then((value) =>
-                      print(value));
-                      userRoleProvider.setUserRole(isFreelancer
-                          ? UserRole.freelancer
-                          : UserRole.charterer);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AllOrders()),
-                      );
-                    } catch (e) {
-                      print(111);
+                setState(() {
+                  _loginTextFieldError = _loginTextFieldController.text.trim().isEmpty ? "Поле пустое" : null;
+                  _emailTextFieldError = _emailTextFieldController.text.trim().isEmpty ? "Поле пустое" : null;
+                  _passwordTextFieldError = _passwordTextFieldController.text.trim().isEmpty ? "Поле пустое" : null;
+                  _passwordRepeatTextFieldError = _passwordRepeatTextFieldController.text.trim().isEmpty ? "Поле пустое" : null;
+
+                  if (_passwordTextFieldError == null && _passwordRepeatTextFieldError == null) {
+                    if (_passwordTextFieldController.text != _passwordRepeatTextFieldController.text) {
+                      _passwordTextFieldError = "Пароли не совпадают";
+                      _passwordRepeatTextFieldError = "Пароли не совпадают";
                     }
-                  },
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(Size(
-                        constraints.maxWidth * 0.8,
-                        constraints.maxHeight * 0.05)),
-                    backgroundColor:
-                        MaterialStateProperty.all(AppColors.primaryColor),
-                  ),
-                  child: const Text(
-                    'Зарегистрироваться',
-                    style: TextStyle(
-                      color: AppColors.blackTextColor,
-                    ),
-                  ),
-                ));
-          }),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Container(
-                height: constraints.maxHeight * 0.12,
-                decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 0.70,
-                      strokeAlign: BorderSide.strokeAlignCenter,
-                      color: AppColors.backgroundColor,
-                    ),
-                  ),
+                  }
+
+                  if (_emailTextFieldError == null && !isValidEmail(_emailTextFieldController.text)) {
+                    _emailTextFieldError = "Неверный формат почты";
+                  }
+                });
+
+                print(userRoleProvider.userRole.name);
+
+                // Если есть ошибки, прекратить выполнение
+                if (_loginTextFieldError != null ||
+                    _emailTextFieldError != null ||
+                    _passwordTextFieldError != null ||
+                    _passwordRepeatTextFieldError != null) {
+                  return;
+                }
+
+                try {
+                  final user = RegistrationRequestDTO(
+                    username: _loginTextFieldController.text,
+                    password: _passwordTextFieldController.text,
+                    email: _emailTextFieldController.text,
+                    role: userRoleProvider.userRole.name
+                  );
+
+                  print('Role to be sent: ${user.role}');
+
+                  FreelanceFinderService.instance.registerUser(user).then((value) => print(value));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AllOrders()),
+                  );
+                } catch (e) {
+                  print(111);
+                }
+              },
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(Size(constraints.maxWidth * 0.8, constraints.maxHeight * 0.05)),
+                backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+              ),
+              child: const Text(
+                'Зарегистрироваться',
+                style: TextStyle(
+                  color: AppColors.blackTextColor,
                 ),
-              );
-            },
+              ),
+            ),
+          );
+          },
           ),
           Align(
             alignment: const FractionalOffset(0.05, 0.05),
@@ -479,6 +643,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                         )))),
           ),
         ]));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    AppMetrica.activate(AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
   }
 
   bool isValidEmail(String email) {

@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: appmetrica_plugin
-      sha256: "9420820fd49a072a54d2a0d273409e863061c4e07ccec879dc4068718fec096c"
+      sha256: "0357330d701a7b61c7b0aabccbe9abe799539d927ad82ad4b6708beb27f7c500"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "2.1.1"
   async:
     dependency: transitive
     description:
@@ -94,6 +94,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_cupertino_settings:
+    dependency: "direct main"
+    description:
+      name: flutter_cupertino_settings
+      sha256: e313dab20b8a655a41186deaeb8b73a70dfb12faf2dcf8a06e4361c2a8bb84f8
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -260,10 +268,10 @@ packages:
     dependency: transitive
     description:
       name: rational
-      sha256: ba58e9e18df9abde280e8b10051e4bce85091e41e8e7e411b6cde2e738d357cf
+      sha256: cb808fb6f1a839e6fc5f7d8cb3b0a10e1db48b3be102de73938c627f0b636336
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.2"
+    version: "2.2.3"
   shared_preferences:
     dependency: "direct main"
     description:
