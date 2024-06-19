@@ -257,7 +257,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         hasResponse = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -291,7 +291,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         hasPrice = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -325,7 +325,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         hasPrice = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -359,7 +359,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         hasInfo = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -396,7 +396,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         isDevelopment = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -430,7 +430,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         isTesting = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -464,7 +464,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         isAdmin = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -498,7 +498,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         isDesign = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -532,7 +532,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         isContent = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -566,7 +566,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         isMarketing = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -600,7 +600,7 @@ class FreelancerFiltersWidget extends StatelessWidget {
                         isMiscellaneous = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),

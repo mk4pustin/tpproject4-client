@@ -245,7 +245,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isDevelopment = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -279,7 +279,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isTesting = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -313,7 +313,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isAdmin = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -347,7 +347,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isDesign = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -381,7 +381,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isContent = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -415,7 +415,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isMarketing = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -449,7 +449,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isMiscellaneous = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -513,7 +513,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         hasResponse = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -547,7 +547,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         hasPrice = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -581,7 +581,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         hasPrice = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),
@@ -615,7 +615,7 @@ class OrderFiltersWidget extends StatelessWidget {
                         isFast = value ?? false;
                       });
                     },
-                    checkColor: Colors.red,
+                    checkColor: AppColors.errorColor,
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
                   ),

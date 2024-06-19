@@ -1,10 +1,10 @@
 import 'package:client/orders/all_orders.dart';
 import 'package:client/reg/registration.dart';
-import 'package:client/services/orders/dto/order.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
+import '../integration/rest/freelance_finder/dto/order.dart';
 
 class ViewOrderWidget extends StatelessWidget {
   const ViewOrderWidget(Order order, {super.key});

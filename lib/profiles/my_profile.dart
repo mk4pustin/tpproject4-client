@@ -7,8 +7,8 @@ import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
 import '../orders/view_order.dart';
 
-class FreelancerProfileWidget extends StatelessWidget {
-  const FreelancerProfileWidget({super.key});
+class MyProfileWidget extends StatelessWidget {
+  const MyProfileWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const AllFreelancersWidget()),
+                                  const AllFreelancersWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -124,7 +124,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                               scale: 1,
                               alignment: Alignment.topCenter,
                               child:
-                                  Image.asset('assets/images/profile_icon.png'),
+                              Image.asset('assets/images/profile_icon.png'),
                             )
                           ])))),
             ),
@@ -725,7 +725,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                         constraints.maxWidth * 0.5,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                        MaterialStateProperty.all(AppColors.primaryColor),
+                    MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Предложить заказ',
@@ -751,7 +751,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                         constraints.maxWidth * 0.5,
                         constraints.maxHeight * 0.05)),
                     backgroundColor:
-                        MaterialStateProperty.all(AppColors.primaryColor),
+                    MaterialStateProperty.all(AppColors.primaryColor),
                   ),
                   child: const Text(
                     'Обратная связь',
@@ -799,7 +799,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const EditProfileWidget()),
+                                const EditProfileWidget()),
                           );
                         },
                         splashColor: Colors.transparent,
@@ -807,7 +807,7 @@ class FreelancerProfileWidget extends StatelessWidget {
                           Transform.scale(
                             scale: 1,
                             child:
-                                Image.asset('assets/images/edit_profile.png'),
+                            Image.asset('assets/images/edit_profile.png'),
                           )
                         ])))),
           ) : const SizedBox.shrink(),

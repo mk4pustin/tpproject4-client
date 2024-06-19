@@ -5,7 +5,6 @@ import 'package:client/profiles/freelancer_profile.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/AppColors.dart';
-import '../services/orders/orders_service.dart';
 
 class ViewComplaintWidget extends StatelessWidget {
   const ViewComplaintWidget({super.key});
@@ -434,13 +433,13 @@ class ViewComplaintWidget extends StatelessWidget {
             alignment: const FractionalOffset(0.5, 0.6),
             child: LayoutBuilder(builder: (context, constraints) {
               return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
-                    );
-                  },
+                  // onTap: () {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
+                  //   );
+                  // },
                   child: SizedBox(
                     child: Stack(
                       children: [

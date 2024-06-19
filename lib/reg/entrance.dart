@@ -1,12 +1,28 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:client/integration/rest/freelance_finder/dto/login_request.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/reg/forgot_password.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/AppColors.dart';
+import '../integration/rest/freelance_finder/client/client.dart';
 
-class EntranceWidget extends StatelessWidget {
+class EntranceWidget extends StatefulWidget {
   const EntranceWidget({super.key});
+
+  @override
+  _EntranceWidgetState createState() => _EntranceWidgetState();
+}
+
+class _EntranceWidgetState extends State<EntranceWidget> {
+  final TextEditingController _loginTextFieldController =
+      TextEditingController();
+  final TextEditingController _passwordTextFieldController =
+      TextEditingController();
+
+  String? _loginTextFieldError;
+  String? _passwordTextFieldError;
 
   @override
   Widget build(BuildContext context) {
@@ -59,44 +75,98 @@ class EntranceWidget extends StatelessWidget {
               'Вход',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.blackTextColor,
-                fontSize: 24,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w400,
-                height: 0.03,
-                letterSpacing: -0.50,
-                decoration: TextDecoration.none
-              ),
+                  color: AppColors.blackTextColor,
+                  fontSize: 24,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  height: 0.03,
+                  letterSpacing: -0.50,
+                  decoration: TextDecoration.none),
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.49),
+              alignment: const FractionalOffset(0.5, 0.52),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                    child: SizedBox(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
+                          controller: _loginTextFieldController,
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide.none,
+                            contentPadding: EdgeInsets.only(
+                              top: constraints.maxHeight * 0.08,
+                              left: constraints.maxWidth * 0.05,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: _loginTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _loginTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
-                              )),
-                        )));
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _loginTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          height: 16,
+                          child: Visibility(
+                            visible: _loginTextFieldError != null,
+                            child: Text(
+                              _loginTextFieldError ?? '',
+                              style: const TextStyle(
+                                color: AppColors.errorColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
               })),
           const Align(
             alignment: FractionalOffset(0.1325, 0.45),
@@ -132,36 +202,95 @@ class EntranceWidget extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.62),
+              alignment: const FractionalOffset(0.5, 0.65),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                    child: SizedBox(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
+                          controller: _passwordTextFieldController,
                           textAlignVertical: TextAlignVertical.center,
+                          obscureText: true,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide.none,
+                            contentPadding: EdgeInsets.only(
+                              top: constraints.maxHeight * 0.02,
+                              bottom: constraints.maxHeight * 0.02,
+                              left: constraints.maxWidth * 0.05,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: _passwordTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _passwordTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
-                              )),
-                        )));
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _passwordTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: constraints.maxHeight * 0.01,
+                        ),
+                        child: SizedBox(
+                          height: 16,
+                          child: Visibility(
+                            visible: _passwordTextFieldError != null,
+                            child: Text(
+                              _passwordTextFieldError ?? '',
+                              style: const TextStyle(
+                                color: AppColors.errorColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
               })),
           Align(
-            alignment: const FractionalOffset(0.13, 0.69),
+            alignment: const FractionalOffset(0.89, 0.68),
             child: Material(
                 color: AppColors.backgroundColor,
                 child: InkWell(
@@ -192,12 +321,48 @@ class EntranceWidget extends StatelessWidget {
             return Align(
                 alignment: const FractionalOffset(0.5, 0.85),
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AllOrders()),
-                    );
+                  onPressed: () async {
+                    AppMetrica.activate(const AppMetricaConfig(
+                        "045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+                    AppMetrica.reportEvent('Установка');
+                    AppMetrica.reportEvent('Запуск');
+                    // AppMetrica.reportEvent('Регистрация');
+                    // AppMetrica.reportEvent('Авторизация');
+                    // AppMetrica.reportEvent('Переход в аккаунт');
+                    // AppMetrica.reportEvent('Оценки');
+
+                    setState(() {
+                      _loginTextFieldError =
+                          _loginTextFieldController.text.trim().isEmpty
+                              ? "Поле пустое"
+                              : null;
+                      _passwordTextFieldError =
+                          _passwordTextFieldController.text.trim().isEmpty
+                              ? "Поле пустое"
+                              : null;
+                    });
+
+                    if (_loginTextFieldError != null ||
+                        _passwordTextFieldError != null) {
+                      return;
+                    }
+
+                    try {
+                      final user = LoginRequestDTO(
+                        username: _loginTextFieldController.text,
+                        password: _passwordTextFieldController.text,
+                      );
+
+                      FreelanceFinderService.instance
+                          .loginUser(user);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AllOrders()),
+                      );
+                    } catch (e) {
+                      print(111);
+                    }
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(Size(

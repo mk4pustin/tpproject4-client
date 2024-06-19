@@ -7,7 +7,6 @@ import '../orders/all_orders.dart';
 import '../orders/view_order.dart';
 import '../profiles/freelancer_profile.dart';
 import '../reg/registration.dart';
-import '../services/orders/orders_service.dart';
 import 'freelancers_filters.dart';
 
 class OrderResponsesWidget extends StatelessWidget {
@@ -568,10 +567,10 @@ class OrderResponsesWidget extends StatelessWidget {
           child: LayoutBuilder(builder: (context, constraints) {
             return GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
+                // );
               },
               child: SizedBox(
                 child: Stack(

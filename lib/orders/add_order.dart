@@ -1,11 +1,9 @@
 import 'package:client/orders/all_orders.dart';
 import 'package:client/reg/registration.dart';
-import 'package:client/services/orders/orders_service.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
-import '../services/orders/dto/order.dart';
 
 class AddOrderWidget extends StatelessWidget {
   const AddOrderWidget({super.key});
@@ -459,8 +457,6 @@ class AddOrderWidget extends StatelessWidget {
                 alignment: const FractionalOffset(0.5, 0.87),
                 child: ElevatedButton(
                   onPressed: () {
-                    OrdersService().addOrder(Order('Блокчейн система', '2500\$',
-                        '0', '29.05.2024', ['Go', 'gRPC', 'Cosmos']));
                     Navigator.push(
                       context,
                       MaterialPageRoute(

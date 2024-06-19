@@ -1,17 +1,9 @@
-import 'package:client/providers/UserRoleProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'start_page.dart';
 
-void main() => runApp(
-  MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => UserRoleProvider()),
-    ],
-    child: const MyApp(),
-  ),
-);
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

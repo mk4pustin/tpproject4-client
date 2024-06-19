@@ -18,22 +18,16 @@ class Role {
   }
 }
 
-class Authority {
-  final int id;
-  final String name;
-  final String authority;
+class Scope {
+  int id;
+  String name;
 
-  Authority({
-    required this.id,
-    required this.name,
-    required this.authority,
-  });
+  Scope({required this.id, required this.name});
 
-  factory Authority.fromJson(Map<String, dynamic> json) {
-    return Authority(
+  factory Scope.fromJson(Map<String, dynamic> json) {
+    return Scope(
       id: json['id'],
       name: json['name'],
-      authority: json['authority'],
     );
   }
 }
@@ -43,15 +37,14 @@ class RegistrationResponseDTO {
   final Role role;
   final String username;
   final String email;
-  final dynamic scopes;
-  final dynamic aboutMe;
-  final dynamic contact;
+  final List<Scope>? scopes;
+  final String? aboutMe;
+  final String? contact;
   final DateTime registrationDate;
   final DateTime lastOnline;
-  final dynamic rating;
-  final dynamic skills;
+  final int? rating;
+  final String? skills;
   final bool isEnabled;
-  final List<Authority> authorities;
   final bool isAccountNonExpired;
   final bool isAccountNonLocked;
   final bool isCredentialsNonExpired;
@@ -69,23 +62,21 @@ class RegistrationResponseDTO {
     this.rating,
     this.skills,
     required this.isEnabled,
-    required this.authorities,
     required this.isAccountNonExpired,
     required this.isAccountNonLocked,
     required this.isCredentialsNonExpired,
   });
 
   factory RegistrationResponseDTO.fromJson(Map<String, dynamic> json) {
-    var authoritiesFromJson = json['authorities'] as List;
-    List<Authority> authoritiesList =
-    authoritiesFromJson.map((i) => Authority.fromJson(i)).toList();
-
     return RegistrationResponseDTO(
       id: json['id'],
       role: Role.fromJson(json['role']),
       username: json['username'],
       email: json['email'],
-      scopes: json['scopes'],
+      scopes: json['scopes'] != null
+          ? List<Scope>.from(
+              json['scopes'].map((scopeJson) => Scope.fromJson(scopeJson)))
+          : null,
       aboutMe: json['aboutMe'],
       contact: json['contact'],
       registrationDate: DateTime.parse(json['registrationDate']),
@@ -93,7 +84,6 @@ class RegistrationResponseDTO {
       rating: json['rating'],
       skills: json['skills'],
       isEnabled: json['isEnabled'],
-      authorities: authoritiesList,
       isAccountNonExpired: json['isAccountNonExpired'],
       isAccountNonLocked: json['isAccountNonLocked'],
       isCredentialsNonExpired: json['isCredentialsNonExpired'],

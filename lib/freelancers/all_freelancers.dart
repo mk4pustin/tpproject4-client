@@ -6,7 +6,6 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import '../constants/AppColors.dart';
 import '../orders/all_orders.dart';
 import '../reg/registration.dart';
-import '../services/orders/orders_service.dart';
 
 class AllFreelancersWidget extends StatelessWidget {
   const AllFreelancersWidget({super.key});
@@ -518,11 +517,11 @@ class AllFreelancersWidget extends StatelessWidget {
             child: LayoutBuilder(builder: (context, constraints) {
               return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => ViewOrderWidget(OrdersService().getOrders()[0])),
+                    // );
                   },
                   child: SizedBox(
                     child: Stack(
