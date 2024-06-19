@@ -16,6 +16,7 @@ class FreelanceFinderService {
   static const registrationEndpoint = "api/auth/registration";
   static const loginEndpoint = "api/auth/authentication";
   static const allOrdersEndpoint = "api/all/orders";
+  static const createFreelancerRequestEndpoint = "api/freelancer/requestOrder/{orderId}";
 
   Future<RegistrationResponseDTO> registerUser(RegistrationRequestDTO request) async {
     final response = await http.post(
@@ -75,6 +76,29 @@ class FreelanceFinderService {
       return jsonData.map((orderJson) => Order.fromJson(orderJson)).toList();
     } else {
       throw Exception('Failed to load orders');
+    }
+  }
+
+  Future<void> sendRequestToCreateFreelancerRequest(String orderId, String accessToken) async {
+    String url = serverPath + createFreelancerRequestEndpoint.replaceAll('{orderId}', orderId);
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Authorization': 'Bearer $accessToken'
+        },
+      );
+
+      if (response.statusCode == 201) {
+        print('Request sent successfully');
+      } else {
+        print('Failed to send request. Status code: ${response.statusCode}');
+        throw Exception();
+      }
+    } catch (e) {
+      print('Exception during request: $e');
+      throw Exception();
     }
   }
 }

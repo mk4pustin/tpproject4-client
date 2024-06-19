@@ -309,6 +309,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                       width: constraints.maxWidth * 0.85,
                       height: constraints.maxHeight * 0.05,
                       child: TextField(
+                        obscureText: true,
                         controller: _passwordTextFieldController,
                         textAlignVertical: TextAlignVertical.center,
                         cursorColor: Colors.black,
@@ -414,6 +415,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                       width: constraints.maxWidth * 0.85,
                       height: constraints.maxHeight * 0.05,
                       child: TextField(
+                        obscureText: true,
                         controller: _passwordRepeatTextFieldController,
                         textAlignVertical: TextAlignVertical.center,
                         cursorColor: Colors.black,

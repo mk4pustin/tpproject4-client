@@ -1,10 +1,15 @@
 import 'package:client/orders/all_orders.dart';
+import 'package:client/providers/token_provider.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
+import '../integration/rest/freelance_finder/client/client.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
+import '../models/user_role.dart';
+import '../providers/user_role_provider.dart';
 
 class ViewOrderWidget extends StatelessWidget {
   final Order order;
@@ -98,6 +103,8 @@ class ViewOrderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userRole = Provider.of<UserRoleProvider>(context).userRole;
+
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -519,7 +526,7 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          Align(
+          userRole != UserRole.Guest ? Align(
             alignment: const FractionalOffset(0.9, 0.5),
             child: GestureDetector(
               onTap: () {
@@ -544,7 +551,7 @@ class ViewOrderWidget extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ) : const SizedBox.shrink(),
           Align(
             alignment: const FractionalOffset(0.5, 0.615),
             child: Container(
@@ -583,7 +590,9 @@ class ViewOrderWidget extends StatelessWidget {
             },
           ),
           Align(
-            alignment: const FractionalOffset(0.5, 0.865),
+            alignment: userRole == UserRole.Freelancer
+                ? const FractionalOffset(0.5, 0.865)
+                : const FractionalOffset(0.5, 0.8),
             child: LayoutBuilder(builder: (context, constraints) {
               return SizedBox(
                 child: Stack(
@@ -688,9 +697,9 @@ class ViewOrderWidget extends StatelessWidget {
               );
             }),
           ),
-          LayoutBuilder(builder: (context, constraints) {
-            return ResponseButton();
-          }),
+          userRole == UserRole.Freelancer ? LayoutBuilder(builder: (context, constraints) {
+            return ResponseButton(orderId: order.id);
+          }) : const SizedBox.shrink(),
           Align(
             alignment: const FractionalOffset(0.05, 0.055),
             child: SizedBox(
@@ -722,23 +731,35 @@ class ViewOrderWidget extends StatelessWidget {
 }
 
 class ResponseButton extends StatefulWidget {
+  final int orderId;
+
+  const ResponseButton({Key? key, required this.orderId}) : super(key: key);
+
   @override
   _ResponseButtonState createState() => _ResponseButtonState();
 }
 
 class _ResponseButtonState extends State<ResponseButton> {
   bool _isResponded = false;
+  bool _isResponsedBefore = false;
 
   @override
   Widget build(BuildContext context) {
+    final token = Provider.of<TokenProvider>(context).token;
     return LayoutBuilder(builder: (context, constraints) {
       return Align(
         alignment: const FractionalOffset(0.5, 0.725),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: _isResponded ? null : () async {
             setState(() {
               _isResponded = true;
             });
+            try {
+              await FreelanceFinderService.instance.sendRequestToCreateFreelancerRequest(widget.orderId.toString(), token!);
+            } catch (e) {
+              print("123");
+              _isResponsedBefore = true;
+            }
           },
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all(
@@ -756,7 +777,7 @@ class _ResponseButtonState extends State<ResponseButton> {
             )),
           ),
           child: Text(
-            _isResponded ? 'Вы откликнулись' : 'Откликнуться',
+            _isResponsedBefore ? 'Вы уже откликались' : _isResponded ? 'Вы откликнулись' : 'Откликнуться',
             style: TextStyle(
               color: _isResponded
                   ? AppColors.primaryColor
@@ -768,3 +789,4 @@ class _ResponseButtonState extends State<ResponseButton> {
     });
   }
 }
+

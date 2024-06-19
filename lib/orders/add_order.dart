@@ -1,12 +1,34 @@
 import 'package:client/orders/all_orders.dart';
-import 'package:client/reg/registration.dart';
+import 'package:client/profiles/my_profile.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
 
-class AddOrderWidget extends StatelessWidget {
+class AddOrderWidget extends StatefulWidget {
   const AddOrderWidget({super.key});
+
+  @override
+  _AddOrderWidgetState createState() => _AddOrderWidgetState();
+}
+
+class _AddOrderWidgetState extends State<AddOrderWidget> {
+  final TextEditingController _titleTextFieldController =
+      TextEditingController();
+  final TextEditingController _descTextFieldController =
+      TextEditingController();
+  final TextEditingController _skillsTextFieldController =
+      TextEditingController();
+  final TextEditingController _priceTextFieldController =
+      TextEditingController();
+
+  String? dropdownValue;
+
+  String? _titleTextFieldError;
+  String? _descTextFieldError;
+  String? _skillsRepeatTextFieldError;
+  String? _priceTextFieldError;
+  String? _dropdownFieldError;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +150,7 @@ class AddOrderWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      RegistrationWidget()),
+                                      const MyProfileWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -225,30 +247,88 @@ class AddOrderWidget extends StatelessWidget {
               alignment: const FractionalOffset(0.5, 0.2),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                    child: SizedBox(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide.none,
+                          controller: _titleTextFieldController,
+                          textAlignVertical: TextAlignVertical.center,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                              left: constraints.maxWidth * 0.05,
+                              right: constraints.maxWidth * 0.05,
+                              top: 0,
+                              bottom: 0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: _titleTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _titleTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _titleTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                            ))));
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          height: 16,
+                          child: Visibility(
+                            visible: _titleTextFieldError != null,
+                            child: Text(
+                              _titleTextFieldError ?? '',
+                              style: const TextStyle(
+                                color: AppColors.errorColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
               })),
           const Align(
             alignment: FractionalOffset(0.13, 0.28),
@@ -268,33 +348,91 @@ class AddOrderWidget extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.36),
+              alignment: const FractionalOffset(0.5, 0.365),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                    child: SizedBox(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.15,
                         child: TextField(
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: constraints.maxHeight * 0.33,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide.none,
+                          controller: _descTextFieldController,
+                          textAlignVertical: TextAlignVertical.center,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                              left: constraints.maxWidth * 0.05,
+                              right: constraints.maxWidth * 0.05,
+                              top: 0,
+                              bottom: 0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: _descTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _descTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _descTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                            ))));
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          height: 16,
+                          child: Visibility(
+                            visible: _descTextFieldError != null,
+                            child: Text(
+                              _descTextFieldError ?? '',
+                              style: const TextStyle(
+                                color: AppColors.errorColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
               })),
           const Align(
             alignment: FractionalOffset(0.2, 0.5),
@@ -314,51 +452,105 @@ class AddOrderWidget extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.55),
+              alignment: const FractionalOffset(0.5, 0.57),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                  child: SizedBox(
-                    width: constraints.maxWidth * 0.85,
-                    height: constraints.maxHeight * 0.05,
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(
-                          top: constraints.maxHeight * 0.01,
-                          left: constraints.maxWidth * 0.3,
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: constraints.maxWidth * 0.85,
+                      height: constraints.maxHeight * 0.05,
+                      child: DropdownButtonFormField<String>(
+                        value: dropdownValue,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            top: constraints.maxHeight * 0.01,
+                            left: constraints.maxWidth * 0.3,
+                          ),
+                          hintText: 'Выберите...',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: _dropdownFieldError != null
+                                  ? AppColors.errorColor
+                                  : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: _dropdownFieldError != null
+                                  ? AppColors.errorColor
+                                  : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: _dropdownFieldError != null
+                                  ? AppColors.errorColor
+                                  : AppColors.primaryColor,
+                              width: 2.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: AppColors.errorColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: AppColors.errorColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
-                        hintText: 'Выберите...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: AppColors.primaryColor, width: 2.0),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: AppColors.primaryColor, width: 2.0),
-                          borderRadius: BorderRadius.circular(8.0),
+                        items: <String>[
+                          'Разработка',
+                          'Тестирование',
+                          'Администрирование',
+                          'Маркетинг'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              dropdownValue = newValue;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: SizedBox(
+                        height: 16,
+                        child: Visibility(
+                          visible: _dropdownFieldError != null,
+                          child: Text(
+                            _dropdownFieldError ?? '',
+                            style: const TextStyle(
+                              color: AppColors.errorColor,
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ),
-                      items: <String>[
-                        'Разработка',
-                        'Тестирование',
-                        'Администрирование',
-                        'Маркетинг'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        if (newValue != null) {}
-                      },
                     ),
-                  ),
-                );
+                    const SizedBox(height: 20),
+                  ],
+                ));
               })),
           const Align(
             alignment: FractionalOffset(0.18, 0.62),
@@ -378,33 +570,91 @@ class AddOrderWidget extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.68),
+              alignment: const FractionalOffset(0.5, 0.7),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                    child: SizedBox(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.01,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide.none,
+                          controller: _skillsTextFieldController,
+                          textAlignVertical: TextAlignVertical.center,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                              left: constraints.maxWidth * 0.05,
+                              right: constraints.maxWidth * 0.05,
+                              top: 0,
+                              bottom: 0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: _skillsRepeatTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _skillsRepeatTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _skillsRepeatTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                            ))));
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          height: 16,
+                          child: Visibility(
+                            visible: _skillsRepeatTextFieldError != null,
+                            child: Text(
+                              _skillsRepeatTextFieldError ?? '',
+                              style: const TextStyle(
+                                color: AppColors.errorColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
               })),
           const Align(
             alignment: FractionalOffset(0.14, 0.74),
@@ -424,44 +674,148 @@ class AddOrderWidget extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: const FractionalOffset(0.5, 0.8),
+              alignment: const FractionalOffset(0.5, 0.83),
               child: LayoutBuilder(builder: (context, constraints) {
                 return Material(
-                    child: SizedBox(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
                         width: constraints.maxWidth * 0.85,
                         height: constraints.maxHeight * 0.05,
                         child: TextField(
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: constraints.maxHeight * 0.08,
-                                  left: constraints.maxWidth * 0.05),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide.none,
+                          controller: _priceTextFieldController,
+                          textAlignVertical: TextAlignVertical.center,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                              left: constraints.maxWidth * 0.05,
+                              right: constraints.maxWidth * 0.05,
+                              top: 0,
+                              bottom: 0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide(
+                                color: _priceTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _priceTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.primaryColor, width: 2.0),
-                                borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _priceTextFieldError != null
+                                    ? AppColors.errorColor
+                                    : AppColors.primaryColor,
+                                width: 2.0,
                               ),
-                            ))));
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.errorColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          height: 16,
+                          child: Visibility(
+                            visible: _priceTextFieldError != null,
+                            child: Text(
+                              _priceTextFieldError ?? '',
+                              style: const TextStyle(
+                                color: AppColors.errorColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
               })),
           LayoutBuilder(builder: (context, constraints) {
             return Align(
                 alignment: const FractionalOffset(0.5, 0.87),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AllOrders()),
-                    );
+                    setState(() {
+                      _titleTextFieldError =
+                          _titleTextFieldController.text.trim().isEmpty
+                              ? "Поле пустое"
+                              : null;
+                      _descTextFieldError =
+                          _descTextFieldController.text.trim().isEmpty
+                              ? "Поле пустое"
+                              : null;
+                      _skillsRepeatTextFieldError =
+                          _skillsTextFieldController.text.trim().isEmpty
+                              ? "Поле пустое"
+                              : null;
+                      _priceTextFieldError =
+                          _priceTextFieldController.text.trim().isEmpty
+                              ? "Поле пустое"
+                              : null;
+                      _dropdownFieldError =
+                          dropdownValue == null ? "Поле пустое"
+                              : null;
+                    });
+
+                    if (_titleTextFieldError != null ||
+                        dropdownValue != null ||
+                        _descTextFieldError != null ||
+                        _skillsRepeatTextFieldError != null ||
+                        _priceTextFieldError != null) {
+                      return;
+                    }
+
+                    // try {
+                    //   final user = RegistrationRequestDTO(
+                    //       username: _loginTextFieldController.text,
+                    //       password: _passwordTextFieldController.text,
+                    //       email: _emailTextFieldController.text,
+                    //       role: isFreelancer ? "Freelancer" : "Customer");
+                    //
+                    //   print('Role to be sent: ${user.role}');
+                    //
+                    //   await FreelanceFinderService.instance.registerUser(user);
+                    //   updateProvidersInfo(
+                    //       userRoleProvider, userIdProvider, tokenProvider);
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const AllOrders()),
+                    //   );
+                    // } catch (e) {
+                    //   _emailTextFieldError =
+                    //   "На данную почту уже зарегистрирован аккаунт";
+                    // }
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(Size(
