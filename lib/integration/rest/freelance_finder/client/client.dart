@@ -25,7 +25,7 @@ class FreelanceFinderService {
     );
 
     if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
+      final responseData = jsonDecode(utf8.decode(response.bodyBytes));
       final user = RegistrationResponseDTO.fromJson(responseData);
       final token = response.headers['authorization'];
 
@@ -50,7 +50,7 @@ class FreelanceFinderService {
     );
 
     if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
+      final responseData = jsonDecode(utf8.decode(response.bodyBytes));
       final user = RegistrationResponseDTO.fromJson(responseData);
       final token = response.headers['authorization'];
 
@@ -71,7 +71,7 @@ class FreelanceFinderService {
     final response = await http.get(Uri.parse(serverPath + allOrdersEndpoint));
 
     if (response.statusCode == 200) {
-      List<dynamic> jsonData = json.decode(response.body);
+      List<dynamic> jsonData = json.decode(utf8.decode(response.bodyBytes));
       return jsonData.map((orderJson) => Order.fromJson(orderJson)).toList();
     } else {
       throw Exception('Failed to load orders');

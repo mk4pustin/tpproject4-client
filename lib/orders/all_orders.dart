@@ -194,7 +194,7 @@ class _AllOrdersState extends State<AllOrders> {
                                       top: constraints.maxHeight * 0.25,
                                       child: SizedBox(
                                         child: Text(
-                                          orders[index].price.toString(),
+                                          "${orders[index].price} ₽",
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               color: AppColors.blackTextColor,
@@ -212,9 +212,7 @@ class _AllOrdersState extends State<AllOrders> {
                                       top: constraints.maxHeight * 0.475,
                                       child: SizedBox(
                                         child: Text(
-                                          orders[index]
-                                              .responsesCount
-                                              .toString(),
+                                          "${orders[index].responsesCount} откликов",
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               color: AppColors.blackTextColor,
@@ -231,9 +229,7 @@ class _AllOrdersState extends State<AllOrders> {
                                       right: constraints.maxWidth * 0.1,
                                       top: constraints.maxHeight * 0.475,
                                       child: Text(
-                                        orders[index]
-                                            .creationDate
-                                            .toIso8601String(),
+                                        orders[index].creationDate,
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                             color: AppColors.blackTextColor,
@@ -246,52 +242,60 @@ class _AllOrdersState extends State<AllOrders> {
                                       ),
                                     ),
                                     Positioned(
-                                      right: constraints.maxWidth * 0.775,
                                       top: constraints.maxHeight * 0.78,
+                                      right: orders[index].skills.isNotEmpty
+                                          ? constraints.maxWidth * 0.75
+                                          : constraints.maxWidth * 0.8,
                                       child: SizedBox(
                                         child: Text(
-                                          orders![index].skills.isNotEmpty
+                                          orders[index].skills.isNotEmpty
                                               ? orders[index].skills[0]
-                                              : '-',
-                                          textAlign: TextAlign.center,
+                                              : '—',
                                           style: const TextStyle(
-                                              color: AppColors.blackTextColor,
-                                              fontSize: 22,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400,
-                                              height: 0.04,
-                                              letterSpacing: -0.50,
-                                              decoration: TextDecoration.none),
+                                            color: AppColors.blackTextColor,
+                                            fontSize: 22,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0.04,
+                                            letterSpacing: -0.50,
+                                            decoration: TextDecoration.none,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Positioned(
                                       top: constraints.maxHeight * 0.78,
-                                      left: constraints.maxWidth * 0.45,
-                                      child: SizedBox(
-                                        child: Text(
-                                          orders[index].skills.length >= 2
-                                              ? orders[index].skills[1]
-                                              : '-',
-                                          style: const TextStyle(
+                                      left: 0,
+                                      right: 0,
+                                      child: Center(
+                                        child: SizedBox(
+                                          child: Text(
+                                            orders[index].skills.length >= 2
+                                                ? orders[index].skills[1]
+                                                : '—',
+                                            style: const TextStyle(
                                               color: AppColors.blackTextColor,
                                               fontSize: 22,
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w400,
                                               height: 0.04,
                                               letterSpacing: -0.50,
-                                              decoration: TextDecoration.none),
+                                              decoration: TextDecoration.none,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Positioned(
-                                      left: constraints.maxWidth * 0.725,
+                                      left: orders[index].skills.length >= 3
+                                      ? constraints.maxWidth * 0.7
+                                          : constraints.maxWidth * 0.8,
                                       top: constraints.maxHeight * 0.78,
                                       child: SizedBox(
                                         child: Text(
                                           orders[index].skills.length >= 3
                                               ? orders[index].skills[2]
-                                              : '---',
+                                              : '—',
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               color: AppColors.blackTextColor,
@@ -305,7 +309,7 @@ class _AllOrdersState extends State<AllOrders> {
                                       ),
                                     ),
                                     Positioned(
-                                      left: constraints.maxWidth * 0.33,
+                                      left: constraints.maxWidth * 0.35,
                                       top: constraints.maxHeight * 0.65,
                                       child: Transform(
                                         transform: Matrix4.identity()
