@@ -37,6 +37,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final userRoleProvider = Provider.of<UserRoleProvider>(context);
+    final userIdProvider = Provider.of<UserIdProvider>(context);
+    final tokenProvider = Provider.of<TokenProvider>(context);
+
     bool isFreelancer = false;
 
     return Container(
@@ -600,16 +604,17 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
                       print('Role to be sent: ${user.role}');
 
-                      FreelanceFinderService.instance
-                          .registerUser(user);
-                      updateProvidersInfo(context);
+                      await FreelanceFinderService.instance.registerUser(user);
+                      updateProvidersInfo(
+                          userRoleProvider, userIdProvider, tokenProvider);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const AllOrders()),
                       );
                     } catch (e) {
-                      _emailTextFieldError = "На данную почту уже зарегистрирован аккаунт";
+                      _emailTextFieldError =
+                          "На данную почту уже зарегистрирован аккаунт";
                     }
                   },
                   style: ButtonStyle(
@@ -681,18 +686,16 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         ]));
   }
 
-  void updateProvidersInfo(BuildContext context) {
-    final userRoleProvider = Provider.of<UserRoleProvider>(context);
-    final userIdProvider = Provider.of<UserIdProvider>(context);
-    final tokenProvider = Provider.of<TokenProvider>(context);
+  void updateProvidersInfo(UserRoleProvider userRoleProvider,
+      UserIdProvider userIdProvider, TokenProvider tokenProvider) {
     final sr = SharedPreferences.getInstance();
 
     sr.then((value) => {
-      userRoleProvider
-          .setUserRole(getUserRoleFromString(value.getString('role'))),
-      userIdProvider.setUserId(value.getInt('id')),
-      tokenProvider.setToken(value.getString('token'))
-    });
+          userRoleProvider
+              .setUserRole(getUserRoleFromString(value.getString('role'))),
+          userIdProvider.setUserId(value.getInt('id')),
+          tokenProvider.setToken(value.getString('token'))
+        });
   }
 
   @override
@@ -716,7 +719,8 @@ class CustomSwitch extends StatefulWidget {
   final Color borderColor;
   final double borderWidth;
 
-  const CustomSwitch({super.key,
+  const CustomSwitch({
+    super.key,
     required this.value,
     required this.onChanged,
     this.activeColor = CupertinoColors.activeGreen,
@@ -785,4 +789,3 @@ class _CustomSwitchState extends State<CustomSwitch> {
     );
   }
 }
-
