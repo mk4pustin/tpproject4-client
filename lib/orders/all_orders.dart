@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/constants/AppColors.dart';
 import 'package:client/freelancers/all_freelancers.dart';
 import 'package:client/orders/add_order.dart';
@@ -490,6 +491,7 @@ class AllOrders extends StatelessWidget {
                       color: AppColors.primaryColor,
                       child: InkWell(
                           onTap: () {
+                            AppMetrica.reportEvent('Авторизация');
                             print(userRole);
                             Navigator.push(
                               context,

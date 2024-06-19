@@ -1,10 +1,13 @@
 import 'package:client/freelancers/freelancers_filters.dart';
-import 'package:client/orders/view_order.dart';
 import 'package:client/profiles/freelancer_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:provider/provider.dart';
 import '../constants/AppColors.dart';
+import '../models/user_role.dart';
 import '../orders/all_orders.dart';
+import '../profiles/my_profile.dart';
+import '../providers/user_role_provider.dart';
 import '../reg/registration.dart';
 
 class AllFreelancersWidget extends StatelessWidget {
@@ -12,6 +15,7 @@ class AllFreelancersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userRole = Provider.of<UserRoleProvider>(context).userRole;
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -117,16 +121,17 @@ class AllFreelancersWidget extends StatelessWidget {
                       color: AppColors.primaryColor,
                       child: InkWell(
                           onTap: () {
-                            AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
-                            AppMetrica.reportEvent('Установка');
-                            AppMetrica.reportEvent('Запуск');
-                            AppMetrica.reportEvent('Регистрация');
-                            AppMetrica.reportEvent('Авторизация');
+                            AppMetrica.activate(const AppMetricaConfig(
+                                "045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+                            AppMetrica.reportEvent('Переход в аккаунт');
+                            print(userRole);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (
-                                      context) => RegistrationWidget()),
+                                  builder: (context) =>
+                                  userRole == UserRole.Guest
+                                      ? const RegistrationWidget()
+                                      : const MyProfileWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -134,7 +139,8 @@ class AllFreelancersWidget extends StatelessWidget {
                             Transform.scale(
                               scale: 1,
                               alignment: Alignment.center,
-                              child: Image.asset('assets/images/profile_icon.png'),
+                              child:
+                              Image.asset('assets/images/profile_icon.png'),
                             )
                           ])))),
             ),

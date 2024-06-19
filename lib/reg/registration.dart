@@ -549,12 +549,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                   onPressed: () async {
                     AppMetrica.activate(const AppMetricaConfig(
                         "045e79e7-d746-49e7-8d17-e4f2e0aab027"));
-                    AppMetrica.reportEvent('Установка');
-                    AppMetrica.reportEvent('Запуск');
                     AppMetrica.reportEvent('Регистрация');
-                    AppMetrica.reportEvent('Авторизация');
-                    AppMetrica.reportEvent('Переход в аккаунт');
-                    AppMetrica.reportEvent('Оценки');
 
                     setState(() {
                       _loginTextFieldError =

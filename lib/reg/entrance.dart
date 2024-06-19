@@ -32,6 +32,9 @@ class _EntranceWidgetState extends State<EntranceWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final userRoleProvider = Provider.of<UserRoleProvider>(context);
+    final userIdProvider = Provider.of<UserIdProvider>(context);
+    final tokenProvider = Provider.of<TokenProvider>(context);
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -44,7 +47,7 @@ class _EntranceWidgetState extends State<EntranceWidget> {
         ),
         child: Stack(children: [
           const Align(
-            alignment: FractionalOffset(0.5, 0.2),
+            alignment: FractionalOffset(0.5, 0.195),
             child: Text(
               'FREELANCEFINDER',
               textAlign: TextAlign.center,
@@ -330,12 +333,7 @@ class _EntranceWidgetState extends State<EntranceWidget> {
                   onPressed: () async {
                     AppMetrica.activate(const AppMetricaConfig(
                         "045e79e7-d746-49e7-8d17-e4f2e0aab027"));
-                    AppMetrica.reportEvent('Установка');
-                    AppMetrica.reportEvent('Запуск');
-                    // AppMetrica.reportEvent('Регистрация');
-                    // AppMetrica.reportEvent('Авторизация');
-                    // AppMetrica.reportEvent('Переход в аккаунт');
-                    // AppMetrica.reportEvent('Оценки');
+                    AppMetrica.reportEvent('Авторизация');
 
                     setState(() {
                       _loginTextFieldError =
@@ -359,16 +357,19 @@ class _EntranceWidgetState extends State<EntranceWidget> {
                         password: _passwordTextFieldController.text,
                       );
 
-                      FreelanceFinderService.instance
-                          .loginUser(user);
-                      updateProvidersInfo(context);
+                      await FreelanceFinderService.instance.loginUser(user);
+                      updateProvidersInfo(
+                          userRoleProvider, userIdProvider, tokenProvider);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const AllOrders()),
                       );
                     } catch (e) {
-                      print(111);
+                      setState(() {
+                        _loginTextFieldError = "Неверный логин или пароль";
+                        _passwordTextFieldError = "Неверный логин или пароль";
+                      });
                     }
                   },
                   style: ButtonStyle(
@@ -396,7 +397,7 @@ class _EntranceWidgetState extends State<EntranceWidget> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RegistrationWidget()),
+                            builder: (context) => const RegistrationWidget()),
                       );
                     },
                     splashColor: Colors.transparent,
@@ -418,10 +419,8 @@ class _EntranceWidgetState extends State<EntranceWidget> {
         ]));
   }
 
-  void updateProvidersInfo(BuildContext context) {
-    final userRoleProvider = Provider.of<UserRoleProvider>(context);
-    final userIdProvider = Provider.of<UserIdProvider>(context);
-    final tokenProvider = Provider.of<TokenProvider>(context);
+  void updateProvidersInfo(UserRoleProvider userRoleProvider,
+      UserIdProvider userIdProvider, TokenProvider tokenProvider) {
     final sr = SharedPreferences.getInstance();
 
     sr.then((value) => {
