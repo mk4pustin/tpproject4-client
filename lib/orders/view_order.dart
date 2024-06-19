@@ -9,6 +9,87 @@ import '../freelancers/all_freelancers.dart';
 class ViewOrderWidget extends StatelessWidget {
   const ViewOrderWidget(Order order, {super.key});
 
+  void _showComplaintDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: const BorderSide(color: AppColors.primaryColor, width: 4), // Increase the border width
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    onChanged: (value) {},
+                    decoration: const InputDecoration(
+                      hintText: "Введите текст жалобы",
+                      hintStyle: TextStyle(
+                        color: AppColors.blackTextColor,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.primaryColor),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.primaryColor),
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: AppColors.blackTextColor, // Make the text color black
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16), // Add some space between the text field and the buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: const Text(
+                          'Отправить',
+                          style: TextStyle(
+                            color: AppColors.blackTextColor,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onPressed: () {
+                          // Handle the complaint submission
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text(
+                          'Отмена',
+                          style: TextStyle(
+                            color: AppColors.blackTextColor,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +102,8 @@ class ViewOrderWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: Stack(children: [
+        child: Stack(
+            children: [
           LayoutBuilder(builder: (context, constraints) {
             return MaterialApp(
               home: Scaffold(
@@ -129,7 +211,7 @@ class ViewOrderWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      RegistrationWidget()),
+                                      const RegistrationWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -424,22 +506,31 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          const Align(
-            alignment: FractionalOffset(0.9, 0.5),
-            child: Text(
-              'Жалоба',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xFF6C85C5),
-                  fontSize: 14,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
-                  height: 0.12,
-                  letterSpacing: -0.50,
-                  decoration: TextDecoration.none),
-            ),
-          ),
-          const Align(
+              Align(
+                alignment: const FractionalOffset(0.9, 0.5),
+                child: GestureDetector(
+                  onTap: () {
+                    _showComplaintDialog(context);
+                  },
+                  behavior: HitTestBehavior.translucent, // Include the padding area in the tap area
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0), // Add padding around the text
+                    child: Text(
+                      'Жалоба',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(0xFF6C85C5),
+                          fontSize: 14,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w400,
+                          height: 0.12,
+                          letterSpacing: -0.50,
+                          decoration: TextDecoration.none),
+                    ),
+                  ),
+                ),
+              ),
+              const Align(
             alignment: FractionalOffset(0.5, 0.56),
             child: Text(
               'Надо, чтобы было хорошо',
