@@ -7,7 +7,9 @@ import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
 
 class ViewOrderWidget extends StatelessWidget {
-  const ViewOrderWidget(Order order, {super.key});
+  final Order order;
+
+  const ViewOrderWidget(this.order, {super.key});
 
   void _showComplaintDialog(BuildContext context) {
     showDialog(
@@ -17,7 +19,9 @@ class ViewOrderWidget extends StatelessWidget {
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
-            side: const BorderSide(color: AppColors.primaryColor, width: 4), // Increase the border width
+            side: const BorderSide(
+                color: AppColors.primaryColor,
+                width: 4), // Increase the border width
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -42,13 +46,15 @@ class ViewOrderWidget extends StatelessWidget {
                       ),
                     ),
                     style: const TextStyle(
-                      color: AppColors.blackTextColor, // Make the text color black
+                      color: AppColors.blackTextColor,
+                      // Make the text color black
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16), // Add some space between the text field and the buttons
+                  const SizedBox(height: 16),
+                  // Add some space between the text field and the buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -102,8 +108,7 @@ class ViewOrderWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: Stack(
-            children: [
+        child: Stack(children: [
           LayoutBuilder(builder: (context, constraints) {
             return MaterialApp(
               home: Scaffold(
@@ -271,13 +276,13 @@ class ViewOrderWidget extends StatelessWidget {
               ),
             ),
           ),
-          const Align(
-              alignment: FractionalOffset(0.5, 0.0875),
+          Align(
+              alignment: const FractionalOffset(0.5, 0.0875),
               child: SizedBox(
                 child: Text(
-                  'ТГ-бот',
+                  order.title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.blackTextColor,
                       fontSize: 24,
                       fontFamily: 'Montserrat',
@@ -287,12 +292,12 @@ class ViewOrderWidget extends StatelessWidget {
                       decoration: TextDecoration.none),
                 ),
               )),
-          const Align(
-            alignment: FractionalOffset(0.5, 0.1125),
+          Align(
+            alignment: const FractionalOffset(0.5, 0.1125),
             child: Text(
-              '#1',
+              "#${order.id}",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                   color: AppColors.hintColor,
                   fontSize: 14,
                   fontFamily: 'Montserrat',
@@ -302,12 +307,12 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          const Align(
-            alignment: FractionalOffset(0.5, 0.16),
+          Align(
+            alignment: const FractionalOffset(0.5, 0.16),
             child: Text(
-              'Дата размещения: 22.11.2024',
+              'Дата размещения: ${order.creationDate}',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                   color: AppColors.blackTextColor,
                   fontSize: 18,
                   fontFamily: 'Montserrat',
@@ -338,10 +343,10 @@ class ViewOrderWidget extends StatelessWidget {
                     Positioned(
                       left: constraints.maxWidth * 0.1,
                       top: constraints.maxHeight * 0.055,
-                      child: const Text(
-                        '1 отклик',
+                      child: Text(
+                        '${order.responsesCount} откликов',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: AppColors.backgroundColor,
                             fontSize: 22,
                             fontFamily: 'Montserrat',
@@ -354,11 +359,11 @@ class ViewOrderWidget extends StatelessWidget {
                     Positioned(
                       left: constraints.maxWidth * 0.65,
                       top: constraints.maxHeight * 0.055,
-                      child: const SizedBox(
+                      child: SizedBox(
                         child: Text(
-                          '50\$',
+                          "${order.price} ₽",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.backgroundColor,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
@@ -393,13 +398,15 @@ class ViewOrderWidget extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      left: constraints.maxWidth * 0.1,
+                      right: order.skills.isNotEmpty
+                          ? constraints.maxWidth * 0.68
+                          : constraints.maxWidth * 0.73,
                       top: constraints.maxHeight * 0.08,
-                      child: const SizedBox(
+                      child: SizedBox(
                         child: Text(
-                          'Spring',
+                          order.skills.isNotEmpty ? order.skills[0] : '—',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.blackTextColor,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
@@ -411,13 +418,15 @@ class ViewOrderWidget extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      left: constraints.maxWidth * 0.4,
                       top: constraints.maxHeight * 0.08,
-                      child: const SizedBox(
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                          child: SizedBox(
                         child: Text(
-                          'Java',
+                          order.skills.length >= 2 ? order.skills[1] : '—',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.blackTextColor,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
@@ -426,16 +435,18 @@ class ViewOrderWidget extends StatelessWidget {
                               letterSpacing: -0.50,
                               decoration: TextDecoration.none),
                         ),
-                      ),
+                      )),
                     ),
                     Positioned(
-                      left: constraints.maxWidth * 0.7,
+                      left: order.skills.length >= 3
+                          ? constraints.maxWidth * 0.625
+                          : constraints.maxWidth * 0.725,
                       top: constraints.maxHeight * 0.08,
-                      child: const SizedBox(
+                      child: SizedBox(
                         child: Text(
-                          'SQL',
+                          order.skills.length >= 3 ? order.skills[2] : '—',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.blackTextColor,
                               fontSize: 22,
                               fontFamily: 'Montserrat',
@@ -458,7 +469,8 @@ class ViewOrderWidget extends StatelessWidget {
                           decoration: const ShapeDecoration(
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
-                                width: 1,
+                                color: AppColors.primaryColor,
+                                width: 1.5,
                                 strokeAlign: BorderSide.strokeAlignCenter,
                               ),
                             ),
@@ -478,7 +490,8 @@ class ViewOrderWidget extends StatelessWidget {
                           decoration: const ShapeDecoration(
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
-                                width: 1,
+                                color: AppColors.primaryColor,
+                                width: 1.5,
                                 strokeAlign: BorderSide.strokeAlignCenter,
                               ),
                             ),
@@ -506,45 +519,53 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-              Align(
-                alignment: const FractionalOffset(0.9, 0.5),
-                child: GestureDetector(
-                  onTap: () {
-                    _showComplaintDialog(context);
-                  },
-                  behavior: HitTestBehavior.translucent, // Include the padding area in the tap area
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0), // Add padding around the text
-                    child: Text(
-                      'Жалоба',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color(0xFF6C85C5),
-                          fontSize: 14,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w400,
-                          height: 0.12,
-                          letterSpacing: -0.50,
-                          decoration: TextDecoration.none),
-                    ),
-                  ),
+          Align(
+            alignment: const FractionalOffset(0.9, 0.5),
+            child: GestureDetector(
+              onTap: () {
+                _showComplaintDialog(context);
+              },
+              behavior: HitTestBehavior.translucent,
+              // Include the padding area in the tap area
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                // Add padding around the text
+                child: Text(
+                  'Жалоба',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFF6C85C5),
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      height: 0.12,
+                      letterSpacing: -0.50,
+                      decoration: TextDecoration.none),
                 ),
               ),
-              const Align(
-            alignment: FractionalOffset(0.5, 0.56),
-            child: Text(
-              'Надо, чтобы было хорошо',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: AppColors.blackTextColor,
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
-                  height: 0.09,
-                  letterSpacing: -0.50,
-                  decoration: TextDecoration.none),
             ),
           ),
+          Align(
+            alignment: const FractionalOffset(0.5, 0.615),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                order.description,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.blackTextColor,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  height: 1.5,
+                  letterSpacing: -0.50,
+                  decoration: TextDecoration.none,
+                ),
+                maxLines: 7,
+              ),
+            ),
+          ),
+
           LayoutBuilder(
             builder: (context, constraints) {
               return Container(
@@ -562,7 +583,7 @@ class ViewOrderWidget extends StatelessWidget {
             },
           ),
           Align(
-            alignment: const FractionalOffset(0.5, 0.83),
+            alignment: const FractionalOffset(0.5, 0.865),
             child: LayoutBuilder(builder: (context, constraints) {
               return SizedBox(
                 child: Stack(
@@ -582,11 +603,11 @@ class ViewOrderWidget extends StatelessWidget {
                     Positioned(
                       left: constraints.maxWidth * 0.1,
                       top: constraints.maxHeight * 0.075,
-                      child: const SizedBox(
+                      child: SizedBox(
                         child: Text(
-                          'Вася Васютин',
+                          order.orderer.username,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xFF1B53C1),
                               fontSize: 18,
                               fontFamily: 'Montserrat',
@@ -616,8 +637,8 @@ class ViewOrderWidget extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                       left: constraints.maxWidth * 0.65,
-                       top: constraints.maxHeight * 0.0675,
+                      left: constraints.maxWidth * 0.65,
+                      top: constraints.maxHeight * 0.0675,
                       width: 40,
                       height: 40,
                       child: SizedBox(
@@ -629,7 +650,7 @@ class ViewOrderWidget extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                          const AllOrders()),
+                                              const AllOrders()),
                                     );
                                   },
                                   splashColor: Colors.transparent,
@@ -638,18 +659,20 @@ class ViewOrderWidget extends StatelessWidget {
                                       scale: 0.8,
                                       alignment: Alignment.center,
                                       child:
-                                      Image.asset('assets/images/mark.png'),
+                                          Image.asset('assets/images/mark.png'),
                                     )
                                   ])))),
                     ),
                     Positioned(
-                      left: constraints.maxWidth * 0.6,
+                      right: constraints.maxWidth * 0.24,
                       top: constraints.maxHeight * 0.102,
-                      child: const SizedBox(
+                      child: SizedBox(
                         child: Text(
-                          '5',
+                          order.orderer.rating != null
+                              ? order.orderer.rating.toString()
+                              : '— ',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.blackTextColor,
                               fontSize: 28,
                               fontFamily: 'Montserrat',
@@ -681,8 +704,7 @@ class ViewOrderWidget extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AllOrders()),
+                                  builder: (context) => const AllOrders()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -711,7 +733,7 @@ class _ResponseButtonState extends State<ResponseButton> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Align(
-        alignment: const FractionalOffset(0.5, 0.65),
+        alignment: const FractionalOffset(0.5, 0.725),
         child: ElevatedButton(
           onPressed: () {
             setState(() {
@@ -725,20 +747,20 @@ class _ResponseButtonState extends State<ResponseButton> {
                 constraints.maxHeight * 0.05,
               ),
             ),
-            backgroundColor: MaterialStateProperty.all(
-                _isResponded ? AppColors.backgroundColor : AppColors.primaryColor
-            ),
-            side: MaterialStateProperty.all(
-                const BorderSide(
-                  color: AppColors.primaryColor,
-                  width: 3,
-                )
-            ),
+            backgroundColor: MaterialStateProperty.all(_isResponded
+                ? AppColors.backgroundColor
+                : AppColors.primaryColor),
+            side: MaterialStateProperty.all(const BorderSide(
+              color: AppColors.primaryColor,
+              width: 3,
+            )),
           ),
           child: Text(
             _isResponded ? 'Вы откликнулись' : 'Откликнуться',
             style: TextStyle(
-              color: _isResponded ? AppColors.primaryColor : AppColors.backgroundColor,
+              color: _isResponded
+                  ? AppColors.primaryColor
+                  : AppColors.backgroundColor,
             ),
           ),
         ),
