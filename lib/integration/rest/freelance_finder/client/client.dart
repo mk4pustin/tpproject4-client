@@ -26,14 +26,17 @@ class FreelanceFinderService {
 
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
+      final user = RegistrationResponseDTO.fromJson(responseData);
       final token = response.headers['authorization'];
 
       if (token != null) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
+        await prefs.setInt('id', user.id);
+        await prefs.setString('role', user.role.name);
       }
 
-      return RegistrationResponseDTO.fromJson(responseData);
+      return user;
     } else {
       throw Exception('Failed to register user');
     }

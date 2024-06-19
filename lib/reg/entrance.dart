@@ -4,9 +4,15 @@ import 'package:client/orders/all_orders.dart';
 import 'package:client/reg/forgot_password.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/AppColors.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
+import '../models/user_role.dart';
+import '../providers/token_provider.dart';
+import '../providers/user_id_provider.dart';
+import '../providers/user_role_provider.dart';
 
 class EntranceWidget extends StatefulWidget {
   const EntranceWidget({super.key});
@@ -355,6 +361,7 @@ class _EntranceWidgetState extends State<EntranceWidget> {
 
                       FreelanceFinderService.instance
                           .loginUser(user);
+                      updateProvidersInfo(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -409,5 +416,19 @@ class _EntranceWidgetState extends State<EntranceWidget> {
                         )))),
           ),
         ]));
+  }
+
+  void updateProvidersInfo(BuildContext context) {
+    final userRoleProvider = Provider.of<UserRoleProvider>(context);
+    final userIdProvider = Provider.of<UserIdProvider>(context);
+    final tokenProvider = Provider.of<TokenProvider>(context);
+    final sr = SharedPreferences.getInstance();
+
+    sr.then((value) => {
+      userRoleProvider
+          .setUserRole(getUserRoleFromString(value.getString('role'))),
+      userIdProvider.setUserId(value.getInt('id')),
+      tokenProvider.setToken(value.getString('token'))
+    });
   }
 }

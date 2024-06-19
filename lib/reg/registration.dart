@@ -6,6 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/user_role.dart';
+import '../providers/token_provider.dart';
+import '../providers/user_id_provider.dart';
+import '../providers/user_role_provider.dart';
 import 'entrance.dart';
 
 class RegistrationWidget extends StatefulWidget {
@@ -602,6 +607,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
                       FreelanceFinderService.instance
                           .registerUser(user);
+                      updateProvidersInfo(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -678,6 +684,20 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                         )))),
           ),
         ]));
+  }
+
+  void updateProvidersInfo(BuildContext context) {
+    final userRoleProvider = Provider.of<UserRoleProvider>(context);
+    final userIdProvider = Provider.of<UserIdProvider>(context);
+    final tokenProvider = Provider.of<TokenProvider>(context);
+    final sr = SharedPreferences.getInstance();
+
+    sr.then((value) => {
+      userRoleProvider
+          .setUserRole(getUserRoleFromString(value.getString('role'))),
+      userIdProvider.setUserId(value.getInt('id')),
+      tokenProvider.setToken(value.getString('token'))
+    });
   }
 
   @override

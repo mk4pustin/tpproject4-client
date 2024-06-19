@@ -8,26 +8,24 @@ import 'package:client/reg/entrance.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../integration/rest/freelance_finder/client/client.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
 import '../models/user_role.dart';
+import '../providers/user_role_provider.dart';
 
 class AllOrders extends StatelessWidget {
   const AllOrders({super.key});
 
   @override
   Widget build(BuildContext context) {
-    UserRole? userRole;
-    final sr = SharedPreferences.getInstance();
-    sr.then(
-        (value) => userRole = getUserRoleFromString(value.getString('role')));
-    userRole ??= UserRole.Guest;
+    final userRole = Provider.of<UserRoleProvider>(context).userRole;
 
     List<Order>? orders;
-    // FreelanceFinderService.instance.fetchAllOrders().then((value) =>
-    // orders = value);
+    // FreelanceFinderService.instance.fetchAllOrders().then((value) => {
+    //   orders = value
+    // });
+    // print(orders);
 
     return Container(
         width: MediaQuery.of(context).size.width,
