@@ -788,7 +788,7 @@ class MyProfileWidget extends StatelessWidget {
                           ])))),
             ),
           ),
-          false ? Align(
+          true ? Align(
             alignment: const FractionalOffset(0.9, 0.065),
             child: SizedBox(
                 child: Material(

@@ -684,7 +684,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   void initState() {
     super.initState();
     AppMetrica.activate(
-        AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
+        const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
   }
 
   bool isValidEmail(String email) {
@@ -701,7 +701,7 @@ class CustomSwitch extends StatefulWidget {
   final Color borderColor;
   final double borderWidth;
 
-  const CustomSwitch({
+  const CustomSwitch({super.key,
     required this.value,
     required this.onChanged,
     this.activeColor = CupertinoColors.activeGreen,
@@ -740,26 +740,26 @@ class _CustomSwitchState extends State<CustomSwitch> {
         width: 44,
         height: 24,
         decoration: BoxDecoration(
-          color: widget.inactiveColor, // Цвет фона всегда зеленый
+          color: widget.inactiveColor,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: widget.borderColor, // Обводка
+            color: widget.borderColor,
             width: widget.borderWidth,
           ),
         ),
         child: Stack(
           children: [
             AnimatedAlign(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeInOut,
               alignment: Alignment(2 * _position - 1, 0),
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInOut,
                 width: widget.thumbSize,
                 height: widget.thumbSize,
                 decoration: const BoxDecoration(
-                  color: Colors.white, // Шарик всегда белый
+                  color: Colors.white,
                   shape: BoxShape.circle,
                 ),
               ),
