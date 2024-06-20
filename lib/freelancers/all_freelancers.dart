@@ -286,28 +286,28 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                                 ),
                                               ),
                                             ),
-                                            Positioned(
-                                              left: freelancers[index].skills!.length >= 3
-                                                  ? constraints.maxWidth * 0.7
-                                                  : constraints.maxWidth * 0.8,
-                                              top: constraints.maxHeight * 0.78,
-                                              child: SizedBox(
-                                                child: Text(
-                                                  freelancers[index].skills != null && freelancers[index].skills!.isNotEmpty
-                                                      ? freelancers[index].skills![0]
-                                                      : '—',
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                      color: AppColors.blackTextColor,
-                                                      fontSize: 22,
-                                                      fontFamily: 'Montserrat',
-                                                      fontWeight: FontWeight.w400,
-                                                      height: 0.04,
-                                                      letterSpacing: -0.50,
-                                                      decoration: TextDecoration.none),
-                                                ),
-                                              ),
-                                            ),
+                                            // Positioned(
+                                            //   left: freelancers[index].skills!.length >= 3
+                                            //       ? constraints.maxWidth * 0.7
+                                            //       : constraints.maxWidth * 0.8,
+                                            //   top: constraints.maxHeight * 0.78,
+                                            //   child: SizedBox(
+                                            //     child: Text(
+                                            //       freelancers[index].skills != null && freelancers[index].skills!.isNotEmpty
+                                            //           ? freelancers[index].skills![0]
+                                            //           : '—',
+                                            //       textAlign: TextAlign.center,
+                                            //       style: const TextStyle(
+                                            //           color: AppColors.blackTextColor,
+                                            //           fontSize: 22,
+                                            //           fontFamily: 'Montserrat',
+                                            //           fontWeight: FontWeight.w400,
+                                            //           height: 0.04,
+                                            //           letterSpacing: -0.50,
+                                            //           decoration: TextDecoration.none),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                             Positioned(
                                               left: constraints.maxWidth * 0.35,
                                               top: constraints.maxHeight * 0.65,
