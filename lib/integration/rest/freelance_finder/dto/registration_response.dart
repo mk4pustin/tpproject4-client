@@ -52,7 +52,7 @@ class RegistrationResponseDTO {
   final bool isAccountNonExpired;
   final bool isAccountNonLocked;
   final bool isCredentialsNonExpired;
-  final List<Order>? orders;
+  List<Order>? orders;
   final int? price;
   final int ordersCount;
 

@@ -23,7 +23,7 @@ class FreelanceFinderService {
   static const createFreelancerRequestEndpoint = "api/freelancer/requestOrder/{orderId}";
   static const createOrderEndpoint = "api/customer/createOrder";
   static const getUserByIdEndpoint = "api/all/freelancers/{id}";
-  static const getUserOrders = "";
+  static const getUserOrders = "api/all/users/{id}/orders";
 
   Future<RegistrationResponseDTO> registerUser(RegistrationRequestDTO request) async {
     final response = await http.post(
@@ -178,9 +178,18 @@ class FreelanceFinderService {
     String url = serverPath + getUserByIdEndpoint.replaceAll('{id}', id.toString());
     final response = await http.get(Uri.parse(url));
 
+    String ordersUrl = serverPath + getUserOrders.replaceAll('{id}', id.toString());
+    final ordersResponse = await http.get(Uri.parse(ordersUrl));
+
     if (response.statusCode == 200) {
       final responseData = jsonDecode(utf8.decode(response.bodyBytes));
-      return RegistrationResponseDTO.fromJson(responseData);
+      final user = RegistrationResponseDTO.fromJson(responseData);
+
+      List<dynamic> jsonData = json.decode(utf8.decode(ordersResponse.bodyBytes));
+      final orders = jsonData.map((orderJson) => Order.fromJson(orderJson)).toList();
+
+      user.orders = orders;
+      return user;
     } else {
       throw Exception('Failed to load user: ${response.body}');
     }
