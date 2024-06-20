@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import '../constants/AppColors.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
 import '../integration/rest/freelance_finder/dto/freelancer.dart';
+import '../integration/rest/freelance_finder/dto/registration_response.dart';
 import '../models/user_role.dart';
 import '../profiles/my_profile.dart';
 import '../providers/user_role_provider.dart';
-import '../reg/entrance.dart';
 import '../reg/registration.dart';
 
 class AllFreelancersWidget extends StatefulWidget {
@@ -22,7 +22,7 @@ class AllFreelancersWidget extends StatefulWidget {
 }
 
 class _AllFreelancersState extends State<AllFreelancersWidget> {
-  late Future<List<Freelancer>?> _freelancersFuture;
+  late Future<List<RegistrationResponseDTO>?> _freelancersFuture;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
     _freelancersFuture = _fetchFreelancers();
   }
 
-  Future<List<Freelancer>?> _fetchFreelancers() async {
+  Future<List<RegistrationResponseDTO>?> _fetchFreelancers() async {
     try {
       final freelancers = await FreelanceFinderService.instance.fetchAllFreelancers();
       return freelancers;
@@ -229,7 +229,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               right: constraints.maxWidth * 0.1,
                                               top: constraints.maxHeight * 0.475,
                                               child: Text(
-                                                freelancers[index].rating as String,
+                                                freelancers[index].rating != null ? freelancers[index].rating.toString() : '—',
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                     color: AppColors.blackTextColor,
@@ -243,13 +243,13 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                             ),
                                             Positioned(
                                               top: constraints.maxHeight * 0.78,
-                                              right: freelancers[index].skills.isNotEmpty
+                                              right: freelancers[index].skills != null
                                                   ? constraints.maxWidth * 0.75
                                                   : constraints.maxWidth * 0.8,
                                               child: SizedBox(
                                                 child: Text(
-                                                  freelancers[index].skills.isNotEmpty
-                                                      ? freelancers[index].skills[0]
+                                                  freelancers[index].skills != null && freelancers[index].skills!.isNotEmpty
+                                                      ? freelancers[index].skills![0]
                                                       : '—',
                                                   style: const TextStyle(
                                                     color: AppColors.blackTextColor,
@@ -270,8 +270,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               child: Center(
                                                 child: SizedBox(
                                                   child: Text(
-                                                    freelancers[index].skills.length >= 2
-                                                        ? freelancers[index].skills[1]
+                                                    freelancers[index].skills != null && freelancers[index].skills!.isNotEmpty
+                                                        ? freelancers[index].skills![0]
                                                         : '—',
                                                     style: const TextStyle(
                                                       color: AppColors.blackTextColor,
@@ -287,14 +287,14 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               ),
                                             ),
                                             Positioned(
-                                              left: freelancers[index].skills.length >= 3
+                                              left: freelancers[index].skills!.length >= 3
                                                   ? constraints.maxWidth * 0.7
                                                   : constraints.maxWidth * 0.8,
                                               top: constraints.maxHeight * 0.78,
                                               child: SizedBox(
                                                 child: Text(
-                                                  freelancers[index].skills.length >= 3
-                                                      ? freelancers[index].skills[2]
+                                                  freelancers[index].skills != null && freelancers[index].skills!.isNotEmpty
+                                                      ? freelancers[index].skills![0]
                                                       : '—',
                                                   textAlign: TextAlign.center,
                                                   style: const TextStyle(
