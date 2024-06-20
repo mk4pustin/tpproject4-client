@@ -9,6 +9,7 @@ import '../integration/rest/freelance_finder/dto/registration_response.dart';
 import '../models/user_role.dart';
 import '../orders/all_orders.dart';
 import '../profiles/my_profile.dart';
+import '../providers/user_id_provider.dart';
 import '../providers/user_role_provider.dart';
 import '../reg/registration.dart';
 
@@ -42,6 +43,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
   @override
   Widget build(BuildContext context) {
     final userRole = Provider.of<UserRoleProvider>(context).userRole;
+    final userId = Provider.of<UserIdProvider>(context).userId;
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -587,7 +589,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                   builder: (context) =>
                                   userRole == UserRole.Guest
                                       ? const RegistrationWidget()
-                                      : const MyProfileWidget()),
+                                      : MyProfileWidget(userId ,null, null)),
                             );
                           },
                           splashColor: Colors.transparent,

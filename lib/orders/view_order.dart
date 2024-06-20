@@ -1,4 +1,5 @@
 import 'package:client/orders/all_orders.dart';
+import 'package:client/profiles/my_profile.dart';
 import 'package:client/providers/token_provider.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
 import '../models/user_role.dart';
+import '../providers/user_id_provider.dart';
 import '../providers/user_role_provider.dart';
 
 class ViewOrderWidget extends StatelessWidget {
@@ -103,6 +105,7 @@ class ViewOrderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userId = Provider.of<UserIdProvider>(context).userId;
     final userRole = Provider.of<UserRoleProvider>(context).userRole;
 
     return Container(
@@ -526,32 +529,34 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          userRole != UserRole.Guest ? Align(
-            alignment: const FractionalOffset(0.9, 0.5),
-            child: GestureDetector(
-              onTap: () {
-                _showComplaintDialog(context);
-              },
-              behavior: HitTestBehavior.translucent,
-              // Include the padding area in the tap area
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                // Add padding around the text
-                child: Text(
-                  'Жалоба',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color(0xFF6C85C5),
-                      fontSize: 14,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                      height: 0.12,
-                      letterSpacing: -0.50,
-                      decoration: TextDecoration.none),
-                ),
-              ),
-            ),
-          ) : const SizedBox.shrink(),
+          userRole != UserRole.Guest
+              ? Align(
+                  alignment: const FractionalOffset(0.9, 0.5),
+                  child: GestureDetector(
+                    onTap: () {
+                      _showComplaintDialog(context);
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    // Include the padding area in the tap area
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      // Add padding around the text
+                      child: Text(
+                        'Жалоба',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Color(0xFF6C85C5),
+                            fontSize: 14,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            height: 0.12,
+                            letterSpacing: -0.50,
+                            decoration: TextDecoration.none),
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
           Align(
             alignment: const FractionalOffset(0.5, 0.615),
             child: Container(
@@ -572,7 +577,6 @@ class ViewOrderWidget extends StatelessWidget {
               ),
             ),
           ),
-
           LayoutBuilder(
             builder: (context, constraints) {
               return Container(
@@ -595,6 +599,14 @@ class ViewOrderWidget extends StatelessWidget {
                 : const FractionalOffset(0.5, 0.8),
             child: LayoutBuilder(builder: (context, constraints) {
               return SizedBox(
+                  child: Material(
+                      child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyProfileWidget(userId, null, null)),
+                  );
+                },
                 child: Stack(
                   children: [
                     Container(
@@ -611,7 +623,7 @@ class ViewOrderWidget extends StatelessWidget {
                     ),
                     Positioned(
                       left: constraints.maxWidth * 0.1,
-                      top: constraints.maxHeight * 0.075,
+                      top: constraints.maxHeight * 0.065,
                       child: SizedBox(
                         child: Text(
                           order.orderer.username,
@@ -629,7 +641,7 @@ class ViewOrderWidget extends StatelessWidget {
                     ),
                     Positioned(
                       left: constraints.maxWidth * 0.5,
-                      top: constraints.maxHeight * 0.05,
+                      top: constraints.maxHeight * 0.0425,
                       child: const SizedBox(
                         child: Text(
                           'Средняя оценка',
@@ -654,14 +666,6 @@ class ViewOrderWidget extends StatelessWidget {
                           child: Material(
                               color: AppColors.backgroundColor,
                               child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AllOrders()),
-                                    );
-                                  },
                                   splashColor: Colors.transparent,
                                   child: Stack(children: [
                                     Transform.scale(
@@ -674,7 +678,7 @@ class ViewOrderWidget extends StatelessWidget {
                     ),
                     Positioned(
                       right: constraints.maxWidth * 0.24,
-                      top: constraints.maxHeight * 0.102,
+                      top: constraints.maxHeight * 0.092,
                       child: SizedBox(
                         child: Text(
                           order.orderer.rating != null
@@ -694,12 +698,14 @@ class ViewOrderWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-              );
+              )));
             }),
           ),
-          userRole == UserRole.Freelancer ? LayoutBuilder(builder: (context, constraints) {
-            return ResponseButton(orderId: order.id);
-          }) : const SizedBox.shrink(),
+          userRole == UserRole.Freelancer
+              ? LayoutBuilder(builder: (context, constraints) {
+                  return ResponseButton(orderId: order.id);
+                })
+              : const SizedBox.shrink(),
           Align(
             alignment: const FractionalOffset(0.05, 0.055),
             child: SizedBox(
@@ -750,17 +756,21 @@ class _ResponseButtonState extends State<ResponseButton> {
       return Align(
         alignment: const FractionalOffset(0.5, 0.725),
         child: ElevatedButton(
-          onPressed: _isResponded ? null : () async {
-            setState(() {
-              _isResponded = true;
-            });
-            try {
-              await FreelanceFinderService.instance.sendRequestToCreateFreelancerRequest(widget.orderId.toString(), token!);
-            } catch (e) {
-              print("123");
-              _isResponsedBefore = true;
-            }
-          },
+          onPressed: _isResponded
+              ? null
+              : () async {
+                  setState(() {
+                    _isResponded = true;
+                  });
+                  try {
+                    await FreelanceFinderService.instance
+                        .sendRequestToCreateFreelancerRequest(
+                            widget.orderId.toString(), token!);
+                  } catch (e) {
+                    print("123");
+                    _isResponsedBefore = true;
+                  }
+                },
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all(
               Size(
@@ -777,7 +787,11 @@ class _ResponseButtonState extends State<ResponseButton> {
             )),
           ),
           child: Text(
-            _isResponsedBefore ? 'Вы уже откликались' : _isResponded ? 'Вы откликнулись' : 'Откликнуться',
+            _isResponsedBefore
+                ? 'Вы уже откликались'
+                : _isResponded
+                    ? 'Вы откликнулись'
+                    : 'Откликнуться',
             style: TextStyle(
               color: _isResponded
                   ? AppColors.primaryColor
@@ -789,4 +803,3 @@ class _ResponseButtonState extends State<ResponseButton> {
     });
   }
 }
-

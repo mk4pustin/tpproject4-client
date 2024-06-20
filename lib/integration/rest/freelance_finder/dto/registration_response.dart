@@ -1,3 +1,7 @@
+import 'package:intl/intl.dart';
+
+import 'order.dart';
+
 class Role {
   final int id;
   final String name;
@@ -15,21 +19,6 @@ class Role {
       name: json['name'],
       authority: json['authority'],
     );
-  }
-}
-
-class Skill {
-  final String skill;
-
-  Skill({required this.skill});
-
-  factory Skill.fromJson(Map<String, dynamic> json) {
-    return Skill(skill: json['name']);
-  }
-
-  static List<String> parseSkills(String skillsString) {
-    List<String> skillsList = skillsString.split(',').map((skill) => skill.trim()).toList();
-    return skillsList;
   }
 }
 
@@ -55,14 +44,17 @@ class RegistrationResponseDTO {
   final List<Scope>? scopes;
   final String? aboutMe;
   final String? contact;
-  final DateTime registrationDate;
+  final String registrationDate;
   final DateTime lastOnline;
   final int? rating;
-  final String? skills;
+  final List<String> skills;
   final bool isEnabled;
   final bool isAccountNonExpired;
   final bool isAccountNonLocked;
   final bool isCredentialsNonExpired;
+  final List<Order>? orders;
+  final int? price;
+  final int ordersCount;
 
   RegistrationResponseDTO({
     required this.id,
@@ -75,15 +67,25 @@ class RegistrationResponseDTO {
     required this.registrationDate,
     required this.lastOnline,
     this.rating,
-    this.skills,
+    required this.skills,
     required this.isEnabled,
     required this.isAccountNonExpired,
     required this.isAccountNonLocked,
     required this.isCredentialsNonExpired,
+    this.orders,
+    this.price,
+    required this.ordersCount
   });
 
   factory RegistrationResponseDTO.fromJson(Map<String, dynamic> json) {
-    var skillsList = json['scopes'] as List;
+    final DateTime parsedCreationDate = DateTime.parse(json['registrationDate']);
+    final String formattedCreationDate = DateFormat('dd.MM.yyyy').format(parsedCreationDate);
+
+    List<String> skillsList = json['skills'] == null ? List.empty() : (json['skills'] as String)
+        .split(',')
+        .toList();
+    skillsList.sort((a, b) => a.length.compareTo(b.length));
+
     return RegistrationResponseDTO(
       id: json['id'],
       role: Role.fromJson(json['role']),
@@ -95,14 +97,16 @@ class RegistrationResponseDTO {
           : null,
       aboutMe: json['aboutMe'],
       contact: json['contact'],
-      registrationDate: DateTime.parse(json['registrationDate']),
+      registrationDate: formattedCreationDate,
       lastOnline: DateTime.parse(json['lastOnline']),
       rating: json['rating'],
-      skills: json['skills'],
+      skills: skillsList,
       isEnabled: json['isEnabled'],
       isAccountNonExpired: json['isAccountNonExpired'],
       isAccountNonLocked: json['isAccountNonLocked'],
       isCredentialsNonExpired: json['isCredentialsNonExpired'],
+      price: json['price'],
+      ordersCount: json['ordersCount']
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../dto/create_order_request.dart';
-import '../dto/freelancer.dart';
 import '../dto/login_request.dart';
 import '../dto/registration_request.dart';
 import '../dto/registration_response.dart';
@@ -21,6 +20,8 @@ class FreelanceFinderService {
   static const allFreelancersEndpoint = "api/all/freelancers";
   static const createFreelancerRequestEndpoint = "api/freelancer/requestOrder/{orderId}";
   static const createOrderEndpoint = "api/customer/createOrder";
+  static const getUserByIdEndpoint = "api/all/freelancers/{id}";
+  static const getUserOrders = "";
 
   Future<RegistrationResponseDTO> registerUser(RegistrationRequestDTO request) async {
     final response = await http.post(
@@ -139,6 +140,18 @@ class FreelanceFinderService {
       print("Failed to create order: ${response.statusCode}");
       print("Response body: ${response.body}");
       throw Exception("Failed to create order");
+    }
+  }
+
+  Future<RegistrationResponseDTO> getUserById(int id) async {
+    String url = serverPath + getUserByIdEndpoint.replaceAll('{id}', id.toString());
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+      return RegistrationResponseDTO.fromJson(responseData);
+    } else {
+      throw Exception('Failed to load user: ${response.body}');
     }
   }
 }

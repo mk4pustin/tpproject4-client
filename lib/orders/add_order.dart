@@ -1,5 +1,4 @@
 import 'package:client/integration/rest/freelance_finder/dto/create_order_request.dart';
-import 'package:client/integration/rest/freelance_finder/dto/order.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/my_profile.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
 import '../providers/token_provider.dart';
+import '../providers/user_id_provider.dart';
 
 class AddOrderWidget extends StatefulWidget {
   const AddOrderWidget({super.key});
@@ -37,6 +37,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = Provider.of<UserIdProvider>(context).userId;
     final token = Provider.of<TokenProvider>(context).token;
 
     return Container(
@@ -157,7 +158,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const MyProfileWidget()),
+                                      MyProfileWidget(userId, null, true)),
                             );
                           },
                           splashColor: Colors.transparent,
