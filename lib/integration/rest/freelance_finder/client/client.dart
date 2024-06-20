@@ -3,6 +3,7 @@ import 'package:client/integration/rest/freelance_finder/dto/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../dto/create_order_request.dart';
 import '../dto/freelancer.dart';
 import '../dto/login_request.dart';
 import '../dto/registration_request.dart';
@@ -19,6 +20,7 @@ class FreelanceFinderService {
   static const allOrdersEndpoint = "api/all/orders";
   static const allFreelancersEndpoint = "api/all/freelancers";
   static const createFreelancerRequestEndpoint = "api/freelancer/requestOrder/{orderId}";
+  static const createOrderEndpoint = "api/customer/createOrder";
 
   Future<RegistrationResponseDTO> registerUser(RegistrationRequestDTO request) async {
     final response = await http.post(
@@ -112,6 +114,31 @@ class FreelanceFinderService {
     } catch (e) {
       print('Exception during request: $e');
       throw Exception();
+    }
+  }
+
+  Future<void> createOrder(
+      CreateOrderRequest orderRequest,
+      String authToken,
+      ) async {
+    final Uri url = Uri.parse(serverPath + createOrderEndpoint);
+
+    final http.Response response = await http.post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $authToken",
+      },
+      body: jsonEncode(orderRequest.toJson()),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      print("Order created successfully");
+    } else {
+      print("Failed to create order: ${response.statusCode}");
+      print("Response body: ${response.body}");
+      throw Exception("Failed to create order");
     }
   }
 }

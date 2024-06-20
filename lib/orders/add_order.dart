@@ -1,9 +1,14 @@
+import 'package:client/integration/rest/freelance_finder/dto/create_order_request.dart';
+import 'package:client/integration/rest/freelance_finder/dto/order.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/my_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
+import '../integration/rest/freelance_finder/client/client.dart';
+import '../providers/token_provider.dart';
 
 class AddOrderWidget extends StatefulWidget {
   const AddOrderWidget({super.key});
@@ -32,6 +37,8 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final token = Provider.of<TokenProvider>(context).token;
+
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -765,7 +772,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
             return Align(
                 alignment: const FractionalOffset(0.5, 0.87),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       _titleTextFieldError =
                           _titleTextFieldController.text.trim().isEmpty
@@ -789,34 +796,38 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                     });
 
                     if (_titleTextFieldError != null ||
-                        dropdownValue != null ||
+                        dropdownValue == null ||
                         _descTextFieldError != null ||
                         _skillsRepeatTextFieldError != null ||
                         _priceTextFieldError != null) {
                       return;
                     }
 
-                    // try {
-                    //   final user = RegistrationRequestDTO(
-                    //       username: _loginTextFieldController.text,
-                    //       password: _passwordTextFieldController.text,
-                    //       email: _emailTextFieldController.text,
-                    //       role: isFreelancer ? "Freelancer" : "Customer");
-                    //
-                    //   print('Role to be sent: ${user.role}');
-                    //
-                    //   await FreelanceFinderService.instance.registerUser(user);
-                    //   updateProvidersInfo(
-                    //       userRoleProvider, userIdProvider, tokenProvider);
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const AllOrders()),
-                    //   );
-                    // } catch (e) {
-                    //   _emailTextFieldError =
-                    //   "На данную почту уже зарегистрирован аккаунт";
-                    // }
+                    final Map<String, String> valueMapping = {
+                      'Разработка': 'Сайты под ключ',
+                      'Тестирование': 'Сайты',
+                      'Администрирование': 'Серверы',
+                      'Маркетинг': 'SMM'
+                    };
+
+                    try {
+                      final order = CreateOrderRequest(
+                          title: _titleTextFieldController.text,
+                          description: _descTextFieldController.text,
+                          skills: _skillsTextFieldController.text,
+                          scopes: [valueMapping[dropdownValue]!],
+                          price: double.parse(_priceTextFieldController.text));
+                      print(order);
+
+                      await FreelanceFinderService.instance.createOrder(order, token!);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AllOrders()),
+                      );
+                    } catch (e) {
+                      print(111);
+                    }
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(Size(
