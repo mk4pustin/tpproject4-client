@@ -515,7 +515,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
               value: isFreelancer,
               onChanged: (value) {
                 setState(() {
-                  isFreelancer = value;
+                  isFreelancer = !isFreelancer;
                 });
               },
               activeColor: CupertinoColors.activeGreen,

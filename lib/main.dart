@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
     });
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'FreelanceFinder',
       home: SafeArea(
         child: Scaffold(

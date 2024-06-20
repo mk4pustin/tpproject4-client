@@ -668,17 +668,28 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                           alignment: userRole == UserRole.Freelancer
                               ? const FractionalOffset(0.9, 0.55)
                               : const FractionalOffset(0.9, 0.55),
-                          child: const Text(
-                            'Отклики',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xFF6C85C5),
-                                fontSize: 14,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                height: 0.12,
-                                letterSpacing: -0.50,
-                                decoration: TextDecoration.none),
+                          child: GestureDetector(
+                            onTap: () {
+
+                            },
+                            behavior: HitTestBehavior.translucent,
+                            // Include the padding area in the tap area
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              // Add padding around the text
+                              child: Text(
+                                'Жалоба',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color(0xFF6C85C5),
+                                    fontSize: 14,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0.12,
+                                    letterSpacing: -0.50,
+                                    decoration: TextDecoration.none),
+                              ),
+                            ),
                           ),
                         ) : const SizedBox.shrink(),
                         activeOrder != null
@@ -1093,9 +1104,10 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     ));
                               })
                             : const SizedBox.shrink(),
-                        canLeaveFeedback(activeOrder, userRole, currentUserRole,
-                                widget.currentUserId)
-                            ? LayoutBuilder(builder: (context, constraints) {
+                        // canLeaveFeedback(activeOrder, userRole, currentUserRole,
+                        //         widget.currentUserId)
+                        //     ?
+    false?     LayoutBuilder(builder: (context, constraints) {
                                 return Align(
                                     alignment:
                                         const FractionalOffset(0.5, 0.87),
