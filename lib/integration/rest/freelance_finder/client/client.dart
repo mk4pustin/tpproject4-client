@@ -7,6 +7,7 @@ import '../dto/create_order_request.dart';
 import '../dto/login_request.dart';
 import '../dto/registration_request.dart';
 import '../dto/registration_response.dart';
+import '../dto/update_request.dart';
 
 class FreelanceFinderService {
   FreelanceFinderService._privateConstructor();
@@ -15,6 +16,7 @@ class FreelanceFinderService {
 
   static const serverPath = "http://85.92.111.152:8080/";
   static const registrationEndpoint = "api/auth/registration";
+  static const updateEndpoint = "api/user/updateProfile";
   static const loginEndpoint = "api/auth/authentication";
   static const allOrdersEndpoint = "api/all/orders";
   static const allFreelancersEndpoint = "api/all/freelancers";
@@ -45,6 +47,35 @@ class FreelanceFinderService {
       return user;
     } else {
       throw Exception('Failed to register user');
+    }
+  }
+
+  Future<RegistrationResponseDTO> updateUser(UpdateRequestDTO request ,
+      String authToken,) async {
+    final response = await http.post(
+      Uri.parse(serverPath + updateEndpoint),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $authToken",
+      },
+      body: json.encode(request.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+      final user = RegistrationResponseDTO.fromJson(responseData);
+      final token = response.headers['authorization'];
+
+      if (token != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+        await prefs.setInt('id', user.id);
+        await prefs.setString('role', user.role.name);
+      }
+
+      return user;
+    } else {
+      throw Exception('Failed to update user');
     }
   }
 
