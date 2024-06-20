@@ -5,9 +5,9 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:provider/provider.dart';
 import '../constants/AppColors.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
-import '../integration/rest/freelance_finder/dto/freelancer.dart';
 import '../integration/rest/freelance_finder/dto/registration_response.dart';
 import '../models/user_role.dart';
+import '../orders/all_orders.dart';
 import '../profiles/my_profile.dart';
 import '../providers/user_role_provider.dart';
 import '../reg/registration.dart';
@@ -107,34 +107,6 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                       decoration: TextDecoration.none),
                 ),
               )),
-          Align(
-            alignment: const FractionalOffset(0.92, 0.07),
-            child: SizedBox(
-              child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: Material(
-                      color: AppColors.backgroundColor,
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                  const FreelancerFiltersWidget()),
-                            );
-                          },
-                          splashColor: Colors.transparent,
-                          child: Stack(children: [
-                            Transform.scale(
-                              scale: 0.8,
-                              alignment: Alignment.center,
-                              child: Image.asset(
-                                  'assets/images/order_settings.png'),
-                            )
-                          ])))),
-            ),
-          ),
           FutureBuilder(
               future: _freelancersFuture,
               builder: (context, snapshot) {
@@ -149,13 +121,13 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                   return ListView.builder(
                       itemCount: freelancers.length,
                       padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.2),
+                          top: MediaQuery.of(context).size.height * 0.15),
                       itemBuilder: (context, index) {
                         return Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20.0, horizontal: 20.0),
                             child: AspectRatio(
-                                aspectRatio: 2 / 1,
+                                aspectRatio: 4 / 3,
                                 child: LayoutBuilder(
                                     builder: (context, constraints) {
                                       return SizedBox(
@@ -174,8 +146,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               ),
                                             ),
                                             Positioned(
-                                              left: constraints.maxWidth * 0.1,
-                                              top: constraints.maxHeight * 0.22,
+                                              left: constraints.maxWidth * 0.05,
+                                              top: constraints.maxHeight * 0.15,
                                               child: Text(
                                                 freelancers[index].username,
                                                 textAlign: TextAlign.center,
@@ -190,11 +162,11 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               ),
                                             ),
                                             Positioned(
-                                              right: constraints.maxWidth * 0.1,
-                                              top: constraints.maxHeight * 0.25,
+                                              right: constraints.maxWidth * 0.05,
+                                              top: constraints.maxHeight * 0.15,
                                               child: SizedBox(
                                                 child: Text(
-                                                  "${freelancers[index].id} ₽",
+                                                  "${freelancers[index].id} \$/час",
                                                   textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                       color: AppColors.blackTextColor,
@@ -208,8 +180,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               ),
                                             ),
                                             Positioned(
-                                              left: constraints.maxWidth * 0.1,
-                                              top: constraints.maxHeight * 0.475,
+                                              left: constraints.maxWidth * 0.05,
+                                              top: constraints.maxHeight * 0.315,
                                               child: SizedBox(
                                                 child: Text(
                                                   "${freelancers[index].id} заказов",
@@ -226,23 +198,107 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               ),
                                             ),
                                             Positioned(
-                                              right: constraints.maxWidth * 0.1,
-                                              top: constraints.maxHeight * 0.475,
-                                              child: Text(
-                                                freelancers[index].rating != null ? freelancers[index].rating.toString() : '—',
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                    color: AppColors.blackTextColor,
-                                                    fontSize: 22,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 0.09,
-                                                    letterSpacing: -0.50,
-                                                    decoration: TextDecoration.none),
+                                              right: constraints.maxWidth * 0.05,
+                                              top: constraints.maxHeight * 0.28,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  const Text(
+                                                    'Средняя',
+                                                    style: TextStyle(
+                                                      color: AppColors.blackTextColor,
+                                                      fontSize: 22,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight: FontWeight.w400,
+                                                      height: 0.09,
+                                                      letterSpacing: -0.50,
+                                                      decoration: TextDecoration.none,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 18),
+                                                  const Text(
+                                                    'оценка',
+                                                    style: TextStyle(
+                                                      color: AppColors.blackTextColor,
+                                                      fontSize: 22,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight: FontWeight.w400,
+                                                      height: 0.09,
+                                                      letterSpacing: -0.50,
+                                                      decoration: TextDecoration.none,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Align(
+                                                        alignment: Alignment.center,
+                                                        child: Text(
+                                                          freelancers[index].rating != null
+                                                              ? freelancers[index].rating.toString()
+                                                              : '3',
+                                                          style: const TextStyle(
+                                                            color: AppColors.blackTextColor,
+                                                            fontSize: 22,
+                                                            fontFamily: 'Montserrat',
+                                                            fontWeight: FontWeight.w400,
+                                                            height: 1.4,
+                                                            letterSpacing: -0.50,
+                                                            decoration: TextDecoration.none,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 10),
+                                                      Align(
+                                                        alignment: Alignment.center,
+                                                        child: Image.asset(
+                                                          'assets/images/mark.png',
+                                                          width: 30,
+                                                          height: 30,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                             Positioned(
-                                              top: constraints.maxHeight * 0.78,
+                                              top: constraints.maxHeight * 0.55,
+                                              left: 0,
+                                              right: 0,
+                                              child: Column(
+                                                children: [
+                                                  const Text(
+                                                    'Обо мне:',
+                                                    style: TextStyle(
+                                                      color: AppColors.blackTextColor,
+                                                      fontSize: 22,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight: FontWeight.w400,
+                                                      height: 0.04,
+                                                      letterSpacing: -0.50,
+                                                      decoration: TextDecoration.none,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 25),
+                                                  Text(
+                                                    freelancers[index].aboutMe ?? '—',
+                                                    style: const TextStyle(
+                                                      color: AppColors.blackTextColor,
+                                                      fontSize: 22,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight: FontWeight.w400,
+                                                      height: 0.04,
+                                                      letterSpacing: -0.50,
+                                                      decoration: TextDecoration.none,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: constraints.maxHeight * 0.9,
                                               right: freelancers[index].skills != null
                                                   ? constraints.maxWidth * 0.75
                                                   : constraints.maxWidth * 0.8,
@@ -264,7 +320,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               ),
                                             ),
                                             Positioned(
-                                              top: constraints.maxHeight * 0.78,
+                                              top: constraints.maxHeight * 0.9,
                                               left: 0,
                                               right: 0,
                                               child: Center(
@@ -310,7 +366,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                             // ),
                                             Positioned(
                                               left: constraints.maxWidth * 0.35,
-                                              top: constraints.maxHeight * 0.65,
+                                              top: constraints.maxHeight * 0.8,
                                               child: Transform(
                                                 transform: Matrix4.identity()
                                                   ..translate(0.0, 0.0)
@@ -332,7 +388,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                             ),
                                             Positioned(
                                               left: constraints.maxWidth * 0.66,
-                                              top: constraints.maxHeight * 0.65,
+                                              top: constraints.maxHeight * 0.8,
                                               child: Transform(
                                                 transform: Matrix4.identity()
                                                   ..translate(0.0, 0.0)
@@ -368,6 +424,34 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                 }
               }),
           Align(
+            alignment: const FractionalOffset(0.92, 0.07),
+            child: SizedBox(
+              child: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Material(
+                      color: AppColors.backgroundColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const FreelancerFiltersWidget()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 0.8,
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                  'assets/images/order_settings.png'),
+                            )
+                          ])))),
+            ),
+          ),
+          Align(
             alignment: const FractionalOffset(0, 1),
             child: Container(
               height: 90,
@@ -375,6 +459,54 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                 color: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
               ),
+            ),
+          ),
+          const Align(
+            alignment: FractionalOffset(0, 1.01),
+            child: SizedBox(
+              width: 113,
+              height: 18,
+              child: Text(
+                'Заказы',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.blackTextColor,
+                  fontSize: 18,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  height: 0.08,
+                  letterSpacing: -0.50,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: const FractionalOffset(0.075, 0.97),
+            child: SizedBox(
+              child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const AllOrders()),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                  'assets/images/orders_icon.png'),
+                            )
+                          ])))),
             ),
           ),
           const Align(
@@ -406,14 +538,6 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                   child: Material(
                       color: AppColors.primaryColor,
                       child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                  const AllFreelancersWidget()),
-                            );
-                          },
                           splashColor: Colors.transparent,
                           child: Stack(children: [
                             Transform.scale(
@@ -475,45 +599,6 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                               Image.asset('assets/images/profile_icon.png'),
                             )
                           ])))),
-            ),
-          ),
-          Align(
-              alignment: const FractionalOffset(0.075, 0.97),
-              child: SizedBox(
-                child: SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: Material(
-                        color: AppColors.primaryColor,
-                        child: InkWell(
-                            splashColor: Colors.transparent,
-                            child: Stack(children: [
-                              Transform.scale(
-                                scale: 1,
-                                alignment: Alignment.center,
-                                child: Image.asset(
-                                    'assets/images/orders_icon.png'),
-                              )
-                            ])))),
-              )),
-          const Align(
-            alignment: FractionalOffset(0, 1.01),
-            child: SizedBox(
-              width: 113,
-              height: 18,
-              child: Text(
-                'Заказы',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.blackTextColor,
-                  fontSize: 18,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
-                  height: 0.08,
-                  letterSpacing: -0.50,
-                  decoration: TextDecoration.none,
-                ),
-              ),
             ),
           ),
         ]));
