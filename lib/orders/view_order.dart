@@ -1,10 +1,13 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/my_profile.dart';
 import 'package:client/providers/token_provider.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../complaints/all_complaints.dart';
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
@@ -107,6 +110,7 @@ class ViewOrderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final userId = Provider.of<UserIdProvider>(context).userId;
     final userRole = Provider.of<UserRoleProvider>(context).userRole;
+    final token = Provider.of<TokenProvider>(context).token;
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -192,7 +196,8 @@ class ViewOrderWidget extends StatelessWidget {
                           ])))),
             ),
           ),
-          const Align(
+          userRole != UserRole.Admin
+              ? const Align(
             alignment: FractionalOffset(1, 1.01),
             child: SizedBox(
               width: 110,
@@ -211,8 +216,29 @@ class ViewOrderWidget extends StatelessWidget {
                 ),
               ),
             ),
+          )
+              : const Align(
+            alignment: FractionalOffset(1, 1.01),
+            child: SizedBox(
+              width: 110,
+              height: 18,
+              child: Text(
+                'Обращения',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.blackTextColor,
+                  fontSize: 18,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  height: 0.08,
+                  letterSpacing: -0.50,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ),
           ),
-          Align(
+          userRole != UserRole.Admin
+              ? Align(
             alignment: const FractionalOffset(0.925, 0.97),
             child: SizedBox(
               child: SizedBox(
@@ -222,11 +248,16 @@ class ViewOrderWidget extends StatelessWidget {
                       color: AppColors.primaryColor,
                       child: InkWell(
                           onTap: () {
+                            AppMetrica.reportEvent('Авторизация');
+                            print(userRole);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const RegistrationWidget()),
+                                  userRole == UserRole.Guest
+                                      ? const RegistrationWidget()
+                                      : MyProfileWidget(
+                                      userId, null, null, null)),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -234,8 +265,36 @@ class ViewOrderWidget extends StatelessWidget {
                             Transform.scale(
                               scale: 1,
                               alignment: Alignment.center,
-                              child:
-                                  Image.asset('assets/images/profile_icon.png'),
+                              child: Image.asset(
+                                  'assets/images/profile_icon.png'),
+                            )
+                          ])))),
+            ),
+          )
+              : Align(
+            alignment: const FractionalOffset(0.99, 0.97),
+            child: SizedBox(
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AllComplaints(token!)),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child: Image.asset(
+                                  'assets/images/complaint.png'),
                             )
                           ])))),
             ),
@@ -389,6 +448,39 @@ class ViewOrderWidget extends StatelessWidget {
               );
             }),
           ),
+          userRole == UserRole.Admin
+              ? LayoutBuilder(builder: (context, constraints) {
+            return Align(
+                alignment:
+                const FractionalOffset(0.9, 0.88),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    FreelanceFinderService.instance
+                        .deleteOrder(order.id, token!);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          const AllOrders()),
+                    );
+                  },
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(
+                        Size(constraints.maxWidth * 0.35,
+                            constraints.maxHeight * 0.05)),
+                    backgroundColor:
+                    MaterialStateProperty.all(
+                        AppColors.primaryColor),
+                  ),
+                  child: const Text(
+                    'Удалить заказ',
+                    style: TextStyle(
+                      color: AppColors.backgroundColor,
+                    ),
+                  ),
+                ));
+          })
+              : const SizedBox.shrink(),
           Align(
             alignment: const FractionalOffset(0.5, 0.36),
             child: LayoutBuilder(builder: (context, constraints) {
@@ -529,7 +621,7 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          userRole != UserRole.Guest
+          userRole != UserRole.Guest && userRole != UserRole.Admin
               ? Align(
                   alignment: const FractionalOffset(0.9, 0.5),
                   child: GestureDetector(

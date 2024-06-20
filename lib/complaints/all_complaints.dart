@@ -1,11 +1,38 @@
 import 'package:client/complaints/view_complaint.dart';
+import 'package:client/integration/rest/freelance_finder/dto/complaint.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/AppColors.dart';
+import '../integration/rest/freelance_finder/client/client.dart';
 import '../orders/all_orders.dart';
 
-class AllComplaints extends StatelessWidget {
-  const AllComplaints({super.key});
+class AllComplaints extends StatefulWidget {
+  final String token;
+
+  const AllComplaints(this.token, {super.key});
+
+  @override
+  _AllComplaintsState createState() => _AllComplaintsState();
+}
+
+class _AllComplaintsState extends State<AllComplaints> {
+  late Future<List<Complaint>?> _complaintsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _complaintsFuture = _fetchComplaints();
+  }
+
+  Future<List<Complaint>?>  _fetchComplaints() async {
+    try {
+      final orders = await FreelanceFinderService.instance.getComplaints(widget.token);
+      return orders;
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +174,40 @@ class AllComplaints extends StatelessWidget {
                     ),
                   ));
             }),
+          ),
+          Align(
+            alignment: const FractionalOffset(0.95, 0.1),
+            child: GestureDetector(
+              onTap: () async {
+                SharedPreferences prefs =
+                    await SharedPreferences
+                    .getInstance();
+                await prefs.clear();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) =>
+                const AllOrders()));
+              },
+              behavior: HitTestBehavior.translucent,
+              // Include the padding area in the tap area
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                // Add padding around the text
+                child: Text(
+                  'Выйти',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFF6C85C5),
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      height: 0.12,
+                      letterSpacing: -0.50,
+                      decoration: TextDecoration.none),
+                ),
+              ),
+            ),
           ),
           Align(
               alignment: const FractionalOffset(0.08, 0.97),

@@ -3,6 +3,7 @@ import 'package:client/integration/rest/freelance_finder/dto/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../dto/complaint.dart';
 import '../dto/create_order_request.dart';
 import '../dto/login_request.dart';
 import '../dto/registration_request.dart';
@@ -25,6 +26,8 @@ class FreelanceFinderService {
   static const getUserByIdEndpoint = "api/all/freelancers/{id}";
   static const getUserOrders = "api/all/users/{id}/orders";
   static const deleteUserEndpoint = "api/admin/users/{id}";
+  static const getAllClaimsEndpoint = "api/admin/claims";
+  static const deleteOrderEndpoint = "api/admin/orders/{id}";
 
   Future<RegistrationResponseDTO> registerUser(RegistrationRequestDTO request) async {
     final response = await http.post(
@@ -209,6 +212,40 @@ class FreelanceFinderService {
       print('Пользователь успешно удален');
     } else {
       throw Exception('Не удалось удалить пользователя. Статус код: ${response.statusCode}');
+    }
+  }
+
+  Future<void> deleteOrder(int orderId, String token) async {
+    String url = serverPath + deleteOrderEndpoint.replaceAll('{id}', orderId.toString());
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('Заказ успешно удален');
+    } else {
+      throw Exception('Не удалось удалить заказ. Статус код: ${response.statusCode}');
+    }
+  }
+
+  Future<List<Complaint>> getComplaints(String token) async {
+    String url = serverPath + getAllClaimsEndpoint;
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body);
+      List<Complaint> complaints = body.map((dynamic item) => Complaint.fromJson(item)).toList();
+      return complaints;
+    } else {
+      throw Exception('Не удалось получить жалобы. Статус код: ${response.statusCode}');
     }
   }
 }

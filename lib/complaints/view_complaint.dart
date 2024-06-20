@@ -115,14 +115,14 @@ class ViewComplaintWidget extends StatelessWidget {
                   child: Material(
                       color: AppColors.primaryColor,
                       child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (
-                                      context) => const AllComplaints()),
-                            );
-                          },
+                          // onTap: () {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (
+                          //             context) => const AllComplaints()),
+                          //   );
+                          // },
                           splashColor: Colors.transparent,
                           child: Stack(children: [
                             Transform.scale(

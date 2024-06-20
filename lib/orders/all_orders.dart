@@ -3,11 +3,13 @@ import 'package:client/orders/add_order.dart';
 import 'package:client/orders/order_filters.dart';
 import 'package:client/orders/view_order.dart';
 import 'package:client/profiles/my_profile.dart';
+import 'package:client/providers/token_provider.dart';
 import 'package:client/reg/entrance.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../complaints/all_complaints.dart';
 import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
@@ -44,6 +46,7 @@ class _AllOrdersState extends State<AllOrders> {
   Widget build(BuildContext context) {
     final userRole = Provider.of<UserRoleProvider>(context).userRole;
     final userId = Provider.of<UserIdProvider>(context).userId;
+    final token = Provider.of<TokenProvider>(context).token;
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -497,7 +500,8 @@ class _AllOrdersState extends State<AllOrders> {
                           ])))),
             ),
           ),
-          const Align(
+          userRole != UserRole.Admin
+              ? const Align(
             alignment: FractionalOffset(1, 1.01),
             child: SizedBox(
               width: 110,
@@ -516,8 +520,29 @@ class _AllOrdersState extends State<AllOrders> {
                 ),
               ),
             ),
+          )
+              : const Align(
+            alignment: FractionalOffset(1, 1.01),
+            child: SizedBox(
+              width: 110,
+              height: 18,
+              child: Text(
+                'Обращения',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.blackTextColor,
+                  fontSize: 18,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400,
+                  height: 0.08,
+                  letterSpacing: -0.50,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ),
           ),
-          Align(
+          userRole != UserRole.Admin
+              ? Align(
             alignment: const FractionalOffset(0.925, 0.97),
             child: SizedBox(
               child: SizedBox(
@@ -531,9 +556,10 @@ class _AllOrdersState extends State<AllOrders> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      userRole == UserRole.Guest
-                                          ? const RegistrationWidget()
-                                          : MyProfileWidget(userId, null, true, null)),
+                                  userRole == UserRole.Guest
+                                      ? const RegistrationWidget()
+                                      : MyProfileWidget(
+                                      userId, null, null, null)),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -541,8 +567,36 @@ class _AllOrdersState extends State<AllOrders> {
                             Transform.scale(
                               scale: 1,
                               alignment: Alignment.center,
-                              child:
-                                  Image.asset('assets/images/profile_icon.png'),
+                              child: Image.asset(
+                                  'assets/images/profile_icon.png'),
+                            )
+                          ])))),
+            ),
+          )
+              : Align(
+            alignment: const FractionalOffset(0.99, 0.97),
+            child: SizedBox(
+              child: SizedBox(
+                  width: 80,
+                  height: 60,
+                  child: Material(
+                      color: AppColors.primaryColor,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AllComplaints(token!)),
+                            );
+                          },
+                          splashColor: Colors.transparent,
+                          child: Stack(children: [
+                            Transform.scale(
+                              scale: 1,
+                              alignment: Alignment.topCenter,
+                              child: Image.asset(
+                                  'assets/images/complaint.png'),
                             )
                           ])))),
             ),

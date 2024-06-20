@@ -1,4 +1,5 @@
 import 'package:client/complaints/all_complaints.dart';
+import 'package:client/orders/all_orders.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 
@@ -170,7 +171,7 @@ class ForgotPasswordWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AllComplaints()),
+                          builder: (context) => const AllOrders()),
                     );
                   },
                   style: ButtonStyle(

@@ -1,5 +1,7 @@
+import 'package:client/complaints/all_complaints.dart';
 import 'package:client/freelancers/freelancers_filters.dart';
 import 'package:client/profiles/freelancer_profile.dart';
+import 'package:client/providers/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +16,10 @@ import '../providers/user_role_provider.dart';
 import '../reg/registration.dart';
 
 class AllFreelancersWidget extends StatefulWidget {
-
   const AllFreelancersWidget({super.key});
 
   @override
   _AllFreelancersState createState() => _AllFreelancersState();
-
 }
 
 class _AllFreelancersState extends State<AllFreelancersWidget> {
@@ -33,7 +33,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
 
   Future<List<RegistrationResponseDTO>?> _fetchFreelancers() async {
     try {
-      final freelancers = await FreelanceFinderService.instance.fetchAllFreelancers();
+      final freelancers =
+          await FreelanceFinderService.instance.fetchAllFreelancers();
       return freelancers;
     } catch (e) {
       return null;
@@ -44,6 +45,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
   Widget build(BuildContext context) {
     final userRole = Provider.of<UserRoleProvider>(context).userRole;
     final userId = Provider.of<UserIdProvider>(context).userId;
+    final token = Provider.of<TokenProvider>(context).token;
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -209,7 +211,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                     right: constraints.maxWidth * 0.05,
                                     top: constraints.maxHeight * 0.28,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         const Text(
                                           'Средняя',
@@ -238,22 +241,28 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                         ),
                                         const SizedBox(height: 8),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Align(
                                               alignment: Alignment.center,
                                               child: Text(
-                                                freelancers[index].rating != null
-                                                    ? freelancers[index].rating.toString()
+                                                freelancers[index].rating !=
+                                                        null
+                                                    ? freelancers[index]
+                                                        .rating
+                                                        .toString()
                                                     : '3',
                                                 style: const TextStyle(
-                                                  color: AppColors.blackTextColor,
+                                                  color:
+                                                      AppColors.blackTextColor,
                                                   fontSize: 22,
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w400,
                                                   height: 1.3,
                                                   letterSpacing: -0.50,
-                                                  decoration: TextDecoration.none,
+                                                  decoration:
+                                                      TextDecoration.none,
                                                 ),
                                               ),
                                             ),
@@ -379,7 +388,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                             side: BorderSide(
                                               color: AppColors.primaryColor,
                                               width: 1.5,
-                                              strokeAlign: BorderSide.strokeAlignCenter,
+                                              strokeAlign:
+                                                  BorderSide.strokeAlignCenter,
                                             ),
                                           ),
                                         ),
@@ -400,7 +410,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                             side: BorderSide(
                                               color: AppColors.primaryColor,
                                               width: 1.5,
-                                              strokeAlign: BorderSide.strokeAlignCenter,
+                                              strokeAlign:
+                                                  BorderSide.strokeAlignCenter,
                                             ),
                                           ),
                                         ),
@@ -414,7 +425,12 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyProfileWidget(userId, freelancers[index], null, null),
+                                            builder: (context) =>
+                                                MyProfileWidget(
+                                                    userId,
+                                                    freelancers[index],
+                                                    null,
+                                                    null),
                                           ),
                                         );
                                       },
@@ -446,7 +462,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                  const FreelancerFiltersWidget()),
+                                      const FreelancerFiltersWidget()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -503,8 +519,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const AllOrders()),
+                                  builder: (context) => const AllOrders()),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -512,8 +527,8 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                             Transform.scale(
                               scale: 1,
                               alignment: Alignment.center,
-                              child: Image.asset(
-                                  'assets/images/orders_icon.png'),
+                              child:
+                                  Image.asset('assets/images/orders_icon.png'),
                             )
                           ])))),
             ),
@@ -558,58 +573,109 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                           ])))),
             ),
           ),
-          const Align(
-            alignment: FractionalOffset(1, 1.01),
-            child: SizedBox(
-              width: 110,
-              height: 18,
-              child: Text(
-                'Профиль',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.blackTextColor,
-                  fontSize: 18,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
-                  height: 0.08,
-                  letterSpacing: -0.50,
-                  decoration: TextDecoration.none,
+          userRole != UserRole.Admin
+              ? const Align(
+                  alignment: FractionalOffset(1, 1.01),
+                  child: SizedBox(
+                    width: 110,
+                    height: 18,
+                    child: Text(
+                      'Профиль',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.blackTextColor,
+                        fontSize: 18,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                        height: 0.08,
+                        letterSpacing: -0.50,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ),
+                )
+              : const Align(
+                  alignment: FractionalOffset(1, 1.01),
+                  child: SizedBox(
+                    width: 110,
+                    height: 18,
+                    child: Text(
+                      'Обращения',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.blackTextColor,
+                        fontSize: 18,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                        height: 0.08,
+                        letterSpacing: -0.50,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: const FractionalOffset(0.925, 0.97),
-            child: SizedBox(
-              child: SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: Material(
-                      color: AppColors.primaryColor,
-                      child: InkWell(
-                          onTap: () {
-                            AppMetrica.reportEvent('Авторизация');
-                            print(userRole);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                  userRole == UserRole.Guest
-                                      ? const RegistrationWidget()
-                                      : MyProfileWidget(userId ,null, null, null)),
-                            );
-                          },
-                          splashColor: Colors.transparent,
-                          child: Stack(children: [
-                            Transform.scale(
-                              scale: 1,
-                              alignment: Alignment.center,
-                              child:
-                              Image.asset('assets/images/profile_icon.png'),
-                            )
-                          ])))),
-            ),
-          ),
+          userRole != UserRole.Admin
+              ? Align(
+                  alignment: const FractionalOffset(0.925, 0.97),
+                  child: SizedBox(
+                    child: SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: Material(
+                            color: AppColors.primaryColor,
+                            child: InkWell(
+                                onTap: () {
+                                  AppMetrica.reportEvent('Авторизация');
+                                  print(userRole);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            userRole == UserRole.Guest
+                                                ? const RegistrationWidget()
+                                                : MyProfileWidget(
+                                                    userId, null, null, null)),
+                                  );
+                                },
+                                splashColor: Colors.transparent,
+                                child: Stack(children: [
+                                  Transform.scale(
+                                    scale: 1,
+                                    alignment: Alignment.center,
+                                    child: Image.asset(
+                                        'assets/images/profile_icon.png'),
+                                  )
+                                ])))),
+                  ),
+                )
+              : Align(
+                  alignment: const FractionalOffset(0.99, 0.97),
+                  child: SizedBox(
+                    child: SizedBox(
+                        width: 80,
+                        height: 60,
+                        child: Material(
+                            color: AppColors.primaryColor,
+                            child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                        AllComplaints(token!)),
+                                  );
+                                },
+                                splashColor: Colors.transparent,
+                                child: Stack(children: [
+                                  Transform.scale(
+                                    scale: 1,
+                                    alignment: Alignment.topCenter,
+                                    child: Image.asset(
+                                        'assets/images/complaint.png'),
+                                  )
+                                ])))),
+                  ),
+                ),
         ]));
   }
 }

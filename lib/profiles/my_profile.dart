@@ -4,6 +4,7 @@ import 'package:client/integration/rest/freelance_finder/dto/registration_respon
 import 'package:client/models/user_role.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/edit_profile.dart';
+import 'package:client/providers/token_provider.dart';
 import 'package:client/providers/user_id_provider.dart';
 import 'package:client/providers/user_role_provider.dart';
 import 'package:client/reg/registration.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../complaints/all_complaints.dart';
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
@@ -49,6 +51,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
   @override
   Widget build(BuildContext context) {
     final currentRole = Provider.of<UserRoleProvider>(context).userRole;
+    final token = Provider.of<TokenProvider>(context).token;
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -163,69 +166,121 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         ])))),
                           ),
                         ),
-                        const Align(
-                          alignment: FractionalOffset(1, 1.01),
-                          child: SizedBox(
-                            width: 110,
-                            height: 18,
-                            child: Text(
-                              'Профиль',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: AppColors.blackTextColor,
-                                fontSize: 18,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                height: 0.08,
-                                letterSpacing: -0.50,
-                                decoration: TextDecoration.none,
+                        currentUserRole != UserRole.Admin
+                            ? const Align(
+                                alignment: FractionalOffset(1, 1.01),
+                                child: SizedBox(
+                                  width: 110,
+                                  height: 18,
+                                  child: Text(
+                                    'Профиль',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppColors.blackTextColor,
+                                      fontSize: 18,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0.08,
+                                      letterSpacing: -0.50,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const Align(
+                                alignment: FractionalOffset(1, 1.01),
+                                child: SizedBox(
+                                  width: 110,
+                                  height: 18,
+                                  child: Text(
+                                    'Обращения',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppColors.blackTextColor,
+                                      fontSize: 18,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0.08,
+                                      letterSpacing: -0.50,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: const FractionalOffset(0.98, 0.97),
-                          child: SizedBox(
-                            child: SizedBox(
-                                width: 80,
-                                height: 60,
-                                child: Material(
-                                    color: AppColors.primaryColor,
-                                    child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    !isMyProfile
-                                                        ? widget.currentUserId ==
-                                                                null
-                                                            ? const RegistrationWidget()
-                                                            : MyProfileWidget(
-                                                                widget
-                                                                    .currentUserId,
-                                                                null,
-                                                                true,
-                                                                null)
-                                                        : MyProfileWidget(
-                                                            widget
-                                                                .currentUserId,
-                                                            null,
-                                                            null,
-                                                            null)),
-                                          );
-                                        },
-                                        splashColor: Colors.transparent,
-                                        child: Stack(children: [
-                                          Transform.scale(
-                                            scale: 1,
-                                            alignment: Alignment.topCenter,
-                                            child: Image.asset(
-                                                'assets/images/profile_icon.png'),
-                                          )
-                                        ])))),
-                          ),
-                        ),
+                        currentUserRole != UserRole.Admin
+                            ? Align(
+                                alignment: const FractionalOffset(0.98, 0.97),
+                                child: SizedBox(
+                                  child: SizedBox(
+                                      width: 80,
+                                      height: 60,
+                                      child: Material(
+                                          color: AppColors.primaryColor,
+                                          child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          !isMyProfile
+                                                              ? widget.currentUserId ==
+                                                                      null
+                                                                  ? const RegistrationWidget()
+                                                                  : MyProfileWidget(
+                                                                      widget
+                                                                          .currentUserId,
+                                                                      null,
+                                                                      true,
+                                                                      null)
+                                                              : MyProfileWidget(
+                                                                  widget
+                                                                      .currentUserId,
+                                                                  null,
+                                                                  null,
+                                                                  null)),
+                                                );
+                                              },
+                                              splashColor: Colors.transparent,
+                                              child: Stack(children: [
+                                                Transform.scale(
+                                                  scale: 1,
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  child: Image.asset(
+                                                      'assets/images/profile_icon.png'),
+                                                )
+                                              ])))),
+                                ),
+                              )
+                            : Align(
+                                alignment: const FractionalOffset(0.99, 0.97),
+                                child: SizedBox(
+                                  child: SizedBox(
+                                      width: 80,
+                                      height: 60,
+                                      child: Material(
+                                          color: AppColors.primaryColor,
+                                          child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AllComplaints(token!)),
+                                                );
+                                              },
+                                              splashColor: Colors.transparent,
+                                              child: Stack(children: [
+                                                Transform.scale(
+                                                  scale: 1,
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  child: Image.asset(
+                                                      'assets/images/complaint.png'),
+                                                )
+                                              ])))),
+                                ),
+                              ),
                         Align(
                             alignment: const FractionalOffset(0.08, 0.97),
                             child: SizedBox(
@@ -590,7 +645,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             )),
-                        !isMyProfile
+                        !isMyProfile && currentUserRole != UserRole.Admin
                             ? Align(
                                 alignment: userRole == UserRole.Freelancer
                                     ? const FractionalOffset(0.9, 0.45)
@@ -609,6 +664,23 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 ),
                               )
                             : const SizedBox.shrink(),
+                        isMyProfile && activeOrder != null ? Align(
+                          alignment: userRole == UserRole.Freelancer
+                              ? const FractionalOffset(0.9, 0.55)
+                              : const FractionalOffset(0.9, 0.55),
+                          child: const Text(
+                            'Отклики',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF6C85C5),
+                                fontSize: 14,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400,
+                                height: 0.12,
+                                letterSpacing: -0.50,
+                                decoration: TextDecoration.none),
+                          ),
+                        ) : const SizedBox.shrink(),
                         activeOrder != null
                             ? Align(
                                 alignment: userRole == UserRole.Freelancer
@@ -1088,7 +1160,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     ));
                               })
                             : const SizedBox.shrink(),
-                        isMyProfile
+                        isMyProfile || currentUserRole == UserRole.Admin
                             ? LayoutBuilder(builder: (context, constraints) {
                                 return Align(
                                     alignment:
@@ -1096,10 +1168,13 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     child: ElevatedButton(
                                       onPressed: () async {
                                         SharedPreferences prefs =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        final token = prefs.getString('token');
-                                        await prefs.clear();
+                                        await SharedPreferences
+                                            .getInstance();
+                                        final token = prefs.getString(
+                                            'token');
+                                        if (currentUserRole != UserRole.Admin) {
+                                          await prefs.clear();
+                                        }
                                         FreelanceFinderService.instance
                                             .deleteUser(user.id, token!);
                                         Navigator.push(
@@ -1154,7 +1229,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         ])))),
                           ),
                         ),
-                        isMyProfile
+                        isMyProfile || currentUserRole == UserRole.Admin
                             ? Align(
                                 alignment: const FractionalOffset(0.9, 0.065),
                                 child: SizedBox(
