@@ -380,10 +380,9 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                           left: constraints.maxWidth * 0.37,
                                           top: constraints.maxHeight * 0.044,
                                           child: Text(
-                                            (user.price == null
+                                            "${user.price == null
                                                     ? '— '
-                                                    : user.price.toString()) +
-                                                " ₽",
+                                                    : user.price.toString()} ₽",
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                                 color:
@@ -563,7 +562,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 fontSize: 18,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
-                                height: 0.07,
+                                height: 1.5,
                                 letterSpacing: -0.50,
                                 decoration: TextDecoration.none),
                           ),
@@ -573,8 +572,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 ? const FractionalOffset(0.5, 0.49)
                                 : const FractionalOffset(0.5, 0.35),
                             child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
                                 user.aboutMe == null
                                     ? 'Тут пока пусто...'
@@ -585,7 +583,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     fontSize: 16,
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w400,
-                                    height: 0.1,
+                                    height: 1.5,
                                     letterSpacing: -0.50,
                                     decoration: TextDecoration.none),
                                 maxLines: 7,
