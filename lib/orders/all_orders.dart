@@ -1,5 +1,4 @@
 import 'package:client/constants/AppColors.dart';
-import 'package:client/freelancers/all_freelancers.dart';
 import 'package:client/orders/add_order.dart';
 import 'package:client/orders/order_filters.dart';
 import 'package:client/orders/view_order.dart';
@@ -9,6 +8,7 @@ import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
 import '../models/user_role.dart';
@@ -30,7 +30,7 @@ class _AllOrdersState extends State<AllOrders> {
     _ordersFuture = _fetchOrders();
   }
 
-  Future<List<Order>?> _fetchOrders() async {
+  Future<List<Order>?>  _fetchOrders() async {
     try {
       final orders = await FreelanceFinderService.instance.fetchAllOrders();
       return orders;

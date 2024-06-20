@@ -3,6 +3,7 @@ import 'package:client/integration/rest/freelance_finder/dto/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../dto/freelancer.dart';
 import '../dto/login_request.dart';
 import '../dto/registration_request.dart';
 import '../dto/registration_response.dart';
@@ -16,6 +17,7 @@ class FreelanceFinderService {
   static const registrationEndpoint = "api/auth/registration";
   static const loginEndpoint = "api/auth/authentication";
   static const allOrdersEndpoint = "api/all/orders";
+  static const allFreelancersEndpoint = "api/all/freelancers";
   static const createFreelancerRequestEndpoint = "api/freelancer/requestOrder/{orderId}";
 
   Future<RegistrationResponseDTO> registerUser(RegistrationRequestDTO request) async {
@@ -74,6 +76,17 @@ class FreelanceFinderService {
     if (response.statusCode == 200) {
       List<dynamic> jsonData = json.decode(utf8.decode(response.bodyBytes));
       return jsonData.map((orderJson) => Order.fromJson(orderJson)).toList();
+    } else {
+      throw Exception('Failed to load orders');
+    }
+  }
+
+  Future<List<Freelancer>> fetchAllFreelancers() async {
+    final response = await http.get(Uri.parse(serverPath + allFreelancersEndpoint));
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonData = json.decode(utf8.decode(response.bodyBytes));
+      return jsonData.map((freelancerJson) => Freelancer.fromJson(freelancerJson)).toList();
     } else {
       throw Exception('Failed to load orders');
     }

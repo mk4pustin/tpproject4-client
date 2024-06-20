@@ -362,11 +362,12 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                           controller: _descTextFieldController,
                           textAlignVertical: TextAlignVertical.center,
                           cursorColor: Colors.black,
+                          maxLines: 6,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(
                               left: constraints.maxWidth * 0.05,
                               right: constraints.maxWidth * 0.05,
-                              top: 0,
+                              top: 8.0,
                               bottom: 0,
                             ),
                             border: OutlineInputBorder(
