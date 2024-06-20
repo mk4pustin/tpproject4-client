@@ -533,7 +533,7 @@ class _AllOrdersState extends State<AllOrders> {
                                   builder: (context) =>
                                       userRole == UserRole.Guest
                                           ? const RegistrationWidget()
-                                          : MyProfileWidget(userId, null, null)),
+                                          : MyProfileWidget(userId, null, true, null)),
                             );
                           },
                           splashColor: Colors.transparent,

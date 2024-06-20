@@ -414,7 +414,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyProfileWidget(userId, freelancers[index], null),
+                                            builder: (context) => MyProfileWidget(userId, freelancers[index], null, null),
                                           ),
                                         );
                                       },
@@ -596,7 +596,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                   builder: (context) =>
                                   userRole == UserRole.Guest
                                       ? const RegistrationWidget()
-                                      : MyProfileWidget(userId ,null, null)),
+                                      : MyProfileWidget(userId ,null, null, null)),
                             );
                           },
                           splashColor: Colors.transparent,

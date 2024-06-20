@@ -9,6 +9,7 @@ import 'package:client/providers/user_role_provider.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
@@ -19,8 +20,10 @@ class MyProfileWidget extends StatefulWidget {
   final int? currentUserId;
   final RegistrationResponseDTO? user;
   final bool? isMyProfile;
+  final Order? activeOrder;
 
-  const MyProfileWidget(this.currentUserId, this.user, this.isMyProfile,
+  const MyProfileWidget(
+      this.currentUserId, this.user, this.isMyProfile, this.activeOrder,
       {super.key});
 
   @override
@@ -71,7 +74,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                   final user = snapshot.data!;
                   final userRole = getUserRoleFromString(user.role.name);
                   final isMyProfile = user.id == widget.currentUserId;
-                  final activeOrder = findActiveOrder(user.orders);
+                  final activeOrder =
+                      widget.activeOrder ?? findActiveOrder(user.orders);
                   final currentUserRole =
                       Provider.of<UserRoleProvider>(context).userRole;
 
@@ -201,10 +205,12 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                                                 widget
                                                                     .currentUserId,
                                                                 null,
-                                                                true)
+                                                                true,
+                                                                null)
                                                         : MyProfileWidget(
                                                             widget
                                                                 .currentUserId,
+                                                            null,
                                                             null,
                                                             null)),
                                           );
@@ -633,11 +639,12 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     builder: (context, constraints) {
                                   return GestureDetector(
                                       onTap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (context) => ViewOrderWidget(Order)),
-                                        // );
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewOrderWidget(activeOrder)),
+                                        );
                                       },
                                       child: SizedBox(
                                           child: Stack(children: [
@@ -1041,6 +1048,79 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                       ),
                                       child: const Text(
                                         'Обратная связь',
+                                        style: TextStyle(
+                                          color: AppColors.backgroundColor,
+                                        ),
+                                      ),
+                                    ));
+                              })
+                            : const SizedBox.shrink(),
+                        isMyProfile
+                            ? LayoutBuilder(builder: (context, constraints) {
+                                return Align(
+                                    alignment:
+                                        const FractionalOffset(0.1, 0.86),
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        await prefs.clear();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AllOrders()),
+                                        );
+                                      },
+                                      style: ButtonStyle(
+                                        minimumSize: MaterialStateProperty.all(
+                                            Size(constraints.maxWidth * 0.35,
+                                                constraints.maxHeight * 0.05)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                AppColors.primaryColor),
+                                      ),
+                                      child: const Text(
+                                        'Выйти',
+                                        style: TextStyle(
+                                          color: AppColors.backgroundColor,
+                                        ),
+                                      ),
+                                    ));
+                              })
+                            : const SizedBox.shrink(),
+                        isMyProfile
+                            ? LayoutBuilder(builder: (context, constraints) {
+                                return Align(
+                                    alignment:
+                                        const FractionalOffset(0.9, 0.86),
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        final token = prefs.getString('token');
+                                        await prefs.clear();
+                                        FreelanceFinderService.instance
+                                            .deleteUser(user.id, token!);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AllOrders()),
+                                        );
+                                      },
+                                      style: ButtonStyle(
+                                        minimumSize: MaterialStateProperty.all(
+                                            Size(constraints.maxWidth * 0.35,
+                                                constraints.maxHeight * 0.05)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                AppColors.primaryColor),
+                                      ),
+                                      child: const Text(
+                                        'Удалить аккаунт',
                                         style: TextStyle(
                                           color: AppColors.backgroundColor,
                                         ),

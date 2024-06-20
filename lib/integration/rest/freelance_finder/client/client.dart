@@ -24,6 +24,7 @@ class FreelanceFinderService {
   static const createOrderEndpoint = "api/customer/createOrder";
   static const getUserByIdEndpoint = "api/all/freelancers/{id}";
   static const getUserOrders = "api/all/users/{id}/orders";
+  static const deleteUserEndpoint = "api/admin/users/{id}";
 
   Future<RegistrationResponseDTO> registerUser(RegistrationRequestDTO request) async {
     final response = await http.post(
@@ -192,6 +193,22 @@ class FreelanceFinderService {
       return user;
     } else {
       throw Exception('Failed to load user: ${response.body}');
+    }
+  }
+
+  Future<void> deleteUser(int userId, String token) async {
+    String url = serverPath + deleteUserEndpoint.replaceAll('{id}', userId.toString());
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('Пользователь успешно удален');
+    } else {
+      throw Exception('Не удалось удалить пользователя. Статус код: ${response.statusCode}');
     }
   }
 }

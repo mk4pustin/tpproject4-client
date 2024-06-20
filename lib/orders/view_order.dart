@@ -604,7 +604,7 @@ class ViewOrderWidget extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyProfileWidget(userId, order.orderer, null)),
+                    MaterialPageRoute(builder: (context) => MyProfileWidget(userId, order.orderer, null, order)),
                   );
                 },
                 child: Stack(
