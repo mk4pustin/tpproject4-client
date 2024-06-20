@@ -127,7 +127,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20.0, horizontal: 20.0),
                             child: AspectRatio(
-                                aspectRatio: 4 / 3,
+                                aspectRatio: 5 / 4,
                                 child: LayoutBuilder(
                                     builder: (context, constraints) {
                                       return SizedBox(
@@ -243,7 +243,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                                             fontSize: 22,
                                                             fontFamily: 'Montserrat',
                                                             fontWeight: FontWeight.w400,
-                                                            height: 1.4,
+                                                            height: 1.3,
                                                             letterSpacing: -0.50,
                                                             decoration: TextDecoration.none,
                                                           ),
@@ -264,7 +264,7 @@ class _AllFreelancersState extends State<AllFreelancersWidget> {
                                               ),
                                             ),
                                             Positioned(
-                                              top: constraints.maxHeight * 0.55,
+                                              top: constraints.maxHeight * 0.52,
                                               left: 0,
                                               right: 0,
                                               child: Column(

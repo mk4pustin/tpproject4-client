@@ -18,6 +18,21 @@ class Role {
   }
 }
 
+class Skill {
+  final String skill;
+
+  Skill({required this.skill});
+
+  factory Skill.fromJson(Map<String, dynamic> json) {
+    return Skill(skill: json['name']);
+  }
+
+  static List<String> parseSkills(String skillsString) {
+    List<String> skillsList = skillsString.split(',').map((skill) => skill.trim()).toList();
+    return skillsList;
+  }
+}
+
 class Scope {
   int id;
   String name;
@@ -68,6 +83,7 @@ class RegistrationResponseDTO {
   });
 
   factory RegistrationResponseDTO.fromJson(Map<String, dynamic> json) {
+    var skillsList = json['scopes'] as List;
     return RegistrationResponseDTO(
       id: json['id'],
       role: Role.fromJson(json['role']),
