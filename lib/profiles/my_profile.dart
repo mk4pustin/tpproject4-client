@@ -64,6 +64,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                 } else {
                   final user = snapshot.data!;
                   final userRole = getUserRoleFromString(user.role.name);
+                  final isMyProfile = user.id == widget.currentUserId;
+
                   return Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
@@ -184,7 +186,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    RegistrationWidget()),
+                                                    !isMyProfile ? widget.currentUserId == null ? RegistrationWidget() : MyProfileWidget(widget.currentUserId, null, true) : MyProfileWidget(widget.currentUserId, null, null)),
                                           );
                                         },
                                         splashColor: Colors.transparent,
@@ -292,14 +294,14 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                           ),
                         ),
                         Align(
-                          alignment: const FractionalOffset(0.5, 0.2),
+                          alignment: const FractionalOffset(0.5, 0.175),
                           child: LayoutBuilder(builder: (context, constraints) {
                             return SizedBox(
                               child: Stack(
                                 children: [
                                   Container(
                                     width: constraints.maxWidth * 0.9,
-                                    height: constraints.maxHeight * 0.05,
+                                    height: constraints.maxHeight * 0.08,
                                     decoration: ShapeDecoration(
                                       color: AppColors.primaryColor,
                                       shape: RoundedRectangleBorder(
@@ -312,7 +314,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                   ),
                                   Positioned(
                                     left: constraints.maxWidth * 0.1,
-                                    top: constraints.maxHeight * 0.035,
+                                    top: constraints.maxHeight * 0.044,
                                     child: Text(
                                       user.ordersCount.toString() + ' заказов',
                                       textAlign: TextAlign.center,
@@ -327,11 +329,11 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     ),
                                   ),
                                   Positioned(
-                                    left: constraints.maxWidth * 0.37,
-                                    top: constraints.maxHeight * 0.035,
+                                    right: constraints.maxWidth * 0.1,
+                                    top: constraints.maxHeight * 0.044,
                                     child: SizedBox(
                                       child: Text(
-                                        user.rating.toString() + ' рейтинг',
+                                        user.rating == null ? 'нет рейтинга' : user.rating.toString() + ' рейтинг',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: AppColors.backgroundColor,
@@ -344,11 +346,11 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    left: constraints.maxWidth * 0.65,
-                                    top: constraints.maxHeight * 0.035,
-                                    child: const Text(
-                                      '50\$/час',
+                                  userRole == UserRole.Freelancer ? Positioned(
+                                    left: constraints.maxWidth * 0.37,
+                                    top: constraints.maxHeight * 0.044,
+                                    child: Text(
+                                      (user.price == null ? '— ' : user.price.toString()) + " ₽",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: AppColors.backgroundColor,
@@ -359,7 +361,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                           letterSpacing: -0.50,
                                           decoration: TextDecoration.none),
                                     ),
-                                  ),
+                                  ) : const SizedBox.shrink(),
                                 ],
                               ),
                             );
@@ -863,7 +865,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const AllFreelancersWidget()),
+                                                    const AllOrders()),
                                           );
                                         },
                                         splashColor: Colors.transparent,
@@ -877,8 +879,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         ])))),
                           ),
                         ),
-                        true
-                            ? Align(
+
+                            isMyProfile ? Align(
                                 alignment: const FractionalOffset(0.9, 0.065),
                                 child: SizedBox(
                                     child: Material(
