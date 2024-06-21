@@ -11,10 +11,6 @@ class StartPage extends StatelessWidget {
 
     AppMetrica.activate(const AppMetricaConfig("045e79e7-d746-49e7-8d17-e4f2e0aab027"));
     AppMetrica.reportEvent('Запуск');
-    AppMetrica.reportEvent('Установка');
-    AppMetrica.reportEvent('Переход в аккаунт');
-    AppMetrica.reportEvent('Регистрация');
-    AppMetrica.reportEvent('Авторизация');
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
