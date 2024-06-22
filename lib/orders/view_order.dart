@@ -78,7 +78,7 @@ class ViewOrderWidget extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          // Handle the complaint submission
+
                           Navigator.of(context).pop();
                         },
                       ),
@@ -621,7 +621,7 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          userRole != UserRole.Guest && userRole != UserRole.Admin
+          userRole != UserRole.Guest && userRole != UserRole.Admin && order.orderer.id == userId
               ? Align(
                   alignment: const FractionalOffset(0.9, 0.5),
                   child: GestureDetector(

@@ -35,6 +35,7 @@ class FreelanceFinderService {
   static const getOrderResponses = "api/customer/requests/{orderId}";
   static const response2Request = "api/customer/respondToRequest/";
   static const addCommentEndpoint = "api/user/addComment";
+  static const completeClaimEndpoint = "api/admin/completeClaim/";
 
   Future<RegistrationResponseDTO> registerUser(
       RegistrationRequestDTO request) async {
@@ -154,8 +155,7 @@ class FreelanceFinderService {
     if (response.statusCode == 200) {
       List<dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
       return responseData
-          .map((freelancerJson) =>
-            Response.fromJson(freelancerJson))
+          .map((freelancerJson) => Response.fromJson(freelancerJson))
           .toList();
     } else {
       throw Exception('Failed to load orders');
@@ -282,8 +282,11 @@ class FreelanceFinderService {
 
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
-      List<Complaint> complaints =
-          body.map((dynamic item) => Complaint.fromJson(item)).toList();
+      List<Complaint> complaints = body
+          .map((dynamic item) => Complaint.fromJson(item))
+          .toList()
+          .where((item) => item.status != 'Complete')
+          .toList();
       return complaints;
     } else {
       throw Exception(
@@ -297,9 +300,7 @@ class FreelanceFinderService {
     print(url);
     final response = await http.post(
       url,
-      headers: {
-        'Authorization': 'Bearer $token'
-      },
+      headers: {'Authorization': 'Bearer $token'},
     );
 
     print(response.statusCode);
@@ -329,4 +330,21 @@ class FreelanceFinderService {
     }
   }
 
+  Future<void> completeClaim(String token, int claimId) async {
+    final url = Uri.parse('$serverPath$completeClaimEndpoint$claimId');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    final response = await http.patch(url,
+        headers: headers, body: "{\"adminComment\": \"ПРОСТО НАЙС\"}");
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to complete claim');
+    }
+  }
 }
