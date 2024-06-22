@@ -1,12 +1,11 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:client/integration/rest/freelance_finder/dto/create_claim_request.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/profiles/my_profile.dart';
 import 'package:client/providers/token_provider.dart';
 import 'package:client/reg/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../complaints/all_complaints.dart';
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
@@ -21,7 +20,9 @@ class ViewOrderWidget extends StatelessWidget {
 
   const ViewOrderWidget(this.order, {super.key});
 
-  void _showComplaintDialog(BuildContext context) {
+  void _showComplaintDialog(BuildContext context, String token) {
+    final TextEditingController feedbackController = TextEditingController();
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -41,6 +42,7 @@ class ViewOrderWidget extends StatelessWidget {
                 children: [
                   TextField(
                     onChanged: (value) {},
+                    controller: feedbackController,
                     decoration: const InputDecoration(
                       hintText: "Введите текст жалобы",
                       hintStyle: TextStyle(
@@ -78,7 +80,11 @@ class ViewOrderWidget extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-
+                          final request = CreateClaimRequest(
+                            orderId: order.id,
+                            description: feedbackController.text
+                          );
+                          FreelanceFinderService.instance.createClaim(token, request);
                           Navigator.of(context).pop();
                         },
                       ),
@@ -621,12 +627,12 @@ class ViewOrderWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          userRole != UserRole.Guest && userRole != UserRole.Admin && order.orderer.id == userId
+          userRole != UserRole.Guest && userRole != UserRole.Admin && order.orderer.id != userId
               ? Align(
                   alignment: const FractionalOffset(0.9, 0.5),
                   child: GestureDetector(
                     onTap: () {
-                      _showComplaintDialog(context);
+                      _showComplaintDialog(context, token!);
                     },
                     behavior: HitTestBehavior.translucent,
                     // Include the padding area in the tap area

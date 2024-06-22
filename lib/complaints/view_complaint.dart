@@ -458,7 +458,7 @@ class ViewComplaintWidget extends StatelessWidget {
                               ),
                               Positioned(
                                 right: constraints.maxWidth * 0.165,
-                                top: constraints.maxHeight * 0.0675,
+                                top: constraints.maxHeight * 0.065,
                                 width: 40,
                                 height: 40,
                                 child: SizedBox(

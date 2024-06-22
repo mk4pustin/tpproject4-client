@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../dto/complaint.dart';
+import '../dto/create_claim_request.dart';
 import '../dto/create_order_request.dart';
 import '../dto/login_request.dart';
 import '../dto/registration_request.dart';
@@ -36,6 +37,7 @@ class FreelanceFinderService {
   static const response2Request = "api/customer/respondToRequest/";
   static const addCommentEndpoint = "api/user/addComment";
   static const completeClaimEndpoint = "api/admin/completeClaim/";
+  static const createClaimEndpoint = "api/user/createClaim";
 
   Future<RegistrationResponseDTO> registerUser(
       RegistrationRequestDTO request) async {
@@ -347,4 +349,28 @@ class FreelanceFinderService {
       throw Exception('Failed to complete claim');
     }
   }
+
+  Future<void> createClaim(String token, CreateClaimRequest request) async {
+    final url = Uri.parse('$serverPath$createClaimEndpoint');
+
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
+    final body = jsonEncode(request.toJson());
+
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw Exception('Failed to create claim');
+    }
+  }
+
 }

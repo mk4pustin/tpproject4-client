@@ -17,6 +17,7 @@ import '../complaints/all_complaints.dart';
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/dto/comment.dart';
+import '../integration/rest/freelance_finder/dto/create_claim_request.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
 import '../orders/view_order.dart';
 
@@ -48,6 +49,97 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
     final user = await FreelanceFinderService.instance
         .getUserById(widget.currentUserId!);
     return user;
+  }
+
+  void _showComplaintDialog(BuildContext context, String token, int id) {
+    final TextEditingController feedbackController = TextEditingController();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: const BorderSide(
+                color: AppColors.primaryColor,
+                width: 4), // Increase the border width
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    onChanged: (value) {},
+                    controller: feedbackController,
+                    decoration: const InputDecoration(
+                      hintText: "Введите текст жалобы",
+                      hintStyle: TextStyle(
+                        color: AppColors.blackTextColor,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.primaryColor),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.primaryColor),
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: AppColors.blackTextColor,
+                      // Make the text color black
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  // Add some space between the text field and the buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: const Text(
+                          'Отправить',
+                          style: TextStyle(
+                            color: AppColors.blackTextColor,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onPressed: () {
+                          final request = CreateClaimRequest(
+                              userId: id, description: feedbackController.text);
+                          FreelanceFinderService.instance
+                              .createClaim(token, request);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text(
+                          'Отмена',
+                          style: TextStyle(
+                            color: AppColors.blackTextColor,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -652,8 +744,37 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 alignment: userRole == UserRole.Freelancer
                                     ? const FractionalOffset(0.9, 0.45)
                                     : const FractionalOffset(0.9, 0.3),
+                                child: GestureDetector(
+                                    onTap: () {
+                                      _showComplaintDialog(
+                                        context,
+                                        token!,
+                                        user.id
+                                      );
+                                    },
+                                    behavior: HitTestBehavior.translucent,
+                                    // Include the padding area in the tap area
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: const Text(
+                                        'Жалоба',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Color(0xFF6C85C5),
+                                            fontSize: 14,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0.12,
+                                            letterSpacing: -0.50,
+                                            decoration: TextDecoration.none),
+                                      ),
+                                    )))
+                            : const SizedBox.shrink(),
+                       false
+                            ? Align(
+                                alignment: const FractionalOffset(0.9, 0.46),
                                 child: const Text(
-                                  'Жалоба',
+                                  'Предложения',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Color(0xFF6C85C5),
@@ -666,24 +787,10 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 ),
                               )
                             : const SizedBox.shrink(),
-                        isMyProfile && currentUserRole == UserRole.Freelancer
-                            ? Align(
-                          alignment: const FractionalOffset(0.9, 0.46),
-                          child: const Text(
-                            'Предложения',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xFF6C85C5),
-                                fontSize: 14,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                height: 0.12,
-                                letterSpacing: -0.50,
-                                decoration: TextDecoration.none),
-                          ),
-                        )
-                            : const SizedBox.shrink(),
-                        isMyProfile && activeOrder != null && !canLeaveFeedback(activeOrder, userRole, currentUserRole, widget.currentUserId)
+                        isMyProfile &&
+                                activeOrder != null &&
+                                !canLeaveFeedback(activeOrder, userRole,
+                                    currentUserRole, widget.currentUserId)
                             ? Align(
                                 alignment: userRole == UserRole.Freelancer
                                     ? const FractionalOffset(0.9, 0.55)
@@ -694,7 +801,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            ResponsesWidget(token!, activeOrder.id)));
+                                                ResponsesWidget(
+                                                    token!, activeOrder.id)));
                                   },
                                   behavior: HitTestBehavior.translucent,
                                   child: const Padding(
@@ -723,7 +831,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     : const FractionalOffset(0.6, 0.55),
                                 child: GestureDetector(
                                   onTap: () {
-                                    showFeedbackDialog(context, activeOrder!.id, token!);
+                                    showFeedbackDialog(
+                                        context, activeOrder!.id, token!);
                                   },
                                   behavior: HitTestBehavior.translucent,
                                   // Include the padding area in the tap area
@@ -1127,7 +1236,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                         // userRole == UserRole.Freelancer &&
                         //         currentRole == UserRole.Customer &&
                         //         activeOrder == null
-                            false ? LayoutBuilder(builder: (context, constraints) {
+                        false
+                            ? LayoutBuilder(builder: (context, constraints) {
                                 return Align(
                                     alignment: userRole == UserRole.Freelancer
                                         ? const FractionalOffset(0.5, 0.85)
@@ -1332,7 +1442,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                     rating: rating,
                     description: feedback,
                   );
-                  await FreelanceFinderService.instance.addComment(comment, token);
+                  await FreelanceFinderService.instance
+                      .addComment(comment, token);
                   Navigator.of(context).pop();
                 } else {
                   print('Оценка должна быть числом от 0 до 5');
