@@ -35,13 +35,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   String? _passwordRepeatTextFieldError;
   String? _emailTextFieldError;
 
+  bool isFreelancer = false;
+
   @override
   Widget build(BuildContext context) {
     final userRoleProvider = Provider.of<UserRoleProvider>(context);
     final userIdProvider = Provider.of<UserIdProvider>(context);
     final tokenProvider = Provider.of<TokenProvider>(context);
-
-    bool isFreelancer = false;
 
     return Container(
         width: MediaQuery.of(context).size.width,

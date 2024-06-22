@@ -266,7 +266,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          AllComplaints(token!)),
+                                                          AllComplaints(
+                                                              token!)),
                                                 );
                                               },
                                               splashColor: Colors.transparent,
@@ -435,9 +436,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                           left: constraints.maxWidth * 0.37,
                                           top: constraints.maxHeight * 0.044,
                                           child: Text(
-                                            "${user.price == null
-                                                    ? '— '
-                                                    : user.price.toString()} ₽",
+                                            "${user.price == null ? '— ' : user.price.toString()} ₽",
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                                 color:
@@ -483,7 +482,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         Positioned(
                                           right: user.skills.isNotEmpty
                                               ? constraints.maxWidth * 0.7
-                                              : constraints.maxWidth * 0.8,
+                                              : constraints.maxWidth * 0.75,
                                           top: constraints.maxHeight * 0.08,
                                           child: SizedBox(
                                             child: Text(
@@ -532,7 +531,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         Positioned(
                                           left: user.skills.length >= 3
                                               ? constraints.maxWidth * 0.675
-                                              : constraints.maxWidth * 0.775,
+                                              : constraints.maxWidth * 0.725,
                                           top: constraints.maxHeight * 0.08,
                                           child: SizedBox(
                                             child: Text(
@@ -627,7 +626,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 ? const FractionalOffset(0.5, 0.49)
                                 : const FractionalOffset(0.5, 0.35),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
                                 user.aboutMe == null
                                     ? 'Тут пока пусто...'
@@ -664,34 +664,63 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 ),
                               )
                             : const SizedBox.shrink(),
-                        isMyProfile && activeOrder != null ? Align(
-                          alignment: userRole == UserRole.Freelancer
-                              ? const FractionalOffset(0.9, 0.55)
-                              : const FractionalOffset(0.9, 0.55),
-                          child: GestureDetector(
-                            onTap: () {
-
-                            },
-                            behavior: HitTestBehavior.translucent,
-                            // Include the padding area in the tap area
-                            child: const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              // Add padding around the text
-                              child: Text(
-                                'Жалоба',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color(0xFF6C85C5),
-                                    fontSize: 14,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400,
-                                    height: 0.12,
-                                    letterSpacing: -0.50,
-                                    decoration: TextDecoration.none),
-                              ),
-                            ),
-                          ),
-                        ) : const SizedBox.shrink(),
+                        isMyProfile && activeOrder != null
+                            ? Align(
+                                alignment: userRole == UserRole.Freelancer
+                                    ? const FractionalOffset(0.9, 0.55)
+                                    : const FractionalOffset(0.9, 0.55),
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  behavior: HitTestBehavior.translucent,
+                                  // Include the padding area in the tap area
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    // Add padding around the text
+                                    child: Text(
+                                      'Отклики',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Color(0xFF6C85C5),
+                                          fontSize: 14,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0.12,
+                                          letterSpacing: -0.50,
+                                          decoration: TextDecoration.none),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        canLeaveFeedback(activeOrder, userRole, currentUserRole,
+                                widget.currentUserId)
+                            ? Align(
+                                alignment: userRole == UserRole.Freelancer
+                                    ? const FractionalOffset(0.2, 0.55)
+                                    : const FractionalOffset(0.2, 0.55),
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  behavior: HitTestBehavior.translucent,
+                                  // Include the padding area in the tap area
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    // Add padding around the text
+                                    child: Text(
+                                      'Оставить обратную связь',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Color(0xFF6C85C5),
+                                          fontSize: 14,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0.12,
+                                          letterSpacing: -0.50,
+                                          decoration: TextDecoration.none),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
                         activeOrder != null
                             ? Align(
                                 alignment: userRole == UserRole.Freelancer
@@ -1104,39 +1133,6 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     ));
                               })
                             : const SizedBox.shrink(),
-                        // canLeaveFeedback(activeOrder, userRole, currentUserRole,
-                        //         widget.currentUserId)
-                        //     ?
-    false?     LayoutBuilder(builder: (context, constraints) {
-                                return Align(
-                                    alignment:
-                                        const FractionalOffset(0.5, 0.87),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const RegistrationWidget()),
-                                        );
-                                      },
-                                      style: ButtonStyle(
-                                        minimumSize: MaterialStateProperty.all(
-                                            Size(constraints.maxWidth * 0.5,
-                                                constraints.maxHeight * 0.05)),
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                AppColors.primaryColor),
-                                      ),
-                                      child: const Text(
-                                        'Обратная связь',
-                                        style: TextStyle(
-                                          color: AppColors.backgroundColor,
-                                        ),
-                                      ),
-                                    ));
-                              })
-                            : const SizedBox.shrink(),
                         isMyProfile
                             ? LayoutBuilder(builder: (context, constraints) {
                                 return Align(
@@ -1180,10 +1176,9 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     child: ElevatedButton(
                                       onPressed: () async {
                                         SharedPreferences prefs =
-                                        await SharedPreferences
-                                            .getInstance();
-                                        final token = prefs.getString(
-                                            'token');
+                                            await SharedPreferences
+                                                .getInstance();
+                                        final token = prefs.getString('token');
                                         if (currentUserRole != UserRole.Admin) {
                                           await prefs.clear();
                                         }
