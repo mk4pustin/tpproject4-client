@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/AppColors.dart';
+import '../freelancers/all_freelancers.dart';
 import '../integration/rest/freelance_finder/client/client.dart';
 import '../orders/all_orders.dart';
 
@@ -25,9 +26,10 @@ class _AllComplaintsState extends State<AllComplaints> {
     _complaintsFuture = _fetchComplaints();
   }
 
-  Future<List<Complaint>?>  _fetchComplaints() async {
+  Future<List<Complaint>?> _fetchComplaints() async {
     try {
-      final orders = await FreelanceFinderService.instance.getComplaints(widget.token);
+      final orders =
+          await FreelanceFinderService.instance.getComplaints(widget.token);
       return orders;
     } catch (e) {
       return null;
@@ -90,104 +92,127 @@ class _AllComplaintsState extends State<AllComplaints> {
               ),
             ),
           ),
-          Align(
-            alignment: const FractionalOffset(0.5, 0.2),
-            child: LayoutBuilder(builder: (context, constraints) {
-              return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ViewComplaintWidget()),
-                    );
-                  },
-                  child: SizedBox(
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: constraints.maxWidth * 0.9,
-                          height: constraints.maxHeight * 0.15,
-                          decoration: ShapeDecoration(
-                            color: AppColors.backgroundColor,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                width: 3,
-                                color: AppColors.primaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: constraints.maxWidth * 0.1,
-                          top: constraints.maxHeight * 0.05,
-                          child: const Text(
-                            'Максим Иванович',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: AppColors.blackTextColor,
-                                fontSize: 22,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                height: 0.08,
-                                letterSpacing: -0.50,
-                                decoration: TextDecoration.none),
-                          ),
-                        ),
-                        Positioned(
-                          left: constraints.maxWidth * 0.65,
-                          top: constraints.maxHeight * 0.05,
-                          child: const SizedBox(
-                            child: Text(
-                            '#1',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: AppColors.hintColor,
-                                fontSize: 22,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                height: 0.09,
-                                letterSpacing: -0.50,
-                                decoration: TextDecoration.none),
-                          ),
-                          ),
-                        ),
-                        Positioned(
-                          left: constraints.maxWidth * 0.1,
-                          top: constraints.maxHeight * 0.1,
-                          child: const SizedBox(
-                            child: Text(
-                              'Заказ оскорбляет чувства верующих',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: AppColors.blackTextColor,
-                                  fontSize: 16,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0.03,
-                                  letterSpacing: -0.50,
-                                  decoration: TextDecoration.none),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ));
-            }),
-          ),
+          FutureBuilder(
+              future: _complaintsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox.shrink();
+                } else if (snapshot.hasError) {
+                  return const SizedBox.shrink();
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const SizedBox.shrink();
+                } else {
+                  final complaints = snapshot.data!;
+                  return ListView.builder(
+                      itemCount: complaints.length,
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.125),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 20.0),
+                            child: AspectRatio(
+                                aspectRatio: 3 / 1,
+                                child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                  return SizedBox(
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          decoration: ShapeDecoration(
+                                            color: AppColors.backgroundColor,
+                                            shape: RoundedRectangleBorder(
+                                              side: const BorderSide(
+                                                width: 3,
+                                                color: AppColors.primaryColor,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: constraints.maxWidth * 0.1,
+                                          top: constraints.maxHeight * 0.25,
+                                          child: Text(
+                                            complaints[index].initiator.username,
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                color: AppColors.blackTextColor,
+                                                fontSize: 22,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w400,
+                                                height: 0.08,
+                                                letterSpacing: -0.50,
+                                                decoration:
+                                                    TextDecoration.none),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          right: constraints.maxWidth * 0.1,
+                                          top: constraints.maxHeight * 0.25,
+                                          child: SizedBox(
+                                            child: Text(
+                                              '#' + complaints[index].id.toString(),
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  color: AppColors.hintColor,
+                                                  fontSize: 22,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 0.09,
+                                                  letterSpacing: -0.50,
+                                                  decoration:
+                                                      TextDecoration.none),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: constraints.maxWidth * 0.1,
+                                          top: constraints.maxHeight * 0.7,
+                                          child: SizedBox(
+                                            child: Text(
+                                              complaints[index].description,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  color:
+                                                      AppColors.blackTextColor,
+                                                  fontSize: 16,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 0.03,
+                                                  letterSpacing: -0.50,
+                                                  decoration:
+                                                      TextDecoration.none),
+                                            ),
+                                          ),
+                                        ),
+                                        Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewComplaintWidget(
+                                                            complaints[index]),
+                                                  ));
+                                            })),
+                                      ],
+                                    ),
+                                  );
+                                })));
+                      });
+                }
+              }),
           Align(
             alignment: const FractionalOffset(0.95, 0.1),
             child: GestureDetector(
               onTap: () async {
-                SharedPreferences prefs =
-                    await SharedPreferences
-                    .getInstance();
+                SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.clear();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                    builder: (context) =>
-                const AllOrders()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AllOrders()));
               },
               behavior: HitTestBehavior.translucent,
               // Include the padding area in the tap area
@@ -222,8 +247,7 @@ class _AllComplaintsState extends State<AllComplaints> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (
-                                        context) => const AllOrders()),
+                                    builder: (context) => const AllOrders()),
                               );
                             },
                             splashColor: Colors.transparent,
@@ -231,7 +255,8 @@ class _AllComplaintsState extends State<AllComplaints> {
                               Transform.scale(
                                 scale: 1,
                                 alignment: Alignment.topCenter,
-                                child: Image.asset('assets/images/orders_icon.png'),
+                                child: Image.asset(
+                                    'assets/images/orders_icon.png'),
                               )
                             ])))),
               )),
@@ -284,12 +309,21 @@ class _AllComplaintsState extends State<AllComplaints> {
                   child: Material(
                       color: AppColors.primaryColor,
                       child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const AllFreelancersWidget()),
+                            );
+                          },
                           splashColor: Colors.transparent,
                           child: Stack(children: [
                             Transform.scale(
                               scale: 1,
                               alignment: Alignment.topCenter,
-                              child: Image.asset('assets/images/freelancers_icon.png'),
+                              child: Image.asset(
+                                  'assets/images/freelancers_icon.png'),
                             )
                           ])))),
             ),

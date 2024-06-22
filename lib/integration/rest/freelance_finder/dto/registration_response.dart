@@ -53,7 +53,7 @@ class RegistrationResponseDTO {
   final bool isAccountNonLocked;
   final bool isCredentialsNonExpired;
   List<Order>? orders;
-  final int? price;
+  final double? price;
   final int ordersCount;
 
   RegistrationResponseDTO({

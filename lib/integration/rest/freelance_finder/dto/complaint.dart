@@ -5,7 +5,7 @@ import 'order.dart';
 
 class Complaint {
   int id;
-  RegistrationResponseDTO? initiator;
+  RegistrationResponseDTO initiator;
   RegistrationResponseDTO? user;
   RegistrationResponseDTO? admin;
   Order? order;
@@ -33,10 +33,10 @@ class Complaint {
 
     return Complaint(
       id: json['id'],
-      initiator: json['initiator'] != null
-          ? RegistrationResponseDTO.fromJson(json['initiator'])
+      initiator: RegistrationResponseDTO.fromJson(json['initiator']),
+      user: json['user'] != null
+          ? RegistrationResponseDTO.fromJson(json['user'])
           : null,
-      user: json['user'],
       admin: json['admin'] != null
           ? RegistrationResponseDTO.fromJson(json['admin'])
           : null,

@@ -1,16 +1,27 @@
 import 'package:client/complaints/all_complaints.dart';
+import 'package:client/integration/rest/freelance_finder/dto/complaint.dart';
 import 'package:client/orders/all_orders.dart';
 import 'package:client/orders/view_order.dart';
 import 'package:client/profiles/freelancer_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/AppColors.dart';
+import '../freelancers/all_freelancers.dart';
+import '../providers/token_provider.dart';
+import '../providers/user_id_provider.dart';
+import '../providers/user_role_provider.dart';
 
 class ViewComplaintWidget extends StatelessWidget {
-  const ViewComplaintWidget({super.key});
+  final Complaint complaint;
+  const ViewComplaintWidget(this.complaint, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userId = Provider.of<UserIdProvider>(context).userId;
+    final userRole = Provider.of<UserRoleProvider>(context).userRole;
+    final token = Provider.of<TokenProvider>(context).token;
+
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -76,6 +87,14 @@ class ViewComplaintWidget extends StatelessWidget {
                   child: Material(
                       color: AppColors.primaryColor,
                       child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const AllFreelancersWidget()),
+                            );
+                          },
                           splashColor: Colors.transparent,
                           child: Stack(children: [
                             Transform.scale(
@@ -115,14 +134,14 @@ class ViewComplaintWidget extends StatelessWidget {
                   child: Material(
                       color: AppColors.primaryColor,
                       child: InkWell(
-                          // onTap: () {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (
-                          //             context) => const AllComplaints()),
-                          //   );
-                          // },
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (
+                                      context) => AllComplaints(token!)),
+                            );
+                          },
                           splashColor: Colors.transparent,
                           child: Stack(children: [
                             Transform.scale(
@@ -194,10 +213,10 @@ class ViewComplaintWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          const Align(
+          Align(
             alignment: FractionalOffset(0.5, 0.11),
             child: Text(
-              '#1',
+              '#${complaint.id}',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: AppColors.hintColor,
@@ -209,10 +228,10 @@ class ViewComplaintWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          const Align(
+          Align(
             alignment: FractionalOffset(0.5, 0.175),
             child: Text(
-              'Дата размещения: 22.11.2024',
+              'Дата размещения: ' + complaint.creationDate,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: AppColors.blackTextColor,
@@ -239,10 +258,10 @@ class ViewComplaintWidget extends StatelessWidget {
                   decoration: TextDecoration.none),
             ),
           ),
-          const Align(
+          Align(
             alignment: FractionalOffset(0.5, 0.35),
             child: Text(
-              'Заказ оскорбляет чувства верующих',
+              complaint.description,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: AppColors.blackTextColor,
