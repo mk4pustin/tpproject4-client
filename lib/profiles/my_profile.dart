@@ -8,6 +8,7 @@ import 'package:client/providers/token_provider.dart';
 import 'package:client/providers/user_id_provider.dart';
 import 'package:client/providers/user_role_provider.dart';
 import 'package:client/reg/registration.dart';
+import 'package:client/responses/responses_by_order.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../complaints/all_complaints.dart';
 import '../constants/AppColors.dart';
 import '../freelancers/all_freelancers.dart';
+import '../integration/rest/freelance_finder/dto/comment.dart';
 import '../integration/rest/freelance_finder/dto/order.dart';
 import '../orders/view_order.dart';
 
@@ -664,18 +666,39 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 ),
                               )
                             : const SizedBox.shrink(),
-                        isMyProfile && activeOrder != null
+                        isMyProfile && currentUserRole == UserRole.Freelancer
+                            ? Align(
+                          alignment: const FractionalOffset(0.9, 0.46),
+                          child: const Text(
+                            'Предложения',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF6C85C5),
+                                fontSize: 14,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400,
+                                height: 0.12,
+                                letterSpacing: -0.50,
+                                decoration: TextDecoration.none),
+                          ),
+                        )
+                            : const SizedBox.shrink(),
+                        isMyProfile && activeOrder != null && !canLeaveFeedback(activeOrder, userRole, currentUserRole, widget.currentUserId)
                             ? Align(
                                 alignment: userRole == UserRole.Freelancer
                                     ? const FractionalOffset(0.9, 0.55)
                                     : const FractionalOffset(0.9, 0.55),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            ResponsesWidget(token!, activeOrder.id)));
+                                  },
                                   behavior: HitTestBehavior.translucent,
-                                  // Include the padding area in the tap area
                                   child: const Padding(
                                     padding: EdgeInsets.all(16.0),
-                                    // Add padding around the text
                                     child: Text(
                                       'Отклики',
                                       textAlign: TextAlign.center,
@@ -696,17 +719,19 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                 widget.currentUserId)
                             ? Align(
                                 alignment: userRole == UserRole.Freelancer
-                                    ? const FractionalOffset(0.2, 0.55)
-                                    : const FractionalOffset(0.2, 0.55),
+                                    ? const FractionalOffset(0.6, 0.55)
+                                    : const FractionalOffset(0.6, 0.55),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    showFeedbackDialog(context, activeOrder!.id, token!);
+                                  },
                                   behavior: HitTestBehavior.translucent,
                                   // Include the padding area in the tap area
                                   child: const Padding(
                                     padding: EdgeInsets.all(16.0),
                                     // Add padding around the text
                                     child: Text(
-                                      'Оставить обратную связь',
+                                      'Обратная связь',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Color(0xFF6C85C5),
@@ -1099,10 +1124,10 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                       ])));
                                 }))
                             : const SizedBox.shrink(),
-                        userRole == UserRole.Freelancer &&
-                                currentRole == UserRole.Customer &&
-                                activeOrder == null
-                            ? LayoutBuilder(builder: (context, constraints) {
+                        // userRole == UserRole.Freelancer &&
+                        //         currentRole == UserRole.Customer &&
+                        //         activeOrder == null
+                            false ? LayoutBuilder(builder: (context, constraints) {
                                 return Align(
                                     alignment: userRole == UserRole.Freelancer
                                         ? const FractionalOffset(0.5, 0.85)
@@ -1265,6 +1290,65 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                 }
               })
         ]));
+  }
+
+  void showFeedbackDialog(BuildContext context, int orderId, String token) {
+    final TextEditingController feedbackController = TextEditingController();
+    final TextEditingController ratingController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Оставить обратную связь'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: feedbackController,
+                decoration: InputDecoration(
+                  hintText: 'Введите отзыв',
+                ),
+              ),
+              TextField(
+                controller: ratingController,
+                decoration: InputDecoration(
+                  hintText: 'Введите оценку от 0 до 5',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Отправить'),
+              onPressed: () async {
+                final feedback = feedbackController.text;
+                final rating = int.tryParse(ratingController.text);
+                if (rating != null && rating >= 0 && rating <= 5) {
+                  print('Отзыв: $feedback, Оценка: $rating');
+                  final comment = CommentDTO(
+                    orderId: 0,
+                    rating: rating,
+                    description: feedback,
+                  );
+                  await FreelanceFinderService.instance.addComment(comment, token);
+                  Navigator.of(context).pop();
+                } else {
+                  print('Оценка должна быть числом от 0 до 5');
+                }
+              },
+            ),
+            TextButton(
+              child: Text('Отмена'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Order? findActiveOrder(List<Order>? orders) {
